@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loja de Peças – Ramostec</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
+
+  :root {
+    --navy: #1A3A5C;
+    --orange: #F07B24;
+    --orange-dark: #D4661A;
+    --white: #FFFFFF;
+    --gray-light: #F5F7FA;
+    --gray-mid: #E2E8F0;
+    --gray-dark: #2D2D2D;
+    --text-muted: #6B7A8D;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Barlow', sans-serif; background: var(--white); color: var(--gray-dark); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(26,58,92,0.97); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px; box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  }
+  .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.7rem; font-weight: 900; color: var(--white); letter-spacing: -0.5px; text-decoration: none; }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s; }
+  .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.1); }
+  .nav-links a.active { color: var(--white); background: rgba(255,255,255,0.12); font-weight: 700; }
+  .nav-links a.nav-cta { background: var(--orange); color: white; font-weight: 700; }
+  .nav-links a.nav-cta:hover { background: var(--orange-dark); }
+  .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: white; transition: all 0.3s; }
+  .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--navy); z-index: 999; flex-direction: column; padding: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { color: rgba(255,255,255,0.8); text-decoration: none; padding: 0.9rem 1rem; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
+  .mobile-menu a:hover { background: rgba(255,255,255,0.07); color: white; }
+  .mobile-menu a.nav-cta { background: var(--orange); color: white; margin-top: 0.5rem; text-align: center; }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    background: var(--navy); padding: 7rem 2rem 3.5rem;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .page-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(240,123,36,0.15) 0%, transparent 60%);
+  }
+  .page-hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
+  .page-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.8rem; }
+  .page-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 0.8rem; }
+  .page-title em { font-style: normal; color: var(--orange); }
+  .page-sub { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.7; }
+
+  /* ── LOJA ── */
+  #loja { padding: 4rem 2rem 5rem; background: var(--white); }
+  .loja-inner { max-width: 1200px; margin: 0 auto; }
+
+  .filter-bar { display: flex; gap: 0.6rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 0.5rem 1.2rem; border-radius: 20px;
+    border: 1.5px solid var(--gray-mid);
+    background: var(--white); color: var(--gray-dark);
+    font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+    font-family: inherit;
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
+  .product-card { border: 1px solid var(--gray-mid); border-radius: 12px; overflow: hidden; transition: all 0.25s; background: var(--white); }
+  .product-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); transform: translateY(-3px); }
+  .product-img { height: 160px; background: var(--gray-light); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+  .product-body { padding: 1.2rem; }
+  .product-badge { display: inline-block; background: rgba(240,123,36,0.12); color: var(--orange); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; }
+  .product-name { font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.25rem; }
+  .product-compat { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+  .product-price { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--orange); margin-bottom: 0.75rem; }
+  .btn-buy {
+    width: 100%; padding: 0.65rem; background: var(--navy); color: var(--white);
+    border: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem;
+    cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    font-family: inherit;
+  }
+  .btn-buy:hover { background: var(--orange); }
+
+  /* empty state */
+  .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text-muted); }
+  .empty-state .empty-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+
+  /* ── CTA BANNER ── */
+  .cta-banner {
+    margin-top: 4rem; background: var(--gray-light);
+    border-radius: 16px; padding: 2.5rem 2rem;
+    text-align: center; border: 1px solid var(--gray-mid);
+  }
+  .cta-banner h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--navy); margin-bottom: 0.5rem; }
+  .cta-banner p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+  .btn-wpp-inline {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: #25D366; color: white; font-weight: 700; font-size: 0.95rem;
+    padding: 0.85rem 2rem; border-radius: 10px; text-decoration: none; transition: all 0.2s;
+  }
+  .btn-wpp-inline:hover { background: #1ebe5d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
+
+  /* ── FOOTER ── */
+  footer { background: #0F2540; padding: 2.5rem 2rem; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: white; text-decoration: none; }
+  .footer-logo span { color: var(--orange); }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.8); }
+  .footer-copy { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 1.2rem; text-align: center; }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--navy); color: white; padding: 0.9rem 1.8rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transition: transform 0.3s; z-index: 9999; white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">RAMOS<span>TEC</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="loja.html" class="active">Loja de Peças</a></li>
+    <li><a href="contato.html" class="nav-cta">Solicitar Atendimento</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="toggleMenu()">Início</a>
+  <a href="loja.html" onclick="toggleMenu()">Loja de Peças</a>
+  <a href="contato.html" class="nav-cta" onclick="toggleMenu()">Solicitar Atendimento</a>
+</div>
+
+<!-- HERO DA PÁGINA -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-eyebrow">🛒 Loja de Peças</div>
+    <h1 class="page-title">Peças para o seu<br><em>eletrodoméstico</em></h1>
+    <p class="page-sub">Clique em "Comprar" para ser direcionado ao WhatsApp e finalizar seu pedido com nossa equipe.</p>
+  </div>
+</div>
+
+<!-- PRODUTOS -->
+<section id="loja">
+  <div class="loja-inner">
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" onclick="filterProducts('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filterProducts('lavar', this)">Máq. de Lavar</button>
+      <button class="filter-btn" onclick="filterProducts('tanquinho', this)">Tanquinho</button>
+      <button class="filter-btn" onclick="filterProducts('fogao', this)">Fogão</button>
+      <button class="filter-btn" onclick="filterProducts('coifa', this)">Coifa</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+
+    <div class="cta-banner">
+      <h3>Não encontrou a peça que precisa?</h3>
+      <p>Consulte nossa equipe pelo WhatsApp. Trabalhamos com um catálogo amplo e fazemos pedidos sob encomenda.</p>
+      <a href="https://wa.me/5511900000000?text=Ol%C3%A1!%20Vim%20pela%20loja%20da%20Ramostec%20e%20preciso%20de%20uma%20pe%C3%A7a%20que%20n%C3%A3o%20encontrei%20no%20site." class="btn-wpp-inline" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+        Consultar pelo WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo">RAMOS<span>TEC</span></a>
+    <div class="footer-links">
+      <a href="index.html">Início</a>
+      <a href="loja.html">Loja de Peças</a>
+      <a href="contato.html">Solicitar Atendimento</a>
+    </div>
+  </div>
+  <p class="footer-copy">© 2025 Ramostec – Assistência Técnica em Eletrodomésticos. Todos os direitos reservados.</p>
+</footer>
+
+<div class="toast" id="toast">✅ Redirecionando para o WhatsApp...</div>
+
+<script>
+  const produtos = [
+    { nome: 'Mangueira de Entrada', compat: 'Electrolux, Brastemp, LG', preco: 'R$ 29,90', cat: 'lavar', icon: '🔗' },
+    { nome: 'Bomba de Drenagem', compat: 'Brastemp, Consul, Samsung', preco: 'R$ 89,90', cat: 'lavar', icon: '🔄' },
+    { nome: 'Tampa de Máquina', compat: 'Electrolux LTR10, LTR12', preco: 'R$ 49,90', cat: 'lavar', icon: '🔲' },
+    { nome: 'Rolamento de Tambor', compat: 'Diversas marcas', preco: 'R$ 39,90', cat: 'lavar', icon: '⚙️' },
+    { nome: 'Turbina de Tanquinho', compat: 'Agratto, Wanke, Suggar', preco: 'R$ 55,00', cat: 'tanquinho', icon: '🌀' },
+    { nome: 'Mangueira de Esgoto', compat: 'Tanquinhos em geral', preco: 'R$ 19,90', cat: 'tanquinho', icon: '🔗' },
+    { nome: 'Tampa para Tanquinho', compat: 'Agratto, Wanke', preco: 'R$ 34,90', cat: 'tanquinho', icon: '🔲' },
+    { nome: 'Botão Acionador', compat: 'Suggar, Wanke', preco: 'R$ 15,00', cat: 'tanquinho', icon: '🔘' },
+    { nome: 'Acendedor Eletrônico', compat: 'Brastemp, Consul, Atlas', preco: 'R$ 45,00', cat: 'fogao', icon: '⚡' },
+    { nome: 'Grelha de Fogão', compat: 'Dako, Atlas, Esmaltec', preco: 'R$ 38,00', cat: 'fogao', icon: '🔆' },
+    { nome: 'Válvula de Gás', compat: 'Brastemp, Consul', preco: 'R$ 62,00', cat: 'fogao', icon: '🔩' },
+    { nome: 'Filtro de Carvão Coifa', compat: 'Suggar, Nardelli', preco: 'R$ 45,90', cat: 'coifa', icon: '🌫️' },
+    { nome: 'Motor de Coifa', compat: 'Diversos modelos', preco: 'R$ 120,00', cat: 'coifa', icon: '💨' },
+    { nome: 'Luminária LED Coifa', compat: 'Universal', preco: 'R$ 25,00', cat: 'coifa', icon: '💡' },
+  ];
+
+  function catLabel(cat) {
+    const map = { lavar: 'Máq. de Lavar', tanquinho: 'Tanquinho', fogao: 'Fogão', coifa: 'Coifa' };
+    return map[cat] || cat;
+  }
+
+  function renderProducts(cat) {
+    const grid = document.getElementById('productsGrid');
+    const filtered = cat === 'todos' ? produtos : produtos.filter(p => p.cat === cat);
+    if (!filtered.length) {
+      grid.innerHTML = '<div class="empty-state"><span class="empty-icon">🔍</span><p>Nenhuma peça encontrada nessa categoria.</p></div>';
+      return;
+    }
+    grid.innerHTML = filtered.map(p => `
+      <div class="product-card">
+        <div class="product-img">${p.icon}</div>
+        <div class="product-body">
+          <span class="product-badge">${catLabel(p.cat)}</span>
+          <div class="product-name">${p.nome}</div>
+          <div class="product-compat">Compatível: ${p.compat}</div>
+          <div class="product-price">${p.preco}</div>
+          <button class="btn-buy" onclick="comprarPeca('${p.nome}', '${p.preco}')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+            Comprar via WhatsApp
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function filterProducts(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts(cat);
+  }
+
+  function comprarPeca(nome, preco) {
+    const msg = encodeURIComponent(`Olá! Vim pelo site da Ramostec e tenho interesse na peça:\n\n🔩 *${nome}*\n💰 ${preco}\n\nPoderia me confirmar disponibilidade?`);
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+    setTimeout(() => window.open(`https://wa.me/5511900000000?text=${msg}`, '_blank'), 400);
+  }
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  document.addEventListener('click', e => {
+    const menu = document.getElementById('mobileMenu');
+    if (!menu.contains(e.target) && !e.target.closest('.hamburger')) menu.classList.remove('open');
+  });
+
+  renderProducts('todos');
+</script>
+</body>
+</html>
