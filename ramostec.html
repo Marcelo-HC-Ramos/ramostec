@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ramostec – Assistência Técnica em Eletrodomésticos</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
+
+  :root {
+    --navy: #1A3A5C;
+    --orange: #F07B24;
+    --orange-dark: #D4661A;
+    --white: #FFFFFF;
+    --gray-light: #F5F7FA;
+    --gray-mid: #E2E8F0;
+    --gray-dark: #2D2D2D;
+    --text-muted: #6B7A8D;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--white);
+    color: var(--gray-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(26,58,92,0.97);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.7rem; font-weight: 900;
+    color: var(--white); letter-spacing: -0.5px;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--orange); }
+
+  .nav-links {
+    display: flex; gap: 0.25rem; list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none; font-weight: 500; font-size: 0.9rem;
+    padding: 0.5rem 1rem; border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.1); }
+
+  .nav-cta {
+    background: var(--orange) !important;
+    color: var(--white) !important;
+    font-weight: 700 !important;
+    padding: 0.5rem 1.2rem !important;
+  }
+
+  .nav-cta:hover { background: var(--orange-dark) !important; }
+
+  .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: white; transition: all 0.3s; }
+
+  /* ── HERO ── */
+  #home {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding-top: 64px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(240,123,36,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(240,123,36,0.07) 0%, transparent 50%);
+  }
+
+  /* animated gear lines */
+  .gear-lines {
+    position: absolute; right: -60px; top: 50%;
+    transform: translateY(-50%);
+    width: 560px; height: 560px; opacity: 0.07;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(240,123,36,0.15);
+    border: 1px solid rgba(240,123,36,0.3);
+    color: var(--orange);
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 0.35rem 0.9rem; border-radius: 4px;
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 900; color: var(--white);
+    line-height: 1.05; margin-bottom: 1.2rem;
+  }
+
+  .hero-title em { font-style: normal; color: var(--orange); }
+
+  .hero-desc {
+    color: rgba(255,255,255,0.68);
+    font-size: 1.05rem; line-height: 1.7;
+    margin-bottom: 2rem; max-width: 480px;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--orange); color: var(--white);
+    font-weight: 700; font-size: 0.95rem;
+    padding: 0.9rem 1.8rem; border-radius: 8px;
+    border: none; cursor: pointer; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(240,123,36,0.4); }
+
+  .btn-outline {
+    background: transparent; color: var(--white);
+    font-weight: 600; font-size: 0.95rem;
+    padding: 0.9rem 1.8rem; border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    cursor: pointer; text-decoration: none;
+    transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+
+  .btn-outline:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.06); }
+
+  /* hero appliance icons */
+  .hero-visual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  }
+
+  .appliance-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 12px; padding: 1.5rem;
+    text-align: center; transition: all 0.3s;
+    cursor: default;
+  }
+
+  .appliance-card:hover {
+    background: rgba(240,123,36,0.1);
+    border-color: rgba(240,123,36,0.3);
+    transform: translateY(-3px);
+  }
+
+  .appliance-card .icon { font-size: 2.4rem; margin-bottom: 0.6rem; display: block; }
+  .appliance-card .label { color: rgba(255,255,255,0.75); font-size: 0.85rem; font-weight: 600; }
+
+  /* ── STATS ── */
+  .stats-bar {
+    background: var(--orange);
+    padding: 1.5rem 2rem;
+  }
+
+  .stats-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    text-align: center;
+  }
+
+  .stat-item { padding: 0.5rem; }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2rem; font-weight: 900; color: white;
+  }
+  .stat-label { font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── SECTIONS ── */
+  section { scroll-margin-top: 64px; }
+
+  .section-header {
+    text-align: center; margin-bottom: 3rem;
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 0.6rem;
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 900; color: var(--navy);
+    line-height: 1.1;
+  }
+
+  .section-sub { color: var(--text-muted); margin-top: 0.6rem; font-size: 1rem; }
+
+  /* ── SERVICES ── */
+  #servicos { padding: 5rem 2rem; background: var(--gray-light); }
+
+  .services-grid {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;
+  }
+
+  .service-card {
+    background: var(--white);
+    border-radius: 12px; padding: 2rem 1.5rem;
+    border: 1px solid var(--gray-mid);
+    transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+
+  .service-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: var(--orange); transform: scaleX(0);
+    transition: transform 0.3s; transform-origin: left;
+  }
+
+  .service-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); transform: translateY(-3px); }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+  .service-name { font-weight: 700; font-size: 1.05rem; color: var(--navy); margin-bottom: 0.4rem; }
+  .service-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
+
+  /* ── LOJA ── */
+  #loja { padding: 5rem 2rem; background: var(--white); }
+
+  .loja-inner { max-width: 1200px; margin: 0 auto; }
+
+  .filter-bar {
+    display: flex; gap: 0.6rem; margin-bottom: 2rem; flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    padding: 0.45rem 1.1rem; border-radius: 20px;
+    border: 1.5px solid var(--gray-mid);
+    background: var(--white); color: var(--gray-dark);
+    font-weight: 600; font-size: 0.85rem;
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--navy); color: var(--white); border-color: var(--navy);
+  }
+
+  .products-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem;
+  }
+
+  .product-card {
+    border: 1px solid var(--gray-mid); border-radius: 12px;
+    overflow: hidden; transition: all 0.25s; background: var(--white);
+  }
+
+  .product-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); transform: translateY(-3px); }
+
+  .product-img {
+    height: 160px; background: var(--gray-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+
+  .product-body { padding: 1.2rem; }
+
+  .product-badge {
+    display: inline-block;
+    background: rgba(240,123,36,0.12); color: var(--orange);
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem;
+  }
+
+  .product-name { font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.25rem; }
+  .product-compat { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem; }
+
+  .product-price {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem; font-weight: 900; color: var(--orange);
+    margin-bottom: 0.75rem;
+  }
+
+  .btn-buy {
+    width: 100%; padding: 0.65rem;
+    background: var(--navy); color: var(--white);
+    border: none; border-radius: 8px;
+    font-weight: 700; font-size: 0.88rem;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  }
+
+  .btn-buy:hover { background: var(--orange); }
+
+  /* ── SOLICITAR ATENDIMENTO ── */
+  #atendimento { padding: 5rem 2rem; background: var(--gray-light); }
+
+  .atendimento-inner {
+    max-width: 720px; margin: 0 auto;
+  }
+
+  .form-card {
+    background: var(--white); border-radius: 16px;
+    padding: 2.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  }
+
+  .form-group { margin-bottom: 1.4rem; }
+
+  .form-label {
+    display: block; font-weight: 600; font-size: 0.88rem;
+    color: var(--navy); margin-bottom: 0.4rem;
+  }
+
+  .form-label span { color: var(--orange); }
+
+  .form-control {
+    width: 100%; padding: 0.7rem 1rem;
+    border: 1.5px solid var(--gray-mid); border-radius: 8px;
+    font-family: inherit; font-size: 0.9rem; color: var(--gray-dark);
+    transition: border-color 0.2s; background: var(--white);
+    outline: none;
+  }
+
+  .form-control:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(26,58,92,0.08); }
+
+  select.form-control { cursor: pointer; }
+
+  textarea.form-control { resize: vertical; min-height: 110px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .whatsapp-info {
+    background: #E8F5E9; border: 1px solid #A5D6A7;
+    border-radius: 8px; padding: 1rem 1.2rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .whatsapp-info .wa-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .whatsapp-info p { font-size: 0.85rem; color: #2E7D32; line-height: 1.5; }
+  .whatsapp-info strong { display: block; font-weight: 700; }
+
+  .btn-wpp {
+    width: 100%; padding: 1rem;
+    background: #25D366; color: white;
+    border: none; border-radius: 10px;
+    font-family: inherit; font-weight: 700; font-size: 1rem;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+  }
+
+  .btn-wpp:hover { background: #1ebe5d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
+
+  /* ── CONTATO ── */
+  #contato { padding: 5rem 2rem; background: var(--navy); }
+
+  .contato-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+  }
+
+  .contato-info h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.2rem; font-weight: 900; color: var(--white);
+    line-height: 1.1; margin-bottom: 1rem;
+  }
+
+  .contato-info h2 em { font-style: normal; color: var(--orange); }
+  .contato-info p { color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 2rem; }
+
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .contact-item .ci-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: rgba(240,123,36,0.15); border: 1px solid rgba(240,123,36,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+
+  .contact-item .ci-text strong { display: block; font-weight: 700; font-size: 0.85rem; color: white; }
+  .contact-item .ci-text span { font-size: 0.82rem; color: rgba(255,255,255,0.6); }
+
+  .contato-wpp {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 2rem;
+    text-align: center;
+  }
+
+  .contato-wpp .wpp-big { font-size: 4rem; margin-bottom: 1rem; display: block; }
+  .contato-wpp h3 { color: white; font-weight: 700; margin-bottom: 0.5rem; }
+  .contato-wpp p { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+  .btn-wpp-lg {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: #25D366; color: white;
+    padding: 0.9rem 2rem; border-radius: 10px;
+    font-weight: 700; text-decoration: none; font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .btn-wpp-lg:hover { background: #1ebe5d; transform: translateY(-1px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0F2540; padding: 2rem;
+    text-align: center; color: rgba(255,255,255,0.4);
+    font-size: 0.82rem;
+  }
+
+  footer strong { color: rgba(255,255,255,0.7); }
+
+  /* ── MOBILE NAV ── */
+  .mobile-menu {
+    display: none; position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--navy); z-index: 999;
+    flex-direction: column; padding: 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: rgba(255,255,255,0.8); text-decoration: none;
+    padding: 0.9rem 1rem; border-radius: 8px; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .mobile-menu a:hover { background: rgba(255,255,255,0.07); color: white; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--navy); color: white;
+    padding: 0.9rem 1.8rem; border-radius: 10px;
+    font-weight: 600; font-size: 0.9rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s; z-index: 9999;
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    .hero-content { grid-template-columns: 1fr; gap: 2rem; text-align: center; padding: 2rem 1.5rem; }
+    .hero-btns { justify-content: center; }
+    .hero-desc { margin: 0 auto 2rem; }
+    .hero-visual { display: none; }
+
+    .stats-inner { grid-template-columns: repeat(2,1fr); gap: 1rem; }
+
+    .form-row { grid-template-columns: 1fr; }
+
+    .contato-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .contato-info { text-align: center; }
+    .contact-items { align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">RAMOS<span>TEC</span></a>
+  <ul class="nav-links">
+    <li><a href="#servicos">Serviços</a></li>
+    <li><a href="#loja">Loja de Peças</a></li>
+    <li><a href="#atendimento">Solicitar Atendimento</a></li>
+    <li><a href="#contato">Contato</a></li>
+    <li><a href="#atendimento" class="nav-cta">📲 Chamar no WhatsApp</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#servicos" onclick="toggleMenu()">Serviços</a>
+  <a href="#loja" onclick="toggleMenu()">Loja de Peças</a>
+  <a href="#atendimento" onclick="toggleMenu()">Solicitar Atendimento</a>
+  <a href="#contato" onclick="toggleMenu()">Contato</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div>
+      <span class="hero-eyebrow">⚡ Assistência Técnica Domiciliar</span>
+      <h1 class="hero-title">Seu eletrodoméstico<br><em>funcionando hoje.</em></h1>
+      <p class="hero-desc">
+        Conserto de máquinas de lavar, tanquinhos, instalação de fogões e coifas — 
+        no conforto da sua casa. Também vendemos peças originais para diversos modelos.
+      </p>
+      <div class="hero-btns">
+        <a href="#atendimento" class="btn-primary">🔧 Solicitar Atendimento</a>
+        <a href="#loja" class="btn-outline">🛒 Ver Peças</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="appliance-card"><span class="icon">🫧</span><span class="label">Máquina de Lavar</span></div>
+      <div class="appliance-card"><span class="icon">🪣</span><span class="label">Tanquinho</span></div>
+      <div class="appliance-card"><span class="icon">🔥</span><span class="label">Fogão</span></div>
+      <div class="appliance-card"><span class="icon">💨</span><span class="label">Coifa</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-label">Clientes atendidos</div></div>
+    <div class="stat-item"><div class="stat-num">4+</div><div class="stat-label">Anos de experiência</div></div>
+    <div class="stat-item"><div class="stat-num">100+</div><div class="stat-label">Peças em estoque</div></div>
+    <div class="stat-item"><div class="stat-num">⭐ 4.9</div><div class="stat-label">Avaliação média</div></div>
+  </div>
+</div>
+
+<!-- SERVIÇOS -->
+<section id="servicos">
+  <div style="max-width:1200px;margin:0 auto;">
+    <div class="section-header">
+      <div class="section-eyebrow">O que fazemos</div>
+      <h2 class="section-title">Serviços especializados<br>com atendimento domiciliar</h2>
+      <p class="section-sub">Você não precisa sair de casa. A gente vai até você.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">🫧</span>
+        <div class="service-name">Máquina de Lavar</div>
+        <p class="service-desc">Diagnóstico e conserto de máquinas de lavar de todas as marcas e modelos. Vazamento, barulho, não centrifuga e muito mais.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🪣</span>
+        <div class="service-name">Tanquinho</div>
+        <p class="service-desc">Reparo completo de tanquinhos elétricos, incluindo troca de turbina, mangueiras, tampas e acionamento.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔥</span>
+        <div class="service-name">Instalação de Fogão</div>
+        <p class="service-desc">Instalação segura de fogões a gás (embutidos ou de piso), com verificação de vazamentos e regulagem das chamas.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">💨</span>
+        <div class="service-name">Instalação de Coifa</div>
+        <p class="service-desc">Instalação e manutenção de coifas e depuradores, com cabeamento e dutos de exaustão.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔩</span>
+        <div class="service-name">Venda de Peças</div>
+        <p class="service-desc">Peças originais e compatíveis para diversas marcas. Consulte disponibilidade pelo WhatsApp.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🏠</span>
+        <div class="service-name">Atendimento Domiciliar</div>
+        <p class="service-desc">Técnico vai até sua casa, diagnostica o problema e já resolve na maioria dos casos na mesma visita.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOJA -->
+<section id="loja">
+  <div class="loja-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Loja de Peças</div>
+      <h2 class="section-title">Peças para o seu eletrodoméstico</h2>
+      <p class="section-sub">Clique em "Comprar" para ser direcionado ao WhatsApp e finalizar seu pedido.</p>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" onclick="filterProducts('todos', this)">Todos</button>
+      <button class="filter-btn" onclick="filterProducts('lavar', this)">Máq. de Lavar</button>
+      <button class="filter-btn" onclick="filterProducts('tanquinho', this)">Tanquinho</button>
+      <button class="filter-btn" onclick="filterProducts('fogao', this)">Fogão</button>
+      <button class="filter-btn" onclick="filterProducts('coifa', this)">Coifa</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+</section>
+
+<!-- ATENDIMENTO -->
+<section id="atendimento">
+  <div class="atendimento-inner">
+    <div class="section-header">
+      <div class="section-eyebrow">Solicitar Atendimento</div>
+      <h2 class="section-title">Descreva o problema<br>e a gente resolve</h2>
+      <p class="section-sub">Preencha o formulário e você será redirecionado para o nosso WhatsApp com todas as informações.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="whatsapp-info">
+        <span class="wa-icon">📱</span>
+        <p><strong>Como funciona?</strong>Você preenche o formulário abaixo e, ao clicar em enviar, abriremos uma conversa no WhatsApp já com os detalhes do seu problema. É rápido e fácil!</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nome completo <span>*</span></label>
+        <input type="text" id="f-nome" class="form-control" placeholder="Seu nome">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Telefone <span>*</span></label>
+          <input type="tel" id="f-tel" class="form-control" placeholder="(11) 99999-9999">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bairro / Cidade <span>*</span></label>
+          <input type="text" id="f-local" class="form-control" placeholder="Ex: Vila Madalena, SP">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Equipamento com problema <span>*</span></label>
+        <select id="f-equip" class="form-control">
+          <option value="">Selecione o equipamento...</option>
+          <option value="Máquina de Lavar">🫧 Máquina de Lavar</option>
+          <option value="Tanquinho">🪣 Tanquinho</option>
+          <option value="Fogão">🔥 Fogão</option>
+          <option value="Coifa / Depurador">💨 Coifa / Depurador</option>
+          <option value="Outro">🔧 Outro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Marca e modelo (se souber)</label>
+        <input type="text" id="f-marca" class="form-control" placeholder="Ex: Brastemp BWT10, Consul CWL08...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descreva o problema <span>*</span></label>
+        <textarea id="f-problema" class="form-control" placeholder="Ex: A máquina não está centrifugando, faz um barulho forte e fica parada na última etapa..."></textarea>
+      </div>
+
+      <button class="btn-wpp" onclick="enviarWhatsApp()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+        Enviar via WhatsApp
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="contato-inner">
+    <div class="contato-info">
+      <h2>Ficou com<br><em>alguma dúvida?</em></h2>
+      <p>Entre em contato com a Ramostec. Respondemos rapidamente pelo WhatsApp durante o horário comercial.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="ci-icon">📍</div>
+          <div class="ci-text"><strong>Região de atendimento</strong><span>Grande São Paulo e região</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">🕐</div>
+          <div class="ci-text"><strong>Horário de atendimento</strong><span>Seg–Sex: 8h às 18h | Sáb: 8h às 13h</span></div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-icon">📲</div>
+          <div class="ci-text"><strong>WhatsApp</strong><span>(11) 9 XXXX-XXXX</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="contato-wpp">
+      <span class="wpp-big">💬</span>
+      <h3>Fale direto com a gente</h3>
+      <p>Clique abaixo para abrir uma conversa no WhatsApp. Atendimento rápido e sem complicação.</p>
+      <a href="https://wa.me/5511900000000?text=Olá!%20Vim%20pelo%20site%20da%20Ramostec%20e%20gostaria%20de%20informações." target="_blank" class="btn-wpp-lg">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+        Chamar no WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p><strong>Ramostec</strong> – Assistência Técnica em Eletrodomésticos &nbsp;|&nbsp; © 2025 Todos os direitos reservados.</p>
+</footer>
+
+<div class="toast" id="toast">✅ Redirecionando para o WhatsApp...</div>
+
+<script>
+  // ── PRODUTOS ──
+  const produtos = [
+    { nome: 'Mangueira de Entrada', compat: 'Electrolux, Brastemp, LG', preco: 'R$ 29,90', cat: 'lavar', icon: '🔗' },
+    { nome: 'Bomba de Drenagem', compat: 'Brastemp, Consul, Samsung', preco: 'R$ 89,90', cat: 'lavar', icon: '🔄' },
+    { nome: 'Tampa de Máquina', compat: 'Electrolux LTR10, LTR12', preco: 'R$ 49,90', cat: 'lavar', icon: '🔲' },
+    { nome: 'Rolamento de Tambor', compat: 'Diversas marcas', preco: 'R$ 39,90', cat: 'lavar', icon: '⚙️' },
+    { nome: 'Turbina de Tanquinho', compat: 'Agratto, Wanke, Suggar', preco: 'R$ 55,00', cat: 'tanquinho', icon: '🌀' },
+    { nome: 'Mangueira de Esgoto', compat: 'Tanquinhos em geral', preco: 'R$ 19,90', cat: 'tanquinho', icon: '🔗' },
+    { nome: 'Tampa para Tanquinho', compat: 'Agratto, Wanke', preco: 'R$ 34,90', cat: 'tanquinho', icon: '🔲' },
+    { nome: 'Botão Acionador', compat: 'Suggar, Wanke', preco: 'R$ 15,00', cat: 'tanquinho', icon: '🔘' },
+    { nome: 'Acendedor Eletrônico', compat: 'Brastemp, Consul, Atlas', preco: 'R$ 45,00', cat: 'fogao', icon: '⚡' },
+    { nome: 'Grelha de Fogão', compat: 'Dako, Atlas, Esmaltec', preco: 'R$ 38,00', cat: 'fogao', icon: '🔆' },
+    { nome: 'Válvula de Gás', compat: 'Brastemp, Consul', preco: 'R$ 62,00', cat: 'fogao', icon: '🔩' },
+    { nome: 'Filtro de Carvão Coifa', compat: 'Suggar, Nardelli', preco: 'R$ 45,90', cat: 'coifa', icon: '🌫️' },
+    { nome: 'Motor de Coifa', compat: 'Diversos modelos', preco: 'R$ 120,00', cat: 'coifa', icon: '💨' },
+    { nome: 'Luminária LED Coifa', compat: 'Universal', preco: 'R$ 25,00', cat: 'coifa', icon: '💡' },
+  ];
+
+  let catAtual = 'todos';
+
+  function renderProducts(cat) {
+    const grid = document.getElementById('productsGrid');
+    const filtered = cat === 'todos' ? produtos : produtos.filter(p => p.cat === cat);
+    grid.innerHTML = filtered.map(p => `
+      <div class="product-card">
+        <div class="product-img">${p.icon}</div>
+        <div class="product-body">
+          <span class="product-badge">${catLabel(p.cat)}</span>
+          <div class="product-name">${p.nome}</div>
+          <div class="product-compat">Compatível: ${p.compat}</div>
+          <div class="product-price">${p.preco}</div>
+          <button class="btn-buy" onclick="comprarPeca('${p.nome}', '${p.preco}')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+            Comprar via WhatsApp
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function catLabel(cat) {
+    const map = { lavar: 'Máq. de Lavar', tanquinho: 'Tanquinho', fogao: 'Fogão', coifa: 'Coifa' };
+    return map[cat] || cat;
+  }
+
+  function filterProducts(cat, btn) {
+    catAtual = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts(cat);
+  }
+
+  function comprarPeca(nome, preco) {
+    const msg = encodeURIComponent(`Olá! Vim pelo site da Ramostec e tenho interesse na peça:\n\n🔩 *${nome}*\n💰 ${preco}\n\nPoderia me confirmar disponibilidade?`);
+    window.open(`https://wa.me/5511900000000?text=${msg}`, '_blank');
+  }
+
+  // ── FORMULÁRIO ──
+  function enviarWhatsApp() {
+    const nome = document.getElementById('f-nome').value.trim();
+    const tel = document.getElementById('f-tel').value.trim();
+    const local = document.getElementById('f-local').value.trim();
+    const equip = document.getElementById('f-equip').value;
+    const marca = document.getElementById('f-marca').value.trim();
+    const problema = document.getElementById('f-problema').value.trim();
+
+    if (!nome || !tel || !local || !equip || !problema) {
+      alert('Por favor, preencha todos os campos obrigatórios (marcados com *).');
+      return;
+    }
+
+    const msg = `Olá, Ramostec! 👋 Vim pelo site e preciso de atendimento técnico.
+
+📋 *Dados do atendimento:*
+👤 Nome: ${nome}
+📞 Telefone: ${tel}
+📍 Local: ${local}
+
+🔧 *Equipamento:* ${equip}
+${marca ? `🏷️ Marca/Modelo: ${marca}` : ''}
+
+❗ *Problema descrito:*
+${problema}
+
+Aguardo contato para agendamento. Obrigado!`;
+
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+
+    setTimeout(() => {
+      window.open(`https://wa.me/5511900000000?text=${encodeURIComponent(msg)}`, '_blank');
+    }, 600);
+  }
+
+  // ── MOBILE MENU ──
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  document.addEventListener('click', e => {
+    const menu = document.getElementById('mobileMenu');
+    if (!menu.contains(e.target) && !e.target.closest('.hamburger')) {
+      menu.classList.remove('open');
+    }
+  });
+
+  // ── INIT ──
+  renderProducts('todos');
+</script>
+</body>
+</html>
