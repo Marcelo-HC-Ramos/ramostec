@@ -7,15 +7,15 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
 
-:root {
-    --navy: #0A2540;        
-    --orange: #DC2626;      
-    --orange-dark: #B91C1C; 
-    --white: #FFFFFF;       
-    --gray-light: #F8FAFC;  
-    --gray-mid: #E2E8F0;    
-    --gray-dark: #1E293B;   
-    --text-muted: #64748B;  
+  :root {
+    --navy: #1A3A5C;
+    --orange: #F07B24;
+    --orange-dark: #D4661A;
+    --white: #FFFFFF;
+    --gray-light: #F5F7FA;
+    --gray-mid: #E2E8F0;
+    --gray-dark: #2D2D2D;
+    --text-muted: #6B7A8D;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -338,7 +338,7 @@
     <div class="sobre-text">
       <div class="section-eyebrow">Quem somos</div>
       <h2 class="section-title" style="text-align:left;margin-bottom:1.5rem;">A Ramostec<br>é uma empresa<br>de confiança</h2>
-      <p>Somos uma assistência técnica especializada em eletrodomésticos, com <strong>mais de 10 anos de experiência</strong> no mercado. Nascemos para resolver o problema do cliente de forma rápida, transparente e sem burocracia.</p>
+      <p>Somos uma assistência técnica especializada em eletrodomésticos, com <strong>mais de 4 anos de experiência</strong> no mercado. Nascemos para resolver o problema do cliente de forma rápida, transparente e sem burocracia.</p>
       <p>Nossa proposta é simples: <strong>o técnico vai até você</strong>. Nada de transportar equipamento pesado, nada de fila de espera em loja. Você agenda, a gente vai, diagnostica e resolve — na maioria dos casos na mesma visita.</p>
       <p>Atuamos com ética, peças de qualidade e mão de obra qualificada. Cada atendimento tem acompanhamento pós-serviço para garantir sua satisfação.</p>
       <div class="sobre-badges">
@@ -510,7 +510,7 @@
       <a href="contato.html">Solicitar Atendimento</a>
     </div>
   </div>
-  <p class="footer-copy">© 2026 Ramostec – Assistência Técnica em Eletrodomésticos. Todos os direitos reservados.</p>
+  <p class="footer-copy">© 2025 Ramostec – Assistência Técnica em Eletrodomésticos. Todos os direitos reservados.</p>
 </footer>
 
 <script>
@@ -526,3 +526,21 @@
 </script>
 </body>
 </html>
+
+<!-- ADMIN BAR (visível apenas quando logado) -->
+<div id="adminBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:8000;background:#080F1A;border-top:1px solid #1E3050;padding:0.6rem 1.5rem;display:none;align-items:center;justify-content:space-between;">
+  <span style="font-size:0.78rem;font-weight:700;color:#4B6278;letter-spacing:1px;text-transform:uppercase;">⚙️ Modo Admin Ativo</span>
+  <div style="display:flex;gap:0.75rem;">
+    <a href="admin.html" style="padding:0.4rem 1rem;background:#F07B24;color:white;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;">📊 Painel Admin</a>
+    <button onclick="adminLogout()" style="padding:0.4rem 1rem;background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);color:#FCA5A5;border-radius:6px;font-size:0.8rem;font-weight:700;cursor:pointer;">Sair</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(sessionStorage.getItem('ramostec_admin')==='true'){
+    const bar=document.getElementById('adminBar');
+    if(bar){bar.style.display='flex';}
+  }
+})();
+function adminLogout(){sessionStorage.removeItem('ramostec_admin');sessionStorage.removeItem('ramostec_admin_user');location.reload();}
+</script>
