@@ -8,9 +8,9 @@
   @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
 
   :root {
-    --navy: #1A3A5C;
-    --orange: #F07B24;
-    --orange-dark: #D4661A;
+    --navy: #CC0000;
+    --orange: #1561C8;
+    --orange-dark: #1148A0;
     --white: #FFFFFF;
     --gray-light: #F5F7FA;
     --gray-mid: #E2E8F0;
@@ -25,7 +25,7 @@
   /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    background: rgba(26,58,92,0.97); backdrop-filter: blur(8px);
+    background: rgba(204,0,0,0.97); backdrop-filter: blur(8px);
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 2rem; height: 64px; box-shadow: 0 2px 16px rgba(0,0,0,0.2);
   }
@@ -52,7 +52,7 @@
   }
   .page-hero::before {
     content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, rgba(240,123,36,0.15) 0%, transparent 60%);
+    background: radial-gradient(ellipse at 50% 100%, rgba(21,97,200,0.15) 0%, transparent 60%);
   }
   .page-hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
   .page-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.8rem; }
@@ -79,7 +79,7 @@
   .product-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.1); transform: translateY(-3px); }
   .product-img { height: 160px; background: var(--gray-light); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
   .product-body { padding: 1.2rem; }
-  .product-badge { display: inline-block; background: rgba(240,123,36,0.12); color: var(--orange); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; }
+  .product-badge { display: inline-block; background: rgba(21,97,200,0.12); color: var(--orange); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.5rem; }
   .product-name { font-weight: 700; font-size: 0.95rem; color: var(--navy); margin-bottom: 0.25rem; }
   .product-compat { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.75rem; }
   .product-price { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--orange); margin-bottom: 0.75rem; }
@@ -111,7 +111,7 @@
   .btn-wpp-inline:hover { background: #1ebe5d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
 
   /* ── FOOTER ── */
-  footer { background: #0F2540; padding: 2.5rem 2rem; }
+  footer { background: #3A0000; padding: 2.5rem 2rem; }
   .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
   .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: white; text-decoration: none; }
   .footer-logo span { color: var(--orange); }
@@ -272,10 +272,10 @@
 </body>
 </html>
 
-<div id="adminBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:8000;background:#080F1A;border-top:1px solid #1E3050;padding:0.6rem 1.5rem;align-items:center;justify-content:space-between;">
+<div id="adminBar" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:8000;background:#110000;border-top:1px solid #4A0000;padding:0.6rem 1.5rem;align-items:center;justify-content:space-between;">
   <span style="font-size:0.78rem;font-weight:700;color:#4B6278;letter-spacing:1px;text-transform:uppercase;">⚙️ Modo Admin Ativo</span>
   <div style="display:flex;gap:0.75rem;">
-    <a href="admin.html" style="padding:0.4rem 1rem;background:#F07B24;color:white;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;">📊 Painel Admin</a>
+    <a href="admin.html" style="padding:0.4rem 1rem;background:#1561C8;color:white;border-radius:6px;font-size:0.8rem;font-weight:700;text-decoration:none;">📊 Painel Admin</a>
     <button onclick="adminLogout()" style="padding:0.4rem 1rem;background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);color:#FCA5A5;border-radius:6px;font-size:0.8rem;font-weight:700;cursor:pointer;">Sair</button>
   </div>
 </div>
