@@ -3,72 +3,212 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin – Ramostec</title>
+<title>Entrar – Ramostec</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
-  :root { --navy:#CC0000; --orange:#1561C8; --orange-dark:#1148A0; }
+  :root { --red:#CC0000; --red-dark:#AA0000; --blue:#1561C8; --blue-dark:#0F2060; --white:#FFFFFF; --gray-light:#F5F7FA; --gray-mid:#E2E8F0; --gray-dark:#2D2D2D; --muted:#6B7A8D; }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Barlow',sans-serif;background:#220000;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem;}
-  .bg-pattern{position:fixed;inset:0;background:radial-gradient(ellipse at 30% 40%,rgba(21,97,200,0.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(204,0,0,0.4) 0%,transparent 50%);pointer-events:none;}
-  .login-box{background:#3A0000;border:1px solid #4A0000;border-radius:20px;padding:3rem 2.5rem;width:100%;max-width:420px;position:relative;z-index:1;box-shadow:0 24px 64px rgba(0,0,0,0.5);}
-  .login-logo{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:white;text-align:center;margin-bottom:0.3rem;}
-  .login-logo span{color:var(--orange);}
-  .login-subtitle{text-align:center;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:#4B6278;margin-bottom:2.5rem;}
-  .form-group{margin-bottom:1.2rem;}
-  .form-label{display:block;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#8BA0B4;margin-bottom:0.5rem;}
-  .form-input{width:100%;padding:0.85rem 1rem;border:1.5px solid #4A0000;border-radius:10px;background:#220000;color:white;font-family:inherit;font-size:0.95rem;outline:none;transition:border-color 0.2s;}
-  .form-input:focus{border-color:var(--orange);}
-  .form-input::placeholder{color:#3A5068;}
-  .btn-login{width:100%;padding:1rem;background:var(--orange);color:white;border:none;border-radius:10px;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
-  .btn-login:hover{background:var(--orange-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(21,97,200,0.4);}
-  .error-msg{background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.3);color:#FCA5A5;border-radius:8px;padding:0.8rem 1rem;font-size:0.85rem;margin-top:1rem;display:none;text-align:center;}
-  .error-msg.show{display:block;}
-  .back-link{display:block;text-align:center;margin-top:1.5rem;color:#4B6278;font-size:0.85rem;text-decoration:none;transition:color 0.2s;}
-  .back-link:hover{color:#8BA0B4;}
-  .lock-icon{text-align:center;font-size:2.5rem;margin-bottom:1.5rem;}
+  body { font-family:'Barlow',sans-serif; background:var(--blue-dark); min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:1rem; position:relative; overflow:hidden; }
+  body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse at 30% 40%,rgba(204,0,0,0.12) 0%,transparent 55%), radial-gradient(ellipse at 80% 80%,rgba(21,97,200,0.2) 0%,transparent 50%); pointer-events:none; }
+
+  .login-logo { font-family:'Barlow Condensed',sans-serif; font-size:2rem; font-weight:900; color:white; text-align:center; margin-bottom:0.3rem; text-decoration:none; display:block; }
+  .login-logo span { color:var(--red); }
+  .login-tagline { text-align:center; font-size:0.78rem; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:2rem; }
+
+  .login-box { background:white; border-radius:20px; padding:0; width:100%; max-width:440px; position:relative; z-index:1; box-shadow:0 24px 64px rgba(0,0,0,0.4); overflow:hidden; }
+
+  /* Tabs */
+  .tabs { display:grid; grid-template-columns:1fr 1fr; border-bottom:2px solid var(--gray-mid); }
+  .tab-btn { padding:1rem; font-family:inherit; font-weight:700; font-size:0.9rem; background:var(--gray-light); color:var(--muted); border:none; cursor:pointer; transition:all 0.2s; }
+  .tab-btn.active { background:white; color:var(--red); border-bottom:2px solid var(--red); margin-bottom:-2px; }
+
+  .tab-content { display:none; padding:2rem; }
+  .tab-content.active { display:block; }
+
+  .form-group { margin-bottom:1.1rem; }
+  .form-label { display:block; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--muted); margin-bottom:0.4rem; }
+  .form-input { width:100%; padding:0.8rem 1rem; border:1.5px solid var(--gray-mid); border-radius:10px; font-family:inherit; font-size:0.95rem; color:var(--gray-dark); outline:none; transition:border-color 0.2s; background:white; }
+  .form-input:focus { border-color:var(--red); box-shadow:0 0 0 3px rgba(204,0,0,0.08); }
+  .form-input::placeholder { color:#B0BAC5; }
+
+  .btn-submit { width:100%; padding:0.95rem; background:var(--red); color:white; border:none; border-radius:10px; font-family:inherit; font-weight:700; font-size:1rem; cursor:pointer; transition:all 0.2s; margin-top:0.5rem; }
+  .btn-submit:hover { background:var(--red-dark); transform:translateY(-1px); box-shadow:0 4px 16px rgba(204,0,0,0.35); }
+  .btn-submit:disabled { background:#ccc; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .divider { display:flex; align-items:center; gap:0.8rem; margin:1.2rem 0; }
+  .divider::before,.divider::after { content:''; flex:1; height:1px; background:var(--gray-mid); }
+  .divider span { font-size:0.78rem; color:var(--muted); font-weight:600; }
+
+  .error-box { background:rgba(220,38,38,0.08); border:1px solid rgba(220,38,38,0.25); color:#B91C1C; border-radius:8px; padding:0.75rem 1rem; font-size:0.85rem; font-weight:600; margin-top:1rem; display:none; }
+  .error-box.show { display:block; }
+  .success-box { background:rgba(22,163,74,0.08); border:1px solid rgba(22,163,74,0.25); color:#166534; border-radius:8px; padding:0.75rem 1rem; font-size:0.85rem; font-weight:600; margin-top:1rem; display:none; }
+  .success-box.show { display:block; }
+
+  .demo-box { background:rgba(21,97,200,0.07); border:1px solid rgba(21,97,200,0.2); border-radius:10px; padding:1rem; margin-bottom:1.2rem; }
+  .demo-box p { font-size:0.78rem; color:var(--blue); font-weight:600; margin-bottom:0.5rem; }
+  .demo-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; }
+  .demo-btn { padding:0.5rem; background:white; border:1px solid rgba(21,97,200,0.3); border-radius:6px; font-size:0.75rem; font-weight:700; color:var(--blue-dark); cursor:pointer; transition:all 0.15s; font-family:inherit; }
+  .demo-btn:hover { background:var(--blue); color:white; }
+  .demo-btn .demo-role { display:block; font-weight:900; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px; }
+
+  .terms-note { font-size:0.75rem; color:var(--muted); text-align:center; margin-top:0.8rem; line-height:1.5; }
+
+  .back-link { display:block; text-align:center; margin-top:1.2rem; color:rgba(255,255,255,0.45); font-size:0.85rem; text-decoration:none; transition:color 0.2s; }
+  .back-link:hover { color:rgba(255,255,255,0.8); }
+
+  .password-wrap { position:relative; }
+  .toggle-pw { position:absolute; right:0.9rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; font-size:1rem; color:var(--muted); }
 </style>
 </head>
 <body>
-<div class="bg-pattern"></div>
+
+<a href="index.html" class="login-logo">RAMOS<span>TEC</span></a>
+<p class="login-tagline">Assistência Técnica em Eletrodomésticos</p>
+
 <div class="login-box">
-  <div class="lock-icon">🔐</div>
-  <div class="login-logo">RAMOS<span>TEC</span></div>
-  <div class="login-subtitle">Painel Administrativo</div>
-  <div class="form-group">
-    <label class="form-label">Usuário</label>
-    <input type="text" id="username" class="form-input" placeholder="Digite seu usuário" autocomplete="username">
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-login-btn" onclick="switchTab('login')">🔑 Entrar</button>
+    <button class="tab-btn" id="tab-cadastro-btn" onclick="switchTab('cadastro')">✏️ Cadastrar</button>
   </div>
-  <div class="form-group">
-    <label class="form-label">Senha</label>
-    <input type="password" id="password" class="form-input" placeholder="Digite sua senha" autocomplete="current-password">
+
+  <!-- ABA LOGIN -->
+  <div class="tab-content active" id="tab-login">
+    <div class="demo-box">
+      <p>🚀 Acesso rápido para teste:</p>
+      <div class="demo-grid">
+        <button class="demo-btn" onclick="fillDemo('admin@ramostec.com','admin123')">
+          <span class="demo-role">⚙️ Admin</span>
+          admin@ramostec.com
+        </button>
+        <button class="demo-btn" onclick="fillDemo('cliente@email.com','cliente123')">
+          <span class="demo-role">👤 Usuário</span>
+          cliente@email.com
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input type="email" id="login-email" class="form-input" placeholder="seu@email.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Senha</label>
+      <div class="password-wrap">
+        <input type="password" id="login-senha" class="form-input" placeholder="Sua senha" autocomplete="current-password">
+        <button class="toggle-pw" onclick="togglePw('login-senha',this)" tabindex="-1">👁</button>
+      </div>
+    </div>
+    <button class="btn-submit" onclick="doLogin()">Entrar na conta</button>
+    <div class="error-box" id="login-error"></div>
   </div>
-  <button class="btn-login" onclick="doLogin()">Entrar no Painel</button>
-  <div class="error-msg" id="errorMsg">❌ Usuário ou senha incorretos.</div>
-  <a href="index.html" class="back-link">← Voltar ao site</a>
+
+  <!-- ABA CADASTRO -->
+  <div class="tab-content" id="tab-cadastro">
+    <div class="form-group">
+      <label class="form-label">Nome completo</label>
+      <input type="text" id="reg-nome" class="form-input" placeholder="Seu nome completo" autocomplete="name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">E-mail</label>
+      <input type="email" id="reg-email" class="form-input" placeholder="seu@email.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Senha (mín. 6 caracteres)</label>
+      <div class="password-wrap">
+        <input type="password" id="reg-senha" class="form-input" placeholder="Crie uma senha" autocomplete="new-password">
+        <button class="toggle-pw" onclick="togglePw('reg-senha',this)" tabindex="-1">👁</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Confirmar senha</label>
+      <input type="password" id="reg-senha2" class="form-input" placeholder="Repita a senha" autocomplete="new-password">
+    </div>
+    <button class="btn-submit" onclick="doRegister()">Criar minha conta</button>
+    <div class="error-box" id="reg-error"></div>
+    <div class="success-box" id="reg-success"></div>
+    <p class="terms-note">Ao criar uma conta você concorda com o uso dos seus dados para fins de atendimento pela Ramostec.</p>
+  </div>
 </div>
+
+<a href="index.html" class="back-link">← Voltar ao site sem entrar</a>
+
+<script src="auth.js"></script>
 <script>
-  // Credenciais padrão — altere aqui para personalizar
-  const ADMIN_USER = 'ramostec';
-  const ADMIN_PASS = 'admin123';
-
-  document.addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-
-  function doLogin() {
-    const u = document.getElementById('username').value.trim();
-    const p = document.getElementById('password').value;
-    if(u === ADMIN_USER && p === ADMIN_PASS) {
-      sessionStorage.setItem('ramostec_admin', 'true');
-      sessionStorage.setItem('ramostec_admin_user', u);
-      window.location.href = 'admin.html';
-    } else {
-      const err = document.getElementById('errorMsg');
-      err.classList.add('show');
-      setTimeout(()=>err.classList.remove('show'), 3000);
-    }
+  // Se já logado, redireciona
+  if (Auth.isLoggedIn()) {
+    const next = new URLSearchParams(window.location.search).get('next');
+    window.location.href = next || 'index.html';
   }
 
-  // Se já logado, redireciona direto
-  if(sessionStorage.getItem('ramostec_admin')==='true') window.location.href='admin.html';
+  // Ativa aba via querystring ?tab=cadastro
+  const tabParam = new URLSearchParams(window.location.search).get('tab');
+  if (tabParam === 'cadastro') switchTab('cadastro');
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-' + tab + '-btn').classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+  }
+
+  function fillDemo(email, senha) {
+    document.getElementById('login-email').value = email;
+    document.getElementById('login-senha').value = senha;
+  }
+
+  function togglePw(id, btn) {
+    const inp = document.getElementById(id);
+    inp.type = inp.type === 'password' ? 'text' : 'password';
+    btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+  }
+
+  function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const senha = document.getElementById('login-senha').value;
+    const err = document.getElementById('login-error');
+    err.classList.remove('show');
+
+    const result = Auth.login(email, senha);
+    if (!result.ok) {
+      err.textContent = '❌ ' + result.error;
+      err.classList.add('show');
+      return;
+    }
+    const next = new URLSearchParams(window.location.search).get('next');
+    window.location.href = next || (result.user.role === 'admin' ? 'admin.html' : 'index.html');
+  }
+
+  function doRegister() {
+    const nome = document.getElementById('reg-nome').value.trim();
+    const email = document.getElementById('reg-email').value.trim();
+    const senha = document.getElementById('reg-senha').value;
+    const senha2 = document.getElementById('reg-senha2').value;
+    const err = document.getElementById('reg-error');
+    const suc = document.getElementById('reg-success');
+    err.classList.remove('show'); suc.classList.remove('show');
+
+    if (senha !== senha2) {
+      err.textContent = '❌ As senhas não conferem.';
+      err.classList.add('show'); return;
+    }
+    const result = Auth.register(nome, email, senha);
+    if (!result.ok) {
+      err.textContent = '❌ ' + result.error;
+      err.classList.add('show'); return;
+    }
+    suc.textContent = '✅ Conta criada! Redirecionando...';
+    suc.classList.add('show');
+    setTimeout(() => { window.location.href = 'index.html'; }, 1200);
+  }
+
+  // Enter key support
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const active = document.querySelector('.tab-content.active').id;
+    if (active === 'tab-login') doLogin();
+    else doRegister();
+  });
 </script>
 </body>
 </html>

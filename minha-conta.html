@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Conta – Ramostec</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root{--red:#CC0000;--red-dark:#AA0000;--blue:#1561C8;--blue-dark:#0F2060;--white:#FFFFFF;--gray-light:#F5F7FA;--gray-mid:#E2E8F0;--gray-dark:#2D2D2D;--muted:#6B7A8D;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Barlow',sans-serif;background:var(--gray-light);color:var(--gray-dark);}
+  .page-hero{background:var(--blue-dark);padding:5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
+  .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(204,0,0,0.15) 0%,transparent 60%);}
+  .page-hero-inner{position:relative;z-index:2;max-width:600px;margin:0 auto;}
+  .hero-avatar{width:72px;height:72px;border-radius:50%;background:var(--red);color:white;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
+  .hero-avatar.admin-av{background:var(--blue);}
+  .hero-name{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:white;margin-bottom:0.3rem;}
+  .hero-email{color:rgba(255,255,255,0.6);font-size:0.9rem;}
+  .hero-badge{display:inline-block;margin-top:0.75rem;padding:0.3rem 0.9rem;border-radius:20px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+  .badge-admin{background:rgba(21,97,200,0.3);color:#93C5FD;border:1px solid rgba(21,97,200,0.4);}
+  .badge-user{background:rgba(204,0,0,0.25);color:#FCA5A5;border:1px solid rgba(204,0,0,0.3);}
+  .content{max-width:900px;margin:0 auto;padding:3rem 2rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+  .card{background:white;border-radius:14px;border:1px solid var(--gray-mid);padding:1.8rem;}
+  .card h3{font-weight:700;font-size:0.9rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:1.2rem;}
+  .info-row{display:flex;justify-content:space-between;align-items:center;padding:0.65rem 0;border-bottom:1px solid var(--gray-light);}
+  .info-row:last-child{border-bottom:none;}
+  .info-row label{font-size:0.82rem;font-weight:600;color:var(--muted);}
+  .info-row span{font-size:0.9rem;font-weight:600;color:var(--gray-dark);}
+  .info-row .badge-role{padding:0.2rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;}
+  .role-admin{background:rgba(15,32,96,0.1);color:var(--blue-dark);}
+  .role-user{background:rgba(204,0,0,0.1);color:var(--red);}
+  .fg{margin-bottom:1rem;}
+  .fl{display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.35rem;}
+  .fi{width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--gray-mid);border-radius:8px;font-family:inherit;font-size:0.9rem;color:var(--gray-dark);outline:none;transition:border-color 0.2s;}
+  .fi:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(204,0,0,0.07);}
+  .btn-save{width:100%;padding:0.75rem;background:var(--red);color:white;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
+  .btn-save:hover{background:var(--red-dark);}
+  .btn-logout-full{width:100%;padding:0.75rem;background:rgba(220,38,38,0.08);border:1.5px solid rgba(220,38,38,0.25);color:#DC2626;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
+  .btn-logout-full:hover{background:rgba(220,38,38,0.14);}
+  .alert{padding:0.7rem 1rem;border-radius:8px;font-size:0.85rem;font-weight:600;margin-top:0.75rem;display:none;}
+  .alert.show{display:block;}
+  .alert-ok{background:rgba(22,163,74,0.09);border:1px solid rgba(22,163,74,0.25);color:#166534;}
+  .alert-err{background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.25);color:#B91C1C;}
+  .admin-link-card{background:linear-gradient(135deg,var(--blue-dark),#1A3A8F);border-radius:14px;padding:1.8rem;color:white;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:all 0.2s;grid-column:1/-1;}
+  .admin-link-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,32,96,0.3);}
+  .admin-link-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:0.3rem;}
+  .admin-link-card p{font-size:0.85rem;color:rgba(255,255,255,0.65);}
+  .admin-link-card .arrow{font-size:2rem;opacity:0.7;}
+  footer{background:var(--blue-dark);padding:2rem;text-align:center;color:rgba(255,255,255,0.3);font-size:0.8rem;}
+  footer a{color:rgba(255,255,255,0.5);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;display:block;margin-bottom:0.5rem;}
+  footer a span{color:var(--red);}
+  @media(max-width:768px){.content{grid-template-columns:1fr;}.admin-link-card{grid-column:1;}}
+</style>
+</head>
+<body>
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script>
+  if (!Auth.requireLogin()) { /* redirected */ }
+  Nav.render('conta');
+</script>
+
+<div class="page-hero">
+  <div class="page-hero-inner" id="heroContent">
+    <div class="hero-avatar" id="heroAvatar">?</div>
+    <div class="hero-name" id="heroName">Carregando...</div>
+    <div class="hero-email" id="heroEmail"></div>
+    <span class="hero-badge" id="heroBadge"></span>
+  </div>
+</div>
+
+<div class="content" id="mainContent">
+  <!-- filled by JS -->
+</div>
+
+<footer>
+  <a href="index.html">RAMOS<span>TEC</span></a>
+  © 2025 Ramostec – Todos os direitos reservados.
+</footer>
+
+<script>
+const session = Auth.getSession();
+const isAdmin = session.role === 'admin';
+
+// Hero
+document.getElementById('heroAvatar').textContent = session.nome[0].toUpperCase();
+if (isAdmin) document.getElementById('heroAvatar').classList.add('admin-av');
+document.getElementById('heroName').textContent = session.nome;
+document.getElementById('heroEmail').textContent = session.email;
+const badge = document.getElementById('heroBadge');
+badge.textContent = isAdmin ? '⚙️ Administrador Master' : '👤 Usuário';
+badge.className = 'hero-badge ' + (isAdmin ? 'badge-admin' : 'badge-user');
+
+document.getElementById('mainContent').innerHTML = `
+  <!-- Dados da conta -->
+  <div class="card">
+    <h3>📋 Dados da Conta</h3>
+    <div class="info-row"><label>Nome</label><span>${session.nome}</span></div>
+    <div class="info-row"><label>E-mail</label><span>${session.email}</span></div>
+    <div class="info-row"><label>Perfil</label><span class="badge-role ${isAdmin?'role-admin':'role-user'}">${isAdmin?'Administrador':'Usuário'}</span></div>
+    <div class="info-row"><label>Acesso</label><span>${isAdmin?'Total (Admin)':'Padrão'}</span></div>
+  </div>
+
+  <!-- Alterar senha -->
+  <div class="card">
+    <h3>🔒 Alterar Senha</h3>
+    <div class="fg"><label class="fl">Senha atual</label><input id="pw-atual" class="fi" type="password" placeholder="Senha atual"></div>
+    <div class="fg"><label class="fl">Nova senha</label><input id="pw-nova" class="fi" type="password" placeholder="Mín. 6 caracteres"></div>
+    <div class="fg"><label class="fl">Confirmar nova senha</label><input id="pw-conf" class="fi" type="password" placeholder="Repita a nova senha"></div>
+    <button class="btn-save" onclick="alterarSenha()">Salvar nova senha</button>
+    <div class="alert alert-ok" id="pw-ok">✅ Senha alterada com sucesso!</div>
+    <div class="alert alert-err" id="pw-err"></div>
+  </div>
+
+  <!-- Sair -->
+  <div class="card">
+    <h3>🚪 Sessão</h3>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;line-height:1.6;">Você está logado como <strong>${session.nome}</strong>. Ao sair, precisará entrar novamente para acessar áreas restritas.</p>
+    <button class="btn-logout-full" onclick="Auth.logout()">Sair da conta</button>
+  </div>
+
+  ${isAdmin ? `
+  <a href="admin.html" class="admin-link-card">
+    <div>
+      <h3>⚙️ Painel Administrativo</h3>
+      <p>Gerencie produtos, atendimentos, compras, usuários e configurações do site.</p>
+    </div>
+    <span class="arrow">→</span>
+  </a>` : ''}
+`;
+
+function alterarSenha() {
+  const atual = document.getElementById('pw-atual').value;
+  const nova = document.getElementById('pw-nova').value;
+  const conf = document.getElementById('pw-conf').value;
+  const ok = document.getElementById('pw-ok');
+  const err = document.getElementById('pw-err');
+  ok.classList.remove('show'); err.classList.remove('show');
+
+  // Validate current password
+  const users = JSON.parse(localStorage.getItem('rmt_users') || '[]');
+  const user = users.find(u => u.id === session.id);
+  if (!user || user.senha !== atual) { err.textContent = '❌ Senha atual incorreta.'; err.classList.add('show'); return; }
+  if (nova.length < 6) { err.textContent = '❌ A nova senha deve ter pelo menos 6 caracteres.'; err.classList.add('show'); return; }
+  if (nova !== conf) { err.textContent = '❌ As senhas não conferem.'; err.classList.add('show'); return; }
+
+  user.senha = nova;
+  localStorage.setItem('rmt_users', JSON.stringify(users));
+  ok.classList.add('show');
+  document.getElementById('pw-atual').value = '';
+  document.getElementById('pw-nova').value = '';
+  document.getElementById('pw-conf').value = '';
+}
+</script>
+</body>
+</html>
