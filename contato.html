@@ -4,153 +4,186 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Solicitar Atendimento – Ramostec</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
-
+  /* ══════════════════════════════════════════
+     PALETA
+     Primária   → Branco   #FFFFFF
+     Secundária → Vermelho #CC0000  (hover #AA0000)
+     Terciária  → Azul     #0F2060  (hero, footer, fundos escuros)
+  ══════════════════════════════════════════ */
   :root {
-    --primary: #FFFFFF;        /* branco  – primária  */
-    --red:     #CC0000;        /* vermelho – secundária */
-    --red-dark:#AA0000;        /* vermelho escuro (hover) */
-    --blue:    #1561C8;        /* azul – terciária */
-    --blue-dark:#0F2060;       /* azul escuro (fundos) */
-    --navy:    #FFFFFF;        /* alias primária (legado) */
-    --orange:  #CC0000;        /* alias secundária (legado) */
-    --orange-dark:#AA0000;     /* alias red-dark (legado) */
-    --white:   #FFFFFF;
-    --gray-light:#F5F7FA;
-    --gray-mid:#E2E8F0;
-    --gray-dark:#2D2D2D;
-    --text-muted:#6B7A8D;
+    --red:        #CC0000;
+    --red-dark:   #AA0000;
+    --blue-dark:  #0F2060;
+    --white:      #FFFFFF;
+    --gray-light: #F5F7FA;
+    --gray-mid:   #E2E8F0;
+    --gray-dark:  #2D2D2D;
+    --text-muted: #6B7A8D;
+    --text-dark:  #1A1A1A;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body { font-family: 'Barlow', sans-serif; background: var(--gray-light); color: var(--gray-dark); overflow-x: hidden; }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    background: rgba(255,255,255,0.97); backdrop-filter: blur(8px); border-bottom: 2px solid #E2E8F0;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2rem; height: 64px; box-shadow: 0 2px 16px rgba(0,0,0,0.2);
-  }
-  .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.7rem; font-weight: 900; color: #CC0000; letter-spacing: -0.5px; text-decoration: none; }
-  .nav-logo span { color: var(--orange); }
-  .nav-links { display: flex; gap: 0.25rem; list-style: none; }
-  .nav-links a { color: #2D2D2D; text-decoration: none; font-weight: 500; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s; }
-  .nav-links a:hover { color: #CC0000; background: rgba(204,0,0,0.06); }
-  .nav-links a.nav-cta { background: #CC0000; color: white; font-weight: 700; }
-  .nav-links a.nav-cta.active { background: var(--orange-dark); }
-  .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
-  .hamburger span { display: block; width: 24px; height: 2px; background: #2D2D2D; transition: all 0.3s; }
-  .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #CC0000; z-index: 999; flex-direction: column; padding: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
-  .mobile-menu.open { display: flex; }
-  .mobile-menu a { color: rgba(255,255,255,0.8); text-decoration: none; padding: 0.9rem 1rem; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
-  .mobile-menu a:hover { background: rgba(255,255,255,0.07); color: white; }
-  .mobile-menu a.nav-cta { background: #CC0000; color: white; margin-top: 0.5rem; text-align: center; }
+  body { font-family: 'Barlow', sans-serif; background: var(--gray-light); color: var(--gray-dark); }
 
   /* ── PAGE HERO ── */
   .page-hero {
-    background: #0F2060; padding: 7rem 2rem 3.5rem;
-    text-align: center; position: relative; overflow: hidden;
+    background: var(--blue-dark);
+    padding: 7rem 2rem 3.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
   }
   .page-hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, rgba(204,0,0,0.15) 0%, transparent 60%);
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(204,0,0,0.18) 0%, transparent 60%);
   }
   .page-hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
-  .page-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.8rem; }
-  .page-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: white; line-height: 1.1; margin-bottom: 0.8rem; }
-  .page-title em { font-style: normal; color: var(--orange); }
+  .page-eyebrow {
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--red); margin-bottom: 0.8rem;
+  }
+  .page-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 900;
+    color: var(--white); line-height: 1.1; margin-bottom: 0.8rem;
+  }
+  .page-title em { font-style: normal; color: var(--red); }
   .page-sub { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.7; }
 
-  /* ── CONTEÚDO PRINCIPAL ── */
+  /* ── BODY ── */
   .contact-body { padding: 4rem 2rem 5rem; }
-  .contact-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem; align-items: start; }
+  .contact-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem; align-items: start;
+  }
 
   /* ── INFO LATERAL ── */
   .contact-info { position: sticky; top: 84px; }
-  .info-card { background: var(--white); border-radius: 16px; padding: 2rem; border: 1px solid var(--gray-mid); margin-bottom: 1.2rem; }
-  .info-card-title { font-weight: 700; font-size: 0.8rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 1rem; }
-  .info-item { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px solid var(--gray-light); }
+
+  .info-card {
+    background: var(--white); border-radius: 16px;
+    padding: 2rem; border: 1px solid var(--gray-mid); margin-bottom: 1.2rem;
+  }
+  .info-card-title {
+    font-weight: 700; font-size: 0.8rem; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--red); margin-bottom: 1rem;
+  }
+  .info-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 0.6rem 0; border-bottom: 1px solid var(--gray-light);
+  }
   .info-item:last-child { border-bottom: none; }
   .info-item .ii-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-  .info-item .ii-text strong { display: block; font-size: 0.85rem; color: #1A1A1A; font-weight: 700; }
-  .info-item .ii-text span { font-size: 0.82rem; color: var(--text-muted); }
+  .info-item .ii-text strong { display: block; font-size: 0.85rem; color: var(--text-dark); font-weight: 700; }
+  .info-item .ii-text span  { font-size: 0.82rem; color: var(--text-muted); }
+
   .how-steps { display: flex; flex-direction: column; gap: 0.9rem; }
-  .how-step { display: flex; align-items: flex-start; gap: 0.8rem; }
+  .how-step  { display: flex; align-items: flex-start; gap: 0.8rem; }
   .how-step .step-num {
     width: 26px; height: 26px; border-radius: 50%;
-    background: #CC0000; color: white;
+    background: var(--red); color: var(--white);
     font-size: 0.78rem; font-weight: 900;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .how-step .step-text { font-size: 0.87rem; color: var(--text-muted); line-height: 1.5; padding-top: 3px; }
-  .how-step .step-text strong { color: #1A1A1A; }
+  .how-step .step-text strong { color: var(--text-dark); }
 
   /* ── FORMULÁRIO ── */
-  .form-card { background: var(--white); border-radius: 16px; padding: 2.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
-  .form-group { margin-bottom: 1.4rem; }
-  .form-label { display: block; font-weight: 600; font-size: 0.88rem; color: #1A1A1A; margin-bottom: 0.4rem; }
-  .form-label span { color: var(--orange); }
+  .form-card {
+    background: var(--white); border-radius: 16px;
+    padding: 2.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  }
+  .form-group  { margin-bottom: 1.4rem; }
+  .form-label  { display: block; font-weight: 600; font-size: 0.88rem; color: var(--text-dark); margin-bottom: 0.4rem; }
+  .form-label span { color: var(--red); }
+
   .form-control {
     width: 100%; padding: 0.7rem 1rem;
     border: 1.5px solid var(--gray-mid); border-radius: 8px;
     font-family: inherit; font-size: 0.9rem; color: var(--gray-dark);
-    transition: border-color 0.2s; background: var(--white); outline: none;
+    background: var(--white); outline: none; transition: border-color 0.2s;
   }
-  .form-control:focus { border-color: #CC0000; box-shadow: 0 0 0 3px rgba(204,0,0,0.08); }
-  select.form-control { cursor: pointer; }
+  .form-control:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(204,0,0,0.08);
+  }
+  select.form-control  { cursor: pointer; }
   textarea.form-control { resize: vertical; min-height: 110px; }
+
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .form-divider { border: none; border-top: 1.5px solid var(--gray-light); margin: 1.8rem 0; }
 
-  .whatsapp-info {
+  /* info WhatsApp */
+  .wpp-info {
     background: #E8F5E9; border: 1px solid #A5D6A7;
     border-radius: 8px; padding: 1rem 1.2rem;
     display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.5rem;
   }
-  .whatsapp-info .wa-icon { font-size: 1.4rem; flex-shrink: 0; }
-  .whatsapp-info p { font-size: 0.85rem; color: #2E7D32; line-height: 1.5; }
-  .whatsapp-info strong { display: block; font-weight: 700; }
+  .wpp-info .wi-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .wpp-info p  { font-size: 0.85rem; color: #2E7D32; line-height: 1.5; }
+  .wpp-info strong { display: block; font-weight: 700; }
 
+  /* botão WhatsApp */
   .btn-wpp {
     width: 100%; padding: 1rem;
-    background: #25D366; color: white;
+    background: #25D366; color: var(--white);
     border: none; border-radius: 10px;
     font-family: inherit; font-weight: 700; font-size: 1rem;
     cursor: pointer; transition: all 0.2s;
     display: flex; align-items: center; justify-content: center; gap: 0.7rem;
   }
-  .btn-wpp:hover { background: #1ebe5d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
+  .btn-wpp:hover { background: #1EBE5D; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,211,102,0.35); }
 
   /* ── FOOTER ── */
-  footer { background: #0A1228; padding: 2.5rem 2rem; }
-  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: #FFFFFF; text-decoration: none; }
-  .footer-logo span { color: #CC0000; }
+  footer { background: var(--blue-dark); padding: 2.5rem 2rem; }
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: var(--white); text-decoration: none; }
+  .footer-logo span { color: var(--red); }
   .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
   .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-  .footer-links a:hover { color: rgba(255,255,255,0.8); }
-  .footer-copy { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 1.2rem; text-align: center; }
+  .footer-links a:hover { color: rgba(255,255,255,0.85); }
+  .footer-copy { color: rgba(255,255,255,0.28); font-size: 0.78rem; margin-top: 1.2rem; text-align: center; }
 
   /* ── TOAST ── */
-  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: #0F2060; color: white; padding: 0.9rem 1.8rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transition: transform 0.3s; z-index: 9999; white-space: nowrap; }
+  .toast {
+    position: fixed; bottom: 1.5rem; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--blue-dark); color: var(--white);
+    padding: 0.9rem 1.8rem; border-radius: 10px;
+    font-weight: 600; font-size: 0.9rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    transition: transform 0.3s; z-index: 9999; white-space: nowrap;
+  }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
+  /* ── RESPONSIVO ── */
   @media (max-width: 768px) {
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .contact-inner { grid-template-columns: 1fr; }
-    .contact-info { position: static; }
-    .form-row { grid-template-columns: 1fr; }
-    .footer-inner { flex-direction: column; text-align: center; }
-    .footer-links { justify-content: center; }
+    .contact-inner  { grid-template-columns: 1fr; }
+    .contact-info   { position: static; }
+    .form-row       { grid-template-columns: 1fr; }
+    .footer-inner   { flex-direction: column; text-align: center; }
+    .footer-links   { justify-content: center; }
   }
 </style>
 </head>
 <body>
 
+<!-- nav dinâmica (auth.js + nav.js) -->
+<script src="auth.js"></script>
+<script src="nav.js"></script>
+<script>
+  Auth.requireLogin('contato.html');
+  Nav.render('contato');
+</script>
+
+<!-- HERO -->
 <div class="page-hero">
   <div class="page-hero-inner">
     <div class="page-eyebrow">🔧 Solicitar Atendimento</div>
@@ -159,6 +192,7 @@
   </div>
 </div>
 
+<!-- CONTEÚDO -->
 <div class="contact-body">
   <div class="contact-inner">
 
@@ -167,19 +201,32 @@
       <div class="info-card">
         <div class="info-card-title">Como funciona</div>
         <div class="how-steps">
-          <div class="how-step"><div class="step-num">1</div><div class="step-text"><strong>Preencha o formulário</strong> ao lado com os dados do equipamento e o problema.</div></div>
-          <div class="how-step"><div class="step-num">2</div><div class="step-text"><strong>Clique em Enviar</strong> — abriremos o WhatsApp com tudo já preenchido.</div></div>
-          <div class="how-step"><div class="step-num">3</div><div class="step-text"><strong>Nossa equipe entra em contato</strong> para agendar a visita técnica.</div></div>
-          <div class="how-step"><div class="step-num">4</div><div class="step-text"><strong>Técnico vai até você</strong> e resolve na mesma visita na maioria dos casos.</div></div>
+          <div class="how-step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Preencha o formulário</strong> ao lado com os dados do equipamento e o problema.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Clique em Enviar</strong> — abriremos o WhatsApp com tudo já preenchido.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Nossa equipe entra em contato</strong> para agendar a visita técnica.</div>
+          </div>
+          <div class="how-step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Técnico vai até você</strong> e resolve na mesma visita na maioria dos casos.</div>
+          </div>
         </div>
       </div>
+
       <div class="info-card">
         <div class="info-card-title">Informações de contato</div>
         <div class="info-item">
           <span class="ii-icon">📱</span>
           <div class="ii-text">
             <strong>WhatsApp</strong>
-            <span>(11) 90000-0000</span>
+            <span>(11) 2690-0632</span>
           </div>
         </div>
         <div class="info-item">
@@ -201,9 +248,9 @@
 
     <!-- FORMULÁRIO -->
     <div class="form-card">
-      <div class="whatsapp-info">
-        <span class="wa-icon">📱</span>
-        <p><strong>Como funciona?</strong>Você preenche o formulário abaixo e, ao clicar em enviar, abriremos uma conversa no WhatsApp já com os detalhes do seu problema. É rápido e fácil!</p>
+      <div class="wpp-info">
+        <span class="wi-icon">📱</span>
+        <p><strong>Como funciona?</strong> Você preenche o formulário abaixo e, ao clicar em enviar, abriremos uma conversa no WhatsApp já com os detalhes do seu problema. Rápido e fácil!</p>
       </div>
 
       <div class="form-group">
@@ -243,11 +290,14 @@
 
       <div class="form-group">
         <label class="form-label">Descreva o problema <span>*</span></label>
-        <textarea id="f-problema" class="form-control" placeholder="Ex: A máquina não está centrifugando, faz um barulho forte e para na última etapa..."></textarea>
+        <textarea id="f-problema" class="form-control" placeholder="Ex: A máquina não centrifuga, faz barulho forte e para na última etapa..."></textarea>
       </div>
 
       <button class="btn-wpp" onclick="enviarWhatsApp()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+          <path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>
+        </svg>
         Enviar via WhatsApp
       </button>
     </div>
@@ -255,6 +305,7 @@
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <a href="index.html" class="footer-logo">RAMOS<span>TEC</span></a>
@@ -271,11 +322,11 @@
 
 <script>
   function enviarWhatsApp() {
-    const nome = document.getElementById('f-nome').value.trim();
-    const tel = document.getElementById('f-tel').value.trim();
-    const local = document.getElementById('f-local').value.trim();
-    const equip = document.getElementById('f-equip').value;
-    const marca = document.getElementById('f-marca').value.trim();
+    const nome    = document.getElementById('f-nome').value.trim();
+    const tel     = document.getElementById('f-tel').value.trim();
+    const local   = document.getElementById('f-local').value.trim();
+    const equip   = document.getElementById('f-equip').value;
+    const marca   = document.getElementById('f-marca').value.trim();
     const problema = document.getElementById('f-problema').value.trim();
 
     if (!nome || !tel || !local || !equip || !problema) {
@@ -283,25 +334,11 @@
       return;
     }
 
-    const msg = `Olá, Ramostec! 👋 Vim pelo site e preciso de atendimento técnico.
+    const msg = `Olá, Ramostec! 👋 Vim pelo site e preciso de atendimento técnico.\n\n📋 *Dados do atendimento:*\n👤 Nome: ${nome}\n📞 Telefone: ${tel}\n📍 Local: ${local}\n\n🔧 *Equipamento:* ${equip}\n${marca ? `🏷️ Marca/Modelo: ${marca}\n` : ''}\n❗ *Problema descrito:*\n${problema}\n\nAguardo contato para agendamento. Obrigado!`;
 
-📋 *Dados do atendimento:*
-👤 Nome: ${nome}
-📞 Telefone: ${tel}
-📍 Local: ${local}
-
-🔧 *Equipamento:* ${equip}
-${marca ? `🏷️ Marca/Modelo: ${marca}` : ''}
-
-❗ *Problema descrito:*
-${problema}
-
-Aguardo contato para agendamento. Obrigado!`;
-
-    const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-    setTimeout(() => window.open(`https://wa.me/5511900000000?text=${encodeURIComponent(msg)}`, '_blank'), 600);
+    document.getElementById('toast').classList.add('show');
+    setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000);
+    setTimeout(() => window.open(`https://wa.me/551126900632?text=${encodeURIComponent(msg)}`, '_blank'), 600);
   }
 </script>
 </body>
