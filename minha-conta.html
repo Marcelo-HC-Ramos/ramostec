@@ -6,18 +6,32 @@
 <title>Minha Conta – Ramostec</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
 <style>
-  :root{--red:#CC0000;--red-dark:#AA0000;--blue:#1561C8;--blue-dark:#0F2060;--white:#FFFFFF;--gray-light:#F5F7FA;--gray-mid:#E2E8F0;--gray-dark:#2D2D2D;--muted:#6B7A8D;}
+  :root {
+    --primary: #FFFFFF;        /* branco  – primária  */
+    --red:     #CC0000;        /* vermelho – secundária */
+    --red-dark:#AA0000;        /* vermelho escuro (hover) */
+    --blue:    #1561C8;        /* azul – terciária */
+    --blue-dark:#0F2060;       /* azul escuro (fundos) */
+    --navy:    #FFFFFF;        /* alias primária (legado) */
+    --orange:  #CC0000;        /* alias secundária (legado) */
+    --orange-dark:#AA0000;     /* alias red-dark (legado) */
+    --white:   #FFFFFF;
+    --gray-light:#F5F7FA;
+    --gray-mid:#E2E8F0;
+    --gray-dark:#2D2D2D;
+    --text-muted:#6B7A8D;
+  }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Barlow',sans-serif;background:var(--gray-light);color:var(--gray-dark);}
   .page-hero{background:var(--blue-dark);padding:5rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
   .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(204,0,0,0.15) 0%,transparent 60%);}
   .page-hero-inner{position:relative;z-index:2;max-width:600px;margin:0 auto;}
-  .hero-avatar{width:72px;height:72px;border-radius:50%;background:var(--red);color:white;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
-  .hero-avatar.admin-av{background:var(--blue);}
+  .hero-avatar{width:72px;height:72px;border-radius:50%;background:#CC0000;color:white;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
+  .hero-avatar.admin-av{background:#1561C8;}
   .hero-name{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:white;margin-bottom:0.3rem;}
   .hero-email{color:rgba(255,255,255,0.6);font-size:0.9rem;}
   .hero-badge{display:inline-block;margin-top:0.75rem;padding:0.3rem 0.9rem;border-radius:20px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;}
-  .badge-admin{background:rgba(21,97,200,0.3);color:#93C5FD;border:1px solid rgba(21,97,200,0.4);}
+  .badge-admin{background:rgba(15,32,96,0.35);color:#93C5FD;border:1px solid rgba(21,97,200,0.4);}
   .badge-user{background:rgba(204,0,0,0.25);color:#FCA5A5;border:1px solid rgba(204,0,0,0.3);}
   .content{max-width:900px;margin:0 auto;padding:3rem 2rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
   .card{background:white;border-radius:14px;border:1px solid var(--gray-mid);padding:1.8rem;}
@@ -27,28 +41,28 @@
   .info-row label{font-size:0.82rem;font-weight:600;color:var(--muted);}
   .info-row span{font-size:0.9rem;font-weight:600;color:var(--gray-dark);}
   .info-row .badge-role{padding:0.2rem 0.7rem;border-radius:20px;font-size:0.72rem;font-weight:700;}
-  .role-admin{background:rgba(15,32,96,0.1);color:var(--blue-dark);}
-  .role-user{background:rgba(204,0,0,0.1);color:var(--red);}
+  .role-admin{background:rgba(15,32,96,0.1);color:#0F2060;}
+  .role-user{background:rgba(204,0,0,0.1);color:#CC0000;}
   .fg{margin-bottom:1rem;}
   .fl{display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.35rem;}
   .fi{width:100%;padding:0.65rem 0.9rem;border:1.5px solid var(--gray-mid);border-radius:8px;font-family:inherit;font-size:0.9rem;color:var(--gray-dark);outline:none;transition:border-color 0.2s;}
-  .fi:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(204,0,0,0.07);}
-  .btn-save{width:100%;padding:0.75rem;background:var(--red);color:white;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
-  .btn-save:hover{background:var(--red-dark);}
+  .fi:focus{border-color:#CC0000;box-shadow:0 0 0 3px rgba(204,0,0,0.07);}
+  .btn-save{width:100%;padding:0.75rem;background:#CC0000;color:white;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;}
+  .btn-save:hover{background:#AA0000;}
   .btn-logout-full{width:100%;padding:0.75rem;background:rgba(220,38,38,0.08);border:1.5px solid rgba(220,38,38,0.25);color:#DC2626;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;}
   .btn-logout-full:hover{background:rgba(220,38,38,0.14);}
   .alert{padding:0.7rem 1rem;border-radius:8px;font-size:0.85rem;font-weight:600;margin-top:0.75rem;display:none;}
   .alert.show{display:block;}
   .alert-ok{background:rgba(22,163,74,0.09);border:1px solid rgba(22,163,74,0.25);color:#166534;}
-  .alert-err{background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.25);color:#B91C1C;}
-  .admin-link-card{background:linear-gradient(135deg,var(--blue-dark),#1A3A8F);border-radius:14px;padding:1.8rem;color:white;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:all 0.2s;grid-column:1/-1;}
+  .alert-err{background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.25);color:#CC0000;}
+  .admin-link-card{background:linear-gradient(135deg,#0F2060,#1561C8);border-radius:14px;padding:1.8rem;color:white;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:all 0.2s;grid-column:1/-1;}
   .admin-link-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,32,96,0.3);}
   .admin-link-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;margin-bottom:0.3rem;}
   .admin-link-card p{font-size:0.85rem;color:rgba(255,255,255,0.65);}
   .admin-link-card .arrow{font-size:2rem;opacity:0.7;}
-  footer{background:var(--blue-dark);padding:2rem;text-align:center;color:rgba(255,255,255,0.3);font-size:0.8rem;}
+  footer{background:#0A1228;padding:2rem;text-align:center;color:rgba(255,255,255,0.3);font-size:0.8rem;}
   footer a{color:rgba(255,255,255,0.5);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;display:block;margin-bottom:0.5rem;}
-  footer a span{color:var(--red);}
+  footer a span{color:#CC0000;}
   @media(max-width:768px){.content{grid-template-columns:1fr;}.admin-link-card{grid-column:1;}}
 </style>
 </head>

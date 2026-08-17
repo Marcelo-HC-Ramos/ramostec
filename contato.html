@@ -8,14 +8,19 @@
   @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
 
   :root {
-    --navy: #1A3A5C;
-    --orange: #F07B24;
-    --orange-dark: #D4661A;
-    --white: #FFFFFF;
-    --gray-light: #F5F7FA;
-    --gray-mid: #E2E8F0;
-    --gray-dark: #2D2D2D;
-    --text-muted: #6B7A8D;
+    --primary: #FFFFFF;        /* branco  – primária  */
+    --red:     #CC0000;        /* vermelho – secundária */
+    --red-dark:#AA0000;        /* vermelho escuro (hover) */
+    --blue:    #1561C8;        /* azul – terciária */
+    --blue-dark:#0F2060;       /* azul escuro (fundos) */
+    --navy:    #FFFFFF;        /* alias primária (legado) */
+    --orange:  #CC0000;        /* alias secundária (legado) */
+    --orange-dark:#AA0000;     /* alias red-dark (legado) */
+    --white:   #FFFFFF;
+    --gray-light:#F5F7FA;
+    --gray-mid:#E2E8F0;
+    --gray-dark:#2D2D2D;
+    --text-muted:#6B7A8D;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,33 +30,33 @@
   /* ── NAV ── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-    background: rgba(26,58,92,0.97); backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(8px); border-bottom: 2px solid #E2E8F0;
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 2rem; height: 64px; box-shadow: 0 2px 16px rgba(0,0,0,0.2);
   }
-  .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.7rem; font-weight: 900; color: var(--white); letter-spacing: -0.5px; text-decoration: none; }
+  .nav-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.7rem; font-weight: 900; color: #CC0000; letter-spacing: -0.5px; text-decoration: none; }
   .nav-logo span { color: var(--orange); }
   .nav-links { display: flex; gap: 0.25rem; list-style: none; }
-  .nav-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-weight: 500; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s; }
-  .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.1); }
-  .nav-links a.nav-cta { background: var(--orange); color: white; font-weight: 700; }
+  .nav-links a { color: #2D2D2D; text-decoration: none; font-weight: 500; font-size: 0.9rem; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s; }
+  .nav-links a:hover { color: #CC0000; background: rgba(204,0,0,0.06); }
+  .nav-links a.nav-cta { background: #CC0000; color: white; font-weight: 700; }
   .nav-links a.nav-cta.active { background: var(--orange-dark); }
   .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
-  .hamburger span { display: block; width: 24px; height: 2px; background: white; transition: all 0.3s; }
-  .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: var(--navy); z-index: 999; flex-direction: column; padding: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .hamburger span { display: block; width: 24px; height: 2px; background: #2D2D2D; transition: all 0.3s; }
+  .mobile-menu { display: none; position: fixed; top: 64px; left: 0; right: 0; background: #CC0000; z-index: 999; flex-direction: column; padding: 1rem; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
   .mobile-menu.open { display: flex; }
   .mobile-menu a { color: rgba(255,255,255,0.8); text-decoration: none; padding: 0.9rem 1rem; border-radius: 8px; font-weight: 600; transition: all 0.2s; }
   .mobile-menu a:hover { background: rgba(255,255,255,0.07); color: white; }
-  .mobile-menu a.nav-cta { background: var(--orange); color: white; margin-top: 0.5rem; text-align: center; }
+  .mobile-menu a.nav-cta { background: #CC0000; color: white; margin-top: 0.5rem; text-align: center; }
 
   /* ── PAGE HERO ── */
   .page-hero {
-    background: var(--navy); padding: 7rem 2rem 3.5rem;
+    background: #0F2060; padding: 7rem 2rem 3.5rem;
     text-align: center; position: relative; overflow: hidden;
   }
   .page-hero::before {
     content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, rgba(240,123,36,0.15) 0%, transparent 60%);
+    background: radial-gradient(ellipse at 50% 100%, rgba(204,0,0,0.15) 0%, transparent 60%);
   }
   .page-hero-inner { position: relative; z-index: 2; max-width: 680px; margin: 0 auto; }
   .page-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--orange); margin-bottom: 0.8rem; }
@@ -70,23 +75,23 @@
   .info-item { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.6rem 0; border-bottom: 1px solid var(--gray-light); }
   .info-item:last-child { border-bottom: none; }
   .info-item .ii-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
-  .info-item .ii-text strong { display: block; font-size: 0.85rem; color: var(--navy); font-weight: 700; }
+  .info-item .ii-text strong { display: block; font-size: 0.85rem; color: #1A1A1A; font-weight: 700; }
   .info-item .ii-text span { font-size: 0.82rem; color: var(--text-muted); }
   .how-steps { display: flex; flex-direction: column; gap: 0.9rem; }
   .how-step { display: flex; align-items: flex-start; gap: 0.8rem; }
   .how-step .step-num {
     width: 26px; height: 26px; border-radius: 50%;
-    background: var(--orange); color: white;
+    background: #CC0000; color: white;
     font-size: 0.78rem; font-weight: 900;
     display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .how-step .step-text { font-size: 0.87rem; color: var(--text-muted); line-height: 1.5; padding-top: 3px; }
-  .how-step .step-text strong { color: var(--navy); }
+  .how-step .step-text strong { color: #1A1A1A; }
 
   /* ── FORMULÁRIO ── */
   .form-card { background: var(--white); border-radius: 16px; padding: 2.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
   .form-group { margin-bottom: 1.4rem; }
-  .form-label { display: block; font-weight: 600; font-size: 0.88rem; color: var(--navy); margin-bottom: 0.4rem; }
+  .form-label { display: block; font-weight: 600; font-size: 0.88rem; color: #1A1A1A; margin-bottom: 0.4rem; }
   .form-label span { color: var(--orange); }
   .form-control {
     width: 100%; padding: 0.7rem 1rem;
@@ -94,7 +99,7 @@
     font-family: inherit; font-size: 0.9rem; color: var(--gray-dark);
     transition: border-color 0.2s; background: var(--white); outline: none;
   }
-  .form-control:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(26,58,92,0.08); }
+  .form-control:focus { border-color: #CC0000; box-shadow: 0 0 0 3px rgba(204,0,0,0.08); }
   select.form-control { cursor: pointer; }
   textarea.form-control { resize: vertical; min-height: 110px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -120,17 +125,17 @@
   .btn-wpp:hover { background: #1ebe5d; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
 
   /* ── FOOTER ── */
-  footer { background: #0F2540; padding: 2.5rem 2rem; }
+  footer { background: #0A1228; padding: 2.5rem 2rem; }
   .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
-  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: white; text-decoration: none; }
-  .footer-logo span { color: var(--orange); }
+  .footer-logo { font-family: 'Barlow Condensed', sans-serif; font-size: 1.4rem; font-weight: 900; color: #FFFFFF; text-decoration: none; }
+  .footer-logo span { color: #CC0000; }
   .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
   .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
   .footer-links a:hover { color: rgba(255,255,255,0.8); }
   .footer-copy { color: rgba(255,255,255,0.3); font-size: 0.78rem; margin-top: 1.2rem; text-align: center; }
 
   /* ── TOAST ── */
-  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--navy); color: white; padding: 0.9rem 1.8rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transition: transform 0.3s; z-index: 9999; white-space: nowrap; }
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: #0F2060; color: white; padding: 0.9rem 1.8rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transition: transform 0.3s; z-index: 9999; white-space: nowrap; }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 768px) {

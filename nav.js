@@ -20,15 +20,15 @@ const Nav = (() => {
         font-size: 1.7rem; font-weight: 900;
         color: #CC0000; letter-spacing: -0.5px; text-decoration: none;
       }
-      .rmt-nav-logo span { color: #1561C8; }
+      .rmt-nav-logo span { color: #CC0000; }
       .rmt-nav-links { display: flex; gap: 0.25rem; list-style: none; align-items: center; }
       .rmt-nav-links a {
         color: #2D2D2D; text-decoration: none; font-weight: 500; font-size: 0.9rem;
         padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s;
         font-family: 'Barlow', sans-serif;
       }
-      .rmt-nav-links a:hover { color: #CC0000; background: rgba(204,0,0,0.06); }
-      .rmt-nav-links a.active { color: #CC0000; font-weight: 700; background: rgba(204,0,0,0.07); }
+      .rmt-nav-links a:hover { color: #CC0000; background: rgba(255,255,255,0.97); }
+      .rmt-nav-links a.active { color: #CC0000; font-weight: 700; background: rgba(255,255,255,0.97); }
       .rmt-nav-links a.nav-cta {
         background: #CC0000; color: white !important; font-weight: 700;
         padding: 0.5rem 1.1rem; border-radius: 6px;
@@ -79,8 +79,8 @@ const Nav = (() => {
       }
       .nav-dropdown a:hover, .nav-dropdown button:hover { background: #F5F7FA; color: #CC0000; }
       .nav-dropdown .dd-divider { border: none; border-top: 1px solid #E2E8F0; margin: 0.3rem 0; }
-      .nav-dropdown .dd-logout { color: #DC2626 !important; }
-      .nav-dropdown .dd-logout:hover { background: rgba(220,38,38,0.07) !important; color: #DC2626 !important; }
+      .nav-dropdown .dd-logout { color: #CC0000 !important; }
+      .nav-dropdown .dd-logout:hover { background: rgba(220,38,38,0.07) !important; color: #CC0000 !important; }
       .nav-dropdown .dd-header { padding: 0.4rem 0.8rem 0.6rem; }
       .nav-dropdown .dd-header strong { display: block; font-size: 0.85rem; color: #1A1A1A; }
       .nav-dropdown .dd-header span { font-size: 0.75rem; color: #6B7A8D; }
