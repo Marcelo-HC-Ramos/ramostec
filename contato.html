@@ -596,33 +596,35 @@ function enviarWhatsApp() {
   const temAnexos = arquivosSelecionados.length > 0;
   const nomeAnexos = arquivosSelecionados.map(f => `• ${f.name}`).join('\n');
 
-  const msg = [
-    `Olá, Ramostec! 👋 Vim pelo site e preciso de atendimento técnico.`,
-    ``,
-    `━━━━━━━━━━━━━━━━━━━━━━`,
-    `👤 *DADOS PESSOAIS*`,
-    `Nome: ${v('f-nome')}`,
-    `Telefone: ${v('f-tel')}`,
-    v('f-email') ? `E-mail: ${v('f-email')}` : null,
-    ``,
-    `📍 *ENDEREÇO DE ATENDIMENTO*`,
-    `   ${endereco}`,
-    ``,
-    `🔧 *EQUIPAMENTO*`,
-    `Tipo: ${v('f-equip')}`,
-    `Marca: ${v('f-marca')}`,
-    v('f-modelo') ? `Modelo: ${v('f-modelo')}` : null,
-    ``,
-    `❗ *PROBLEMA DESCRITO*`,
-    v('f-problema'),
-    ``,
-    temAnexos ? `📎 *ANEXOS (${arquivosSelecionados.length} arquivo(s))*` : null,
-    temAnexos ? `Enviarei os arquivos logo abaixo:` : null,
-    temAnexos ? nomeAnexos : null,
-    ``,
-    `━━━━━━━━━━━━━━━━━━━━━━`,
-    `Aguardo contato para agendamento. Obrigado!`
-  ].filter(l => l !== null).join('\n');
+  const linhas = [];
+  linhas.push('Ola, Ramostec! Preciso de um atendimento tecnico.');
+  linhas.push('');
+  linhas.push('--- DADOS DO CLIENTE ---');
+  linhas.push('Nome: ' + v('f-nome'));
+  linhas.push('Telefone: ' + v('f-tel'));
+  if (v('f-email')) linhas.push('E-mail: ' + v('f-email'));
+  linhas.push('');
+  linhas.push('--- ENDERECO ---');
+  if (v('f-rua'))         linhas.push('Rua: ' + v('f-rua') + ', ' + v('f-numero'));
+  if (v('f-complemento')) linhas.push('Complemento: ' + v('f-complemento'));
+  if (v('f-bairro'))      linhas.push('Bairro: ' + v('f-bairro'));
+  if (v('f-cidade'))      linhas.push('Cidade: ' + v('f-cidade') + ' - ' + v('f-estado'));
+  linhas.push('CEP: ' + v('f-cep'));
+  linhas.push('');
+  linhas.push('--- EQUIPAMENTO ---');
+  linhas.push('Tipo: ' + v('f-equip'));
+  linhas.push('Marca: ' + v('f-marca'));
+  if (v('f-modelo')) linhas.push('Modelo: ' + v('f-modelo'));
+  linhas.push('');
+  linhas.push('--- PROBLEMA ---');
+  linhas.push(v('f-problema'));
+  if (temAnexos) {
+    linhas.push('');
+    linhas.push('Vou enviar ' + arquivosSelecionados.length + ' foto(s)/video(s) logo em seguida nesta conversa.');
+  }
+  linhas.push('');
+  linhas.push('Aguardo contato para agendamento.');
+  const msg = linhas.join('\n');
 
   showToast('✅ Abrindo WhatsApp...');
   setTimeout(() => window.open(`https://wa.me/551126900632?text=${encodeURIComponent(msg)}`, '_blank'), 500);
