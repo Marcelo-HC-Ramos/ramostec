@@ -4,173 +4,198 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel Admin – Ramostec</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap" rel="stylesheet">
+<script src="auth.js"></script>
+<script src="nav.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@700;900&display=swap');
-  :root{--primary:#FFFFFF;--red:#CC0000;--red-dark:#AA0000;--blue:#1561C8;--blue-dark:#0F2060;--navy:#FFFFFF;--orange:#CC0000;--orange-dark:#AA0000;--white:#FFFFFF;--gray-light:#F5F7FA;--gray-mid:#E2E8F0;--gray-dark:#2D2D2D;--text-muted:#6B7A8D;--bg:#0F1C3A;--card:#0A1535;--border:#1A2D54;--text:#CBD5E1;--muted:#4B6278;}
+  :root {
+    --red:#CC0000; --red-dark:#AA0000; --blue:#1561C8; --blue-dark:#0F2060;
+    --orange:#CC0000; --orange-dark:#AA0000;
+    --bg:#0A1228; --card:#0F1C3A; --border:#1A2D54;
+    --text:#CBD5E1; --muted:#4B6278; --sidebar:#060D1A;
+  }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;}
 
   /* ── SIDEBAR ── */
-  .sidebar{width:240px;background:#060D1A;border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:100;transition:transform 0.3s;}
-  .sidebar-logo{padding:1.5rem;border-bottom:1px solid var(--border);}
-  .sidebar-logo a{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:white;text-decoration:none;}
-  .sidebar-logo a span{color:#CC0000;}
-  .sidebar-logo .admin-badge{display:block;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-top:0.1rem;}
+  .sidebar{width:240px;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;z-index:100;transition:transform 0.3s;}
+  .sidebar-logo{padding:1.4rem 1.5rem;border-bottom:1px solid var(--border);}
+  .sidebar-logo a{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:#fff;text-decoration:none;}
+  .sidebar-logo a span{color:var(--red);}
+  .admin-badge{display:block;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-top:0.1rem;}
   .sidebar-user{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:0.75rem;}
-  .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:white;flex-shrink:0;}
-  .user-info .u-name{font-size:0.85rem;font-weight:700;color:white;}
-  .user-info .u-role{font-size:0.72rem;color:var(--muted);}
-  nav.sidebar-nav{flex:1;padding:1rem 0;overflow-y:auto;}
-  .nav-section{padding:0.5rem 1.5rem 0.25rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);}
-  .nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.7rem 1.5rem;color:var(--text);text-decoration:none;font-size:0.88rem;font-weight:500;transition:all 0.2s;cursor:pointer;border:none;background:none;width:100%;text-align:left;}
-  .nav-item:hover{background:rgba(255,255,255,0.04);color:white;}
-  .nav-item.active{background:rgba(204,0,0,0.12);color:#CC0000;font-weight:700;}
-  .nav-item .nav-icon{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
-  .nav-item .nav-badge{margin-left:auto;background:var(--orange);color:white;border-radius:10px;padding:0.1rem 0.5rem;font-size:0.68rem;font-weight:900;}
+  .u-avatar{width:32px;height:32px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;color:#fff;flex-shrink:0;}
+  .u-name{font-size:0.85rem;font-weight:700;color:#fff;}
+  .u-role{font-size:0.7rem;color:var(--muted);}
+  .sidebar-nav{flex:1;padding:1rem 0;overflow-y:auto;}
+  .nav-sec{padding:0.5rem 1.5rem 0.2rem;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);}
+  .nav-btn{display:flex;align-items:center;gap:0.7rem;padding:0.65rem 1.5rem;color:var(--text);font-size:0.87rem;font-weight:500;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:all 0.2s;}
+  .nav-btn:hover{background:rgba(255,255,255,0.04);color:#fff;}
+  .nav-btn.active{background:rgba(204,0,0,0.12);color:var(--red);font-weight:700;}
+  .nav-btn .ni{font-size:1rem;width:20px;text-align:center;flex-shrink:0;}
+  .nav-badge{margin-left:auto;background:var(--red);color:#fff;border-radius:10px;padding:0.1rem 0.5rem;font-size:0.66rem;font-weight:900;}
   .sidebar-bottom{padding:1rem;border-top:1px solid var(--border);}
-  .btn-logout{width:100%;padding:0.65rem;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);color:#FCA5A5;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.2s;}
-  .btn-logout:hover{background:rgba(220,38,38,0.2);}
+  .btn-logout{width:100%;padding:0.6rem;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.25);color:#FCA5A5;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.83rem;cursor:pointer;transition:all 0.2s;}
+  .btn-logout:hover{background:rgba(220,38,38,0.22);}
 
   /* ── MAIN ── */
   .main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
-  .topbar{background:#060D1A;border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-  .topbar-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;color:white;}
-  .topbar-actions{display:flex;gap:0.75rem;align-items:center;}
-  .btn-site{padding:0.45rem 1rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:inherit;font-size:0.82rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;}
-  .btn-site:hover{background:rgba(255,255,255,0.1);color:white;}
+  .topbar{background:var(--sidebar);border-bottom:1px solid var(--border);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+  .topbar-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;}
+  .btn-site{padding:0.4rem 1rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:inherit;font-size:0.8rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:0.4rem;}
+  .btn-site:hover{background:rgba(255,255,255,0.1);color:#fff;}
   .content{padding:2rem;flex:1;}
 
   /* ── SECTIONS ── */
-  .section{display:none;}.section.active{display:block;}
-  .page-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:white;margin-bottom:0.25rem;}
-  .page-sub{color:var(--muted);font-size:0.88rem;margin-bottom:2rem;}
+  .section{display:none;} .section.active{display:block;}
+  .page-title{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:900;color:#fff;margin-bottom:0.2rem;}
+  .page-sub{color:var(--muted);font-size:0.87rem;margin-bottom:2rem;}
 
-  /* ── CARDS RESUMO ── */
-  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
-  .scard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.4rem;}
-  .scard.accent{border-color:rgba(204,0,0,0.3);background:rgba(204,0,0,0.06);}
-  .scard.green{border-color:rgba(22,163,74,0.3);background:rgba(22,163,74,0.05);}
-  .scard.blue{border-color:rgba(37,99,235,0.3);background:rgba(37,99,235,0.05);}
-  .scard-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.5rem;}
-  .scard-val{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:white;}
-  .scard.accent .scard-val{color:#CC0000;}
-  .scard.green .scard-val{color:#4ADE80;}
-  .scard.blue .scard-val{color:#60A5FA;}
-  .scard-sub{font-size:0.75rem;color:var(--muted);margin-top:0.2rem;}
+  /* ── SUMMARY ── */
+  .sum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:2rem;}
+  .scard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.3rem;}
+  .scard.red{border-color:rgba(204,0,0,0.35);background:rgba(204,0,0,0.07);}
+  .scard.grn{border-color:rgba(22,163,74,0.3);background:rgba(22,163,74,0.05);}
+  .scard.blu{border-color:rgba(37,99,235,0.3);background:rgba(37,99,235,0.05);}
+  .sc-lbl{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:0.4rem;}
+  .sc-val{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;color:#fff;}
+  .scard.red .sc-val{color:var(--red);}
+  .scard.grn .sc-val{color:#4ADE80;}
+  .scard.blu .sc-val{color:#60A5FA;}
+  .sc-sub{font-size:0.73rem;color:var(--muted);margin-top:0.15rem;}
 
-  /* ── TABLE ── */
-  .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;}
-  .table-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
-  .table-header h3{font-weight:700;font-size:0.95rem;color:white;}
-  .table-search{padding:0.5rem 0.9rem;border:1px solid var(--border);border-radius:8px;background:#0F1C3A;color:white;font-family:inherit;font-size:0.85rem;outline:none;min-width:200px;}
-  .table-search:focus{border-color:#CC0000;}
-  .table-search::placeholder{color:var(--muted);}
+  /* ── TABLES ── */
+  .tbl-wrap{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:1.5rem;}
+  .tbl-head{padding:0.9rem 1.4rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+  .tbl-head h3{font-weight:700;font-size:0.93rem;color:#fff;}
   table{width:100%;border-collapse:collapse;}
-  th{background:#060D1A;color:var(--muted);font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:0.8rem 1.2rem;text-align:left;border-bottom:1px solid var(--border);}
-  td{padding:0.85rem 1.2rem;border-bottom:1px solid var(--border);font-size:0.87rem;vertical-align:middle;}
+  th{background:var(--sidebar);color:var(--muted);font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:0.75rem 1.1rem;text-align:left;border-bottom:1px solid var(--border);}
+  td{padding:0.8rem 1.1rem;border-bottom:1px solid var(--border);font-size:0.86rem;vertical-align:middle;color:var(--text);}
   tr:last-child td{border-bottom:none;}
   tr:hover td{background:rgba(255,255,255,0.02);}
-  .td-name{font-weight:700;color:white;}
-  .td-price{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;color:#CC0000;}
-  .td-img{width:40px;height:40px;border-radius:6px;background:#060D1A;display:flex;align-items:center;justify-content:center;font-size:1.3rem;overflow:hidden;flex-shrink:0;}
-  .td-img img{width:40px;height:40px;object-fit:cover;}
-  .badge{padding:0.2rem 0.65rem;border-radius:20px;font-size:0.7rem;font-weight:700;}
-  .badge-ok{background:rgba(22,163,74,0.15);color:#4ADE80;}
-  .badge-low{background:rgba(217,119,6,0.15);color:#FCD34D;}
-  .badge-out{background:rgba(220,38,38,0.15);color:#FCA5A5;}
-  .badge-pend{background:rgba(217,119,6,0.15);color:#FCD34D;}
-  .badge-done{background:rgba(22,163,74,0.15);color:#4ADE80;}
-  .badge-new{background:rgba(37,99,235,0.15);color:#60A5FA;}
-  .td-actions{display:flex;gap:0.5rem;}
-  .btn-sm{padding:0.3rem 0.75rem;border-radius:6px;font-size:0.75rem;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid transparent;font-family:inherit;}
-  .btn-edit{background:rgba(204,0,0,0.5);border-color:rgba(204,0,0,0.8);color:#93C5FD;}
-  .btn-edit:hover{background:rgba(204,0,0,0.9);}
-  .btn-del{background:rgba(220,38,38,0.1);border-color:rgba(220,38,38,0.3);color:#FCA5A5;}
-  .btn-del:hover{background:rgba(220,38,38,0.2);}
-  .btn-view{background:rgba(22,163,74,0.1);border-color:rgba(22,163,74,0.3);color:#4ADE80;}
-  .btn-view:hover{background:rgba(22,163,74,0.2);}
-  .btn-status{background:rgba(217,119,6,0.1);border-color:rgba(217,119,6,0.3);color:#FCD34D;}
-  .btn-status:hover{background:rgba(217,119,6,0.2);}
-  .empty-row td{text-align:center;padding:3rem;color:var(--muted);}
+  .tn{font-weight:700;color:#fff;}
+  .tp{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:900;color:var(--red);}
+  .ti{width:40px;height:40px;border-radius:6px;background:var(--sidebar);display:flex;align-items:center;justify-content:center;font-size:1.3rem;overflow:hidden;flex-shrink:0;}
+  .ti img{width:40px;height:40px;object-fit:cover;}
+  .badge{padding:0.18rem 0.6rem;border-radius:20px;font-size:0.68rem;font-weight:700;}
+  .b-ok{background:rgba(22,163,74,0.15);color:#4ADE80;}
+  .b-low{background:rgba(217,119,6,0.15);color:#FCD34D;}
+  .b-out{background:rgba(220,38,38,0.15);color:#FCA5A5;}
+  .b-new{background:rgba(37,99,235,0.15);color:#60A5FA;}
+  .b-pend{background:rgba(217,119,6,0.15);color:#FCD34D;}
+  .b-done{background:rgba(22,163,74,0.15);color:#4ADE80;}
+  .acts{display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .bs{padding:0.28rem 0.7rem;border-radius:6px;font-size:0.73rem;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid transparent;font-family:inherit;}
+  .be{background:rgba(21,97,200,0.15);border-color:rgba(21,97,200,0.35);color:#93C5FD;}
+  .be:hover{background:rgba(21,97,200,0.3);}
+  .bd{background:rgba(220,38,38,0.1);border-color:rgba(220,38,38,0.3);color:#FCA5A5;}
+  .bd:hover{background:rgba(220,38,38,0.22);}
+  .bv{background:rgba(22,163,74,0.1);border-color:rgba(22,163,74,0.3);color:#4ADE80;}
+  .bv:hover{background:rgba(22,163,74,0.22);}
+  .bst{background:rgba(217,119,6,0.1);border-color:rgba(217,119,6,0.3);color:#FCD34D;}
+  .bst:hover{background:rgba(217,119,6,0.22);}
+  .empty td{text-align:center;padding:2.5rem;color:var(--muted);}
 
   /* ── TOOLBAR ── */
-  .toolbar{display:flex;gap:1rem;margin-bottom:1.5rem;align-items:center;flex-wrap:wrap;}
-  .btn-add{padding:0.6rem 1.4rem;background:var(--orange);color:white;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all 0.2s;}
-  .btn-add:hover{background:var(--orange-dark);}
-  .filter-select{padding:0.55rem 0.9rem;border:1px solid var(--border);border-radius:8px;background:#0F1C3A;color:white;font-family:inherit;font-size:0.85rem;outline:none;cursor:pointer;}
-  .filter-select:focus{border-color:#CC0000;}
+  .toolbar{display:flex;gap:0.75rem;margin-bottom:1.4rem;align-items:center;flex-wrap:wrap;}
+  .btn-add{padding:0.55rem 1.3rem;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.86rem;cursor:pointer;transition:all 0.2s;}
+  .btn-add:hover{background:var(--red-dark);}
+  .t-search{flex:1;max-width:280px;padding:0.5rem 0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--card);color:#fff;font-family:inherit;font-size:0.84rem;outline:none;}
+  .t-search:focus{border-color:var(--red);}
+  .t-search::placeholder{color:var(--muted);}
+  .t-sel{padding:0.5rem 0.85rem;border:1px solid var(--border);border-radius:8px;background:var(--card);color:#fff;font-family:inherit;font-size:0.84rem;outline:none;cursor:pointer;}
+  .t-sel:focus{border-color:var(--red);}
 
   /* ── MODAL ── */
-  .modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;padding:1rem;}
+  .modal{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.82);align-items:center;justify-content:center;padding:1rem;}
   .modal.open{display:flex;}
-  .modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:640px;max-height:92vh;overflow-y:auto;}
-  .modal-hdr{padding:1.4rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-  .modal-hdr h3{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:900;color:white;}
-  .modal-close{background:none;border:none;color:var(--muted);font-size:1.5rem;cursor:pointer;line-height:1;}
-  .modal-close:hover{color:white;}
-  .modal-body{padding:1.5rem;}
-  .modal-footer{padding:1.2rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:1rem;justify-content:flex-end;}
-  .fg{margin-bottom:1.2rem;}
-  .fl{display:block;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.4rem;}
-  .fl em{color:var(--orange);font-style:normal;}
-  .fi{width:100%;padding:0.7rem 1rem;border:1.5px solid var(--border);border-radius:8px;background:#0F1C3A;color:white;font-family:inherit;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
-  .fi:focus{border-color:#CC0000;}
+  .mbox{background:var(--card);border:1px solid var(--border);border-radius:16px;width:100%;max-width:660px;max-height:93vh;overflow-y:auto;}
+  .mhdr{padding:1.3rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+  .mhdr h3{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:900;color:#fff;}
+  .mcls{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:0;}
+  .mcls:hover{color:#fff;}
+  .mbdy{padding:1.4rem;}
+  .mftr{padding:1.1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:1rem;justify-content:flex-end;}
+
+  /* ── FORM FIELDS ── */
+  .fg{margin-bottom:1.1rem;}
+  .fl{display:block;font-size:0.76rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:0.38rem;}
+  .fl em{color:var(--red);font-style:normal;}
+  .fi{width:100%;padding:0.68rem 0.95rem;border:1.5px solid var(--border);border-radius:8px;background:var(--bg);color:#fff;font-family:inherit;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
+  .fi:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(204,0,0,0.1);}
   .fi::placeholder{color:#3A5068;}
   select.fi{cursor:pointer;}
-  textarea.fi{resize:vertical;min-height:90px;}
+  textarea.fi{resize:vertical;min-height:85px;}
+  .fi-ok{border-color:#4ADE80 !important;}
+  .fi-err{border-color:#FCA5A5 !important;}
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
   .frow3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
-  .img-drop{border:2px dashed var(--border);border-radius:10px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;}
-  .img-drop:hover{border-color:var(--orange);background:rgba(204,0,0,0.04);}
-  .img-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;}
-  .img-drop .drop-icon{font-size:1.8rem;margin-bottom:0.4rem;}
-  .img-drop p{font-size:0.82rem;color:var(--muted);}
-  .img-drop strong{color:white;}
-  .img-prev{width:100%;height:120px;object-fit:cover;border-radius:8px;margin-top:0.6rem;display:none;}
-  .stars-row{display:flex;gap:0.4rem;}
-  .star-btn{background:none;border:none;font-size:1.4rem;cursor:pointer;color:#2D3748;transition:color 0.1s;}
-  .star-btn.on{color:#F59E0B;}
-  .rev-item{background:#060D1A;border:1px solid var(--border);border-radius:8px;padding:0.9rem;margin-bottom:0.6rem;position:relative;}
-  .rev-rm{position:absolute;top:0.5rem;right:0.75rem;background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;}
+  .field-hint{font-size:0.73rem;margin-top:0.3rem;display:none;}
+  .field-hint.show{display:block;}
+  .hint-err{color:#FCA5A5;}
+  .hint-ok{color:#4ADE80;}
+
+  /* Img drop */
+  .img-drop{border:2px dashed var(--border);border-radius:10px;padding:1.4rem;text-align:center;cursor:pointer;transition:all 0.2s;position:relative;}
+  .img-drop:hover{border-color:var(--red);background:rgba(204,0,0,0.04);}
+  .img-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+  .drop-ico{font-size:1.8rem;margin-bottom:0.4rem;}
+  .img-drop p{font-size:0.8rem;color:var(--muted);}
+  .img-drop strong{color:#fff;}
+  .img-prv{width:100%;height:130px;object-fit:cover;border-radius:8px;margin-top:0.6rem;display:none;}
+  .img-actions{display:flex;gap:0.5rem;margin-top:0.5rem;justify-content:center;}
+  .btn-rm-img{padding:0.3rem 0.8rem;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.3);color:#FCA5A5;border-radius:6px;font-family:inherit;font-size:0.75rem;font-weight:700;cursor:pointer;}
+  .btn-rm-img:hover{background:rgba(220,38,38,0.25);}
+
+  /* Reviews */
+  .rev-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:0.85rem;margin-bottom:0.55rem;position:relative;}
+  .rev-rm{position:absolute;top:0.5rem;right:0.7rem;background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.85rem;}
   .rev-rm:hover{color:#FCA5A5;}
-  .btn-add-rev{width:100%;padding:0.6rem;border:1.5px dashed var(--border);border-radius:8px;background:none;color:var(--muted);font-family:inherit;font-weight:600;font-size:0.82rem;cursor:pointer;transition:all 0.2s;}
-  .btn-add-rev:hover{border-color:var(--orange);color:#CC0000;}
-  .btn-save{padding:0.75rem 2rem;background:var(--orange);color:white;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.2s;}
-  .btn-save:hover{background:var(--orange-dark);}
-  .btn-cancel{padding:0.75rem 1.5rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;font-family:inherit;font-weight:600;font-size:0.95rem;cursor:pointer;}
-  .btn-cancel:hover{background:rgba(255,255,255,0.1);color:white;}
+  .stars-row{display:flex;gap:0.35rem;}
+  .star-btn{background:none;border:none;font-size:1.35rem;cursor:pointer;color:#2D3748;transition:color 0.1s;}
+  .star-btn.on{color:#F59E0B;}
+  .btn-add-rev{width:100%;padding:0.55rem;border:1.5px dashed var(--border);border-radius:8px;background:none;color:var(--muted);font-family:inherit;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s;}
+  .btn-add-rev:hover{border-color:var(--red);color:var(--red);}
 
-  /* ── DETAIL MODAL ── */
-  .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
-  .detail-item label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:0.2rem;}
-  .detail-item span{font-size:0.9rem;color:white;}
+  /* Buttons */
+  .btn-save{padding:0.7rem 1.8rem;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.93rem;cursor:pointer;transition:all 0.2s;}
+  .btn-save:hover{background:var(--red-dark);}
+  .btn-cancel{padding:0.7rem 1.3rem;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-radius:8px;font-family:inherit;font-weight:600;font-size:0.93rem;cursor:pointer;transition:all 0.2s;}
+  .btn-cancel:hover{background:rgba(255,255,255,0.1);color:#fff;}
 
-  /* ── CONFIG DO SITE ── */
-  .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
-  .config-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;}
-  .config-card h3{font-weight:700;color:white;margin-bottom:1.2rem;font-size:0.95rem;}
-  .config-save{width:100%;padding:0.75rem;background:var(--orange);color:white;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.9rem;cursor:pointer;transition:all 0.2s;margin-top:1rem;}
-  .config-save:hover{background:var(--orange-dark);}
+  /* ── CONFIG ── */
+  .cfg-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
+  .cfg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;}
+  .cfg-card h3{font-weight:700;color:#fff;margin-bottom:1.1rem;font-size:0.93rem;display:flex;align-items:center;gap:0.5rem;}
+  .cfg-save{width:100%;padding:0.7rem;background:var(--red);color:#fff;border:none;border-radius:8px;font-family:inherit;font-weight:700;font-size:0.88rem;cursor:pointer;transition:all 0.2s;margin-top:0.75rem;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
+  .cfg-save:hover{background:var(--red-dark);}
+  .cfg-save.saved{background:#16A34A;}
+  .cfg-note{font-size:0.75rem;color:var(--muted);margin-top:0.5rem;line-height:1.5;}
+
+  /* Detail grid */
+  .det-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin-bottom:1rem;}
+  .det-item label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:0.2rem;}
+  .det-item span{font-size:0.88rem;color:#fff;}
 
   /* ── TOAST ── */
-  .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#0A1535;border:1px solid var(--border);color:white;padding:0.9rem 1.5rem;border-radius:10px;font-weight:600;font-size:0.88rem;box-shadow:0 4px 20px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all 0.3s;z-index:9999;}
+  .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--card);border:1px solid var(--border);color:#fff;padding:0.85rem 1.4rem;border-radius:10px;font-weight:600;font-size:0.86rem;box-shadow:0 4px 20px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all 0.3s;z-index:9999;max-width:320px;}
   .toast.show{transform:translateY(0);opacity:1;}
+  .toast.ok{border-color:rgba(22,163,74,0.4);background:rgba(22,163,74,0.12);}
+  .toast.err{border-color:rgba(220,38,38,0.4);background:rgba(220,38,38,0.12);}
 
-  /* ── HAMBURGER MOBILE ── */
-  .mob-toggle{display:none;background:none;border:none;cursor:pointer;color:white;font-size:1.5rem;padding:0.5rem;}
-  .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;}
-  .sidebar-overlay.open{display:block;}
-
+  /* mobile */
+  .mob-tog{display:none;background:none;border:none;color:#fff;font-size:1.5rem;padding:0.4rem;cursor:pointer;}
+  .s-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:99;}
+  .s-overlay.open{display:block;}
   @media(max-width:900px){
     .sidebar{transform:translateX(-100%);}
     .sidebar.open{transform:translateX(0);}
     .main{margin-left:0;}
-    .mob-toggle{display:block;}
-    .config-grid,.frow,.frow3{grid-template-columns:1fr;}
+    .mob-tog{display:block;}
+    .cfg-grid,.frow,.frow3{grid-template-columns:1fr;}
+    .det-grid{grid-template-columns:1fr;}
   }
 </style>
-<script src="auth.js"></script>
-<script src="nav.js"></script>
 </head>
 <body>
 
@@ -181,72 +206,71 @@
     <span class="admin-badge">Master Admin</span>
   </div>
   <div class="sidebar-user">
-    <div class="user-avatar" id="avatarInitial">R</div>
-    <div class="user-info">
-      <div class="u-name" id="sidebarUser">Admin</div>
+    <div class="u-avatar" id="sAvatar">A</div>
+    <div>
+      <div class="u-name" id="sName">Admin</div>
       <div class="u-role">Administrador Master</div>
     </div>
   </div>
   <nav class="sidebar-nav">
-    <div class="nav-section">Visão Geral</div>
-    <button class="nav-item active" onclick="goSection('dashboard',this)"><span class="nav-icon">📊</span> Dashboard</button>
-    <div class="nav-section">Loja</div>
-    <button class="nav-item" onclick="goSection('produtos',this)"><span class="nav-icon">📦</span> Produtos <span class="nav-badge" id="badgeProd">0</span></button>
-    <div class="nav-section">Atendimentos</div>
-    <button class="nav-item" onclick="goSection('atendimentos',this)"><span class="nav-icon">🔧</span> Solicitações <span class="nav-badge" id="badgeAtend" style="display:none"></span></button>
-    <button class="nav-item" onclick="goSection('compras',this)"><span class="nav-icon">🛒</span> Compras <span class="nav-badge" id="badgeCompra" style="display:none"></span></button>
-    <div class="nav-section">Site</div>
-    <button class="nav-item" onclick="goSection('config',this)"><span class="nav-icon">⚙️</span> Configurações do Site</button>
-    <button class="nav-item" onclick="goSection('regioes',this)"><span class="nav-icon">📍</span> Regiões Atendidas</button>
+    <div class="nav-sec">Visão Geral</div>
+    <button class="nav-btn active" onclick="goSec('dashboard',this)"><span class="ni">📊</span>Dashboard</button>
+    <div class="nav-sec">Loja</div>
+    <button class="nav-btn" onclick="goSec('produtos',this)"><span class="ni">📦</span>Produtos<span class="nav-badge" id="bProd">0</span></button>
+    <div class="nav-sec">Atendimentos</div>
+    <button class="nav-btn" onclick="goSec('atendimentos',this)"><span class="ni">🔧</span>Solicitações<span class="nav-badge" id="bAtend" style="display:none"></span></button>
+    <button class="nav-btn" onclick="goSec('compras',this)"><span class="ni">🛒</span>Compras<span class="nav-badge" id="bCompra" style="display:none"></span></button>
+    <div class="nav-sec">Site</div>
+    <button class="nav-btn" onclick="goSec('config',this)"><span class="ni">⚙️</span>Configurações</button>
+    <button class="nav-btn" onclick="goSec('regioes',this)"><span class="ni">📍</span>Regiões Atendidas</button>
+    <button class="nav-btn" onclick="goSec('usuarios',this)"><span class="ni">👥</span>Usuários</button>
   </nav>
   <div class="sidebar-bottom">
-    <button class="btn-logout" onclick="logout()">🚪 Sair do Painel</button>
+    <button class="btn-logout" onclick="Auth.logout('login.html')">🚪 Sair do Painel</button>
   </div>
 </aside>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<div class="s-overlay" id="sOverlay" onclick="closeSB()"></div>
 
 <!-- MAIN -->
 <div class="main">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:1rem;">
-      <button class="mob-toggle" onclick="toggleSidebar()">☰</button>
-      <span class="topbar-title" id="topbarTitle">Dashboard</span>
+      <button class="mob-tog" onclick="toggleSB()">☰</button>
+      <span class="topbar-title" id="topTitle">Dashboard</span>
     </div>
-    <div class="topbar-actions">
-      <a href="index.html" class="btn-site" target="_blank">🌐 Ver Site</a>
-      <a href="loja.html" class="btn-site" target="_blank">🛒 Ver Loja</a>
+    <div style="display:flex;gap:0.6rem;">
+      <a href="index.html" class="btn-site" target="_blank">🌐 Site</a>
+      <a href="loja.html" class="btn-site" target="_blank">🛒 Loja</a>
     </div>
   </div>
 
   <div class="content">
 
-    <!-- ══ DASHBOARD ══ -->
+    <!-- DASHBOARD -->
     <div class="section active" id="sec-dashboard">
       <div class="page-title">Dashboard</div>
       <p class="page-sub">Visão geral da Ramostec em tempo real.</p>
-      <div class="summary-grid" id="dashCards"></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
-        <div class="table-wrap">
-          <div class="table-header"><h3>Últimas Solicitações</h3></div>
+      <div class="sum-grid" id="dashCards"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;">
+        <div class="tbl-wrap"><div class="tbl-head"><h3>Últimas Solicitações</h3></div>
           <table><thead><tr><th>Cliente</th><th>Equipamento</th><th>Status</th></tr></thead>
           <tbody id="dashAtend"></tbody></table>
         </div>
-        <div class="table-wrap">
-          <div class="table-header"><h3>Últimas Compras</h3></div>
+        <div class="tbl-wrap"><div class="tbl-head"><h3>Últimas Compras</h3></div>
           <table><thead><tr><th>Produto</th><th>Cliente</th><th>Status</th></tr></thead>
           <tbody id="dashCompras"></tbody></table>
         </div>
       </div>
     </div>
 
-    <!-- ══ PRODUTOS ══ -->
+    <!-- PRODUTOS -->
     <div class="section" id="sec-produtos">
       <div class="page-title">Produtos</div>
-      <p class="page-sub">Gerencie o catálogo da loja. Alterações aparecem automaticamente no site.</p>
+      <p class="page-sub">Cadastre, edite e remova peças. Alterações aparecem automaticamente na loja.</p>
       <div class="toolbar">
-        <button class="btn-add" onclick="openProdModal()">+ Novo Produto</button>
-        <input class="table-search" style="flex:1;max-width:300px;" placeholder="🔍  Buscar produto..." oninput="renderProdTable(this.value)">
-        <select class="filter-select" onchange="renderProdTable()">
+        <button class="btn-add" onclick="openProd()">+ Novo Produto</button>
+        <input class="t-search" id="prodSearch" placeholder="🔍 Buscar produto..." oninput="renderProds()">
+        <select class="t-sel" id="prodCatFilter" onchange="renderProds()">
           <option value="">Todas as categorias</option>
           <option value="lavar">Máq. de Lavar</option>
           <option value="tanquinho">Tanquinho</option>
@@ -255,94 +279,110 @@
           <option value="outro">Outro</option>
         </select>
       </div>
-      <div class="table-wrap">
+      <div class="tbl-wrap">
         <table><thead><tr><th>Foto</th><th>Produto</th><th>Categoria</th><th>Preço</th><th>Estoque</th><th>Avaliação</th><th>Ações</th></tr></thead>
-        <tbody id="prodTableBody"></tbody></table>
+        <tbody id="prodTbody"></tbody></table>
       </div>
     </div>
 
-    <!-- ══ ATENDIMENTOS ══ -->
+    <!-- ATENDIMENTOS -->
     <div class="section" id="sec-atendimentos">
       <div class="page-title">Solicitações de Atendimento</div>
       <p class="page-sub">Todas as solicitações recebidas pelo formulário do site.</p>
       <div class="toolbar">
-        <button class="btn-add" onclick="addAtendDemo()">+ Adicionar Manual</button>
-        <select class="filter-select" onchange="renderAtendTable()" id="atendFilter">
+        <select class="t-sel" id="atendFilter" onchange="renderAtend()">
           <option value="">Todos os status</option>
           <option value="novo">Novo</option>
           <option value="andamento">Em andamento</option>
           <option value="concluido">Concluído</option>
         </select>
-        <input class="table-search" style="flex:1;max-width:300px;" placeholder="🔍  Buscar cliente..." oninput="renderAtendTable()">
+        <input class="t-search" placeholder="🔍 Buscar cliente..." oninput="renderAtend(this.value)">
       </div>
-      <div class="table-wrap">
-        <table><thead><tr><th>Data</th><th>Cliente</th><th>Telefone</th><th>Equipamento</th><th>Localidade</th><th>Status</th><th>Ações</th></tr></thead>
-        <tbody id="atendTableBody"></tbody></table>
+      <div class="tbl-wrap">
+        <table><thead><tr><th>Data</th><th>Cliente</th><th>Telefone</th><th>Equipamento</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="atendTbody"></tbody></table>
       </div>
     </div>
 
-    <!-- ══ COMPRAS ══ -->
+    <!-- COMPRAS -->
     <div class="section" id="sec-compras">
       <div class="page-title">Compras via WhatsApp</div>
-      <p class="page-sub">Registro de interesse de compra recebidos pela loja.</p>
+      <p class="page-sub">Registros de interesse de compra recebidos pela loja.</p>
       <div class="toolbar">
-        <button class="btn-add" onclick="addCompraDemo()">+ Registrar Compra</button>
-        <select class="filter-select" onchange="renderComprasTable()" id="compraFilter">
+        <select class="t-sel" id="compraFilter" onchange="renderCompras()">
           <option value="">Todos os status</option>
           <option value="novo">Novo</option>
           <option value="contato">Contato feito</option>
           <option value="concluido">Concluído</option>
         </select>
-        <input class="table-search" style="flex:1;max-width:300px;" placeholder="🔍  Buscar..." oninput="renderComprasTable()">
+        <input class="t-search" placeholder="🔍 Buscar..." oninput="renderCompras(this.value)">
       </div>
-      <div class="table-wrap">
+      <div class="tbl-wrap">
         <table><thead><tr><th>Data</th><th>Produto</th><th>Cliente</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
-        <tbody id="comprasTableBody"></tbody></table>
+        <tbody id="compraTbody"></tbody></table>
       </div>
     </div>
 
-    <!-- ══ CONFIGURAÇÕES ══ -->
+    <!-- CONFIGURAÇÕES -->
     <div class="section" id="sec-config">
       <div class="page-title">Configurações do Site</div>
-      <p class="page-sub">Altere as informações exibidas para os visitantes.</p>
-      <div class="config-grid" id="configGrid"></div>
+      <p class="page-sub">Altere as informações exibidas para os visitantes. Clique em Salvar em cada bloco.</p>
+      <div class="cfg-grid" id="cfgGrid"></div>
     </div>
 
-    <!-- ══ REGIÕES ══ -->
+    <!-- REGIÕES -->
     <div class="section" id="sec-regioes">
       <div class="page-title">Regiões Atendidas</div>
       <p class="page-sub">Gerencie as cidades e regiões exibidas no site.</p>
-      <div class="toolbar"><button class="btn-add" onclick="addRegiao()">+ Adicionar Região</button></div>
-      <div class="table-wrap">
+      <div class="toolbar"><button class="btn-add" onclick="openReg()">+ Adicionar Região</button></div>
+      <div class="tbl-wrap">
         <table><thead><tr><th>Cidade / Região</th><th>Detalhe</th><th>Ações</th></tr></thead>
-        <tbody id="regTableBody"></tbody></table>
+        <tbody id="regTbody"></tbody></table>
       </div>
     </div>
 
-  </div><!-- /content -->
-</div><!-- /main -->
-
-<!-- MODAL PRODUTO -->
-<div class="modal" id="prodModal">
-  <div class="modal-box">
-    <div class="modal-hdr">
-      <h3 id="prodModalTitle">Novo Produto</h3>
-      <button class="modal-close" onclick="closeProdModal()">✕</button>
+    <!-- USUÁRIOS -->
+    <div class="section" id="sec-usuarios">
+      <div class="page-title">Usuários</div>
+      <p class="page-sub">Gerencie quem tem acesso ao site e ao painel admin.</p>
+      <div class="tbl-wrap">
+        <table><thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Cadastro</th><th>Ações</th></tr></thead>
+        <tbody id="userTbody"></tbody></table>
+      </div>
     </div>
-    <div class="modal-body">
+
+  </div>
+</div>
+
+<!-- ═══ MODAL PRODUTO ═══ -->
+<div class="modal" id="mProd">
+  <div class="mbox">
+    <div class="mhdr"><h3 id="mProdTitle">Novo Produto</h3><button class="mcls" onclick="closeProd()">✕</button></div>
+    <div class="mbdy">
       <input type="hidden" id="fp-id">
+
+      <!-- Foto -->
       <div class="fg">
         <label class="fl">Foto do Produto</label>
-        <div class="img-drop" onclick="document.getElementById('fp-file').click()">
-          <input type="file" id="fp-file" accept="image/*" style="display:none" onchange="handleImg(this)">
-          <div class="drop-icon">📷</div>
+        <div class="img-drop" id="imgDrop">
+          <input type="file" id="fp-file" accept="image/*" onchange="handleImg(this)">
+          <div class="drop-ico">📷</div>
           <p><strong>Clique para enviar foto</strong><br>JPG, PNG ou WEBP — máx 5MB</p>
-          <img id="fp-prev" class="img-prev" alt="preview">
+          <img id="fp-prev" class="img-prv" alt="preview">
+        </div>
+        <div class="img-actions" id="imgActions" style="display:none">
+          <button type="button" class="btn-rm-img" onclick="removeImg()">🗑️ Remover foto</button>
         </div>
       </div>
+
       <div class="frow">
-        <div class="fg"><label class="fl">Nome <em>*</em></label><input id="fp-nome" class="fi" placeholder="Ex: Bomba de Drenagem"></div>
-        <div class="fg"><label class="fl">Categoria <em>*</em></label>
+        <div class="fg">
+          <label class="fl">Nome <em>*</em></label>
+          <input id="fp-nome" class="fi" placeholder="Ex: Bomba de Drenagem">
+          <div class="field-hint hint-err" id="err-fp-nome">Informe o nome do produto.</div>
+        </div>
+        <div class="fg">
+          <label class="fl">Categoria <em>*</em></label>
           <select id="fp-cat" class="fi">
             <option value="">Selecione...</option>
             <option value="lavar">Máquina de Lavar</option>
@@ -351,59 +391,85 @@
             <option value="coifa">Coifa</option>
             <option value="outro">Outro</option>
           </select>
+          <div class="field-hint hint-err" id="err-fp-cat">Selecione a categoria.</div>
         </div>
       </div>
+
       <div class="frow">
-        <div class="fg"><label class="fl">Marca <em>*</em></label><input id="fp-marca" class="fi" placeholder="Ex: Brastemp"></div>
-        <div class="fg"><label class="fl">Modelo compatível</label><input id="fp-modelo" class="fi" placeholder="Ex: BWL09B, BWT10"></div>
+        <div class="fg">
+          <label class="fl">Marca <em>*</em></label>
+          <input id="fp-marca" class="fi" placeholder="Ex: Brastemp">
+          <div class="field-hint hint-err" id="err-fp-marca">Informe a marca.</div>
+        </div>
+        <div class="fg">
+          <label class="fl">Modelo compatível</label>
+          <input id="fp-modelo" class="fi" placeholder="Ex: BWT10, BWL09B">
+        </div>
       </div>
+
+      <div class="fg">
+        <label class="fl">Compatível com (marcas/modelos)</label>
+        <input id="fp-compat" class="fi" placeholder="Ex: Brastemp, Consul, Samsung">
+      </div>
+
       <div class="frow3">
-        <div class="fg"><label class="fl">Preço (R$) <em>*</em></label><input id="fp-preco" class="fi" type="number" step="0.01" min="0" placeholder="0,00"></div>
-        <div class="fg"><label class="fl">Estoque (un.) <em>*</em></label><input id="fp-estoque" class="fi" type="number" min="0" placeholder="0"></div>
-        <div class="fg"><label class="fl">Frete</label>
+        <div class="fg">
+          <label class="fl">Preço (R$) <em>*</em></label>
+          <input id="fp-preco" class="fi" type="number" step="0.01" min="0" placeholder="0,00">
+          <div class="field-hint hint-err" id="err-fp-preco">Informe o preço.</div>
+        </div>
+        <div class="fg">
+          <label class="fl">Estoque (un.) <em>*</em></label>
+          <input id="fp-estoque" class="fi" type="number" min="0" placeholder="0">
+          <div class="field-hint hint-err" id="err-fp-estoque">Informe o estoque.</div>
+        </div>
+        <div class="fg">
+          <label class="fl">Frete</label>
           <select id="fp-frete" class="fi">
             <option>Grátis</option><option>A combinar</option><option>Consultar</option><option>Incluso</option>
           </select>
         </div>
       </div>
-      <div class="fg"><label class="fl">Informações / Descrição</label><textarea id="fp-info" class="fi" placeholder="Descreva a peça, condições, observações..."></textarea></div>
+
+      <div class="fg">
+        <label class="fl">Descrição / Informações</label>
+        <textarea id="fp-info" class="fi" placeholder="Descreva a peça: condição, aplicação, observações..."></textarea>
+      </div>
+
       <div class="fg">
         <label class="fl">Avaliações dos Clientes</label>
         <div id="revContainer"></div>
-        <button type="button" class="btn-add-rev" onclick="addRevField()">+ Adicionar avaliação</button>
+        <button type="button" class="btn-add-rev" onclick="addRev()">+ Adicionar avaliação</button>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeProdModal()">Cancelar</button>
+    <div class="mftr">
+      <button class="btn-cancel" onclick="closeProd()">Cancelar</button>
       <button class="btn-save" onclick="saveProd()">💾 Salvar Produto</button>
     </div>
   </div>
 </div>
 
-<!-- MODAL DETALHE ATENDIMENTO/COMPRA -->
-<div class="modal" id="detailModal">
-  <div class="modal-box">
-    <div class="modal-hdr"><h3 id="detailTitle">Detalhes</h3><button class="modal-close" onclick="closeDetailModal()">✕</button></div>
-    <div class="modal-body" id="detailBody"></div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeDetailModal()">Fechar</button>
-      <button class="btn-save" id="detailActionBtn" style="display:none">Atualizar Status</button>
-    </div>
+<!-- ═══ MODAL DETALHES ═══ -->
+<div class="modal" id="mDetail">
+  <div class="mbox">
+    <div class="mhdr"><h3 id="mDetailTitle">Detalhes</h3><button class="mcls" onclick="closeDetail()">✕</button></div>
+    <div class="mbdy" id="mDetailBody"></div>
+    <div class="mftr"><button class="btn-cancel" onclick="closeDetail()">Fechar</button></div>
   </div>
 </div>
 
-<!-- MODAL REGIÃO -->
-<div class="modal" id="regModal">
-  <div class="modal-box" style="max-width:400px;">
-    <div class="modal-hdr"><h3 id="regModalTitle">Adicionar Região</h3><button class="modal-close" onclick="closeRegModal()">✕</button></div>
-    <div class="modal-body">
+<!-- ═══ MODAL REGIÃO ═══ -->
+<div class="modal" id="mReg">
+  <div class="mbox" style="max-width:420px;">
+    <div class="mhdr"><h3 id="mRegTitle">Adicionar Região</h3><button class="mcls" onclick="closeReg()">✕</button></div>
+    <div class="mbdy">
       <input type="hidden" id="rg-id">
       <div class="fg"><label class="fl">Cidade / Região <em>*</em></label><input id="rg-nome" class="fi" placeholder="Ex: Cotia"></div>
       <div class="fg"><label class="fl">Detalhe</label><input id="rg-det" class="fi" placeholder="Ex: Todos os bairros"></div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeRegModal()">Cancelar</button>
-      <button class="btn-save" onclick="saveRegiao()">💾 Salvar</button>
+    <div class="mftr">
+      <button class="btn-cancel" onclick="closeReg()">Cancelar</button>
+      <button class="btn-save" onclick="saveReg()">💾 Salvar</button>
     </div>
   </div>
 </div>
@@ -411,535 +477,700 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  AUTH
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
 Auth.requireAdmin();
 Nav.render('admin');
+const me = Auth.getSession();
+document.getElementById('sName').textContent  = me?.nome  || 'Admin';
+document.getElementById('sAvatar').textContent = (me?.nome||'A')[0].toUpperCase();
 
-const adminUser = Auth.getSession()?.nome || 'Admin';
-document.getElementById('sidebarUser').textContent = adminUser;
-document.getElementById('avatarInitial').textContent = adminUser[0].toUpperCase();
-
-function logout() { Auth.logout('login.html'); }
-
-// ═══════════════════════════════════════════
-//  STORAGE HELPERS
-// ═══════════════════════════════════════════
-const K = {
-  prods: 'rmt_produtos',
-  atend: 'rmt_atendimentos',
-  compras: 'rmt_compras',
-  config: 'rmt_config',
-  regioes: 'rmt_regioes'
-};
-
-function ls(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } }
-function lsObj(key) { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch { return {}; } }
-function ss(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
+// ══════════════════════════════════════════════
+//  STORAGE
+// ══════════════════════════════════════════════
+const K = { prods:'rmt_produtos', atend:'rmt_atendimentos', compras:'rmt_compras', cfg:'rmt_config', regs:'rmt_regioes' };
+const ls    = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch { return []; } };
+const lsObj = k => { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch { return {}; } };
+const ss    = (k,v) => localStorage.setItem(k, JSON.stringify(v));
 
 // Defaults
-function initDefaults() {
-  if(!localStorage.getItem(K.regioes)) {
-    ss(K.regioes, [
-      {id:1,nome:'Cotia',det:'Todos os bairros'},
-      {id:2,nome:'Carapicuíba',det:'Região central e bairros'},
-      {id:3,nome:'Osasco',det:'Zona norte e sul'},
-      {id:4,nome:'Barueri',det:'Alphaville e arredores'},
-      {id:5,nome:'Jandira',det:'Área urbana'},
-      {id:6,nome:'Itapevi',det:'Região central'},
-    ]);
-  }
-  if(!localStorage.getItem(K.config)) {
-    ss(K.config, {
-      nome: 'Ramostec',
-      whatsapp: '551126900632',
-      horario: 'Segunda a sábado, 8h–18h',
-      email: 'contato@ramostec.com.br',
-      instagram: '@ramostec',
-      slogan: 'Seu eletrodoméstico funcionando hoje.',
-      descricao: 'Assistência técnica especializada em eletrodomésticos com atendimento domiciliar.',
-      stats_clientes: '500+',
-      stats_anos: '4+',
-      stats_pecas: '100+',
-      stats_nota: '4.9',
-    });
-  }
-  if(!localStorage.getItem(K.atend)) {
-    ss(K.atend, [
-      {id:101,data:'2025-07-10',nome:'Maria Souza',tel:'(11) 98765-4321',local:'Cotia, SP',equip:'Máquina de Lavar',marca:'Brastemp BWT10',problema:'Não centrifuga e faz barulho no final do ciclo.',status:'novo'},
-      {id:102,data:'2025-07-09',nome:'João Pereira',tel:'(11) 91234-5678',local:'Osasco, SP',equip:'Fogão',marca:'Consul',problema:'Queimador central não acende.',status:'andamento'},
-      {id:103,data:'2025-07-08',nome:'Ana Lima',tel:'(11) 99876-5432',local:'Carapicuíba, SP',equip:'Tanquinho',marca:'Agratto',problema:'Turbina parou de girar.',status:'concluido'},
-    ]);
-  }
-  if(!localStorage.getItem(K.compras)) {
-    ss(K.compras, [
-      {id:201,data:'2025-07-11',produto:'Bomba de Drenagem',cliente:'Carlos Silva',tel:'(11) 97654-3210',valor:89.90,status:'novo'},
-      {id:202,data:'2025-07-10',produto:'Turbina de Tanquinho',cliente:'Fernanda Costa',tel:'(11) 95678-1234',valor:55.00,status:'contato'},
-      {id:203,data:'2025-07-09',produto:'Filtro de Carvão Coifa',cliente:'Roberto Nunes',tel:'(11) 94321-8765',valor:45.90,status:'concluido'},
-    ]);
-  }
-}
-initDefaults();
+(function init() {
+  if (!localStorage.getItem(K.regs)) ss(K.regs, [
+    {id:1,nome:'Cotia',det:'Todos os bairros'},
+    {id:2,nome:'Carapicuíba',det:'Região central e bairros'},
+    {id:3,nome:'Osasco',det:'Zona norte e sul'},
+    {id:4,nome:'Barueri',det:'Alphaville e arredores'},
+    {id:5,nome:'Jandira',det:'Área urbana'},
+    {id:6,nome:'Itapevi',det:'Região central'},
+  ]);
+  if (!localStorage.getItem(K.cfg)) ss(K.cfg, {
+    nome:'Ramostec', whatsapp:'551126900632', horario:'Segunda a sábado, 8h–18h',
+    email:'contato@ramostec.com.br', instagram:'@ramostec',
+    slogan:'Seu eletrodoméstico funcionando hoje.',
+    descricao:'Assistência técnica especializada em eletrodomésticos com atendimento domiciliar.',
+    stats_clientes:'500+', stats_anos:'4+', stats_pecas:'100+', stats_nota:'4.9',
+  });
+  if (!localStorage.getItem(K.atend)) ss(K.atend, [
+    {id:101,data:'2025-07-10',nome:'Maria Souza',tel:'(11) 98765-4321',local:'Cotia, SP',equip:'Máquina de Lavar',marca:'Brastemp BWT10',problema:'Não centrifuga e faz barulho no final do ciclo.',status:'novo'},
+    {id:102,data:'2025-07-09',nome:'João Pereira',tel:'(11) 91234-5678',local:'Osasco, SP',equip:'Fogão',marca:'Consul',problema:'Queimador central não acende.',status:'andamento'},
+    {id:103,data:'2025-07-08',nome:'Ana Lima',tel:'(11) 99876-5432',local:'Carapicuíba, SP',equip:'Tanquinho',marca:'Agratto',problema:'Turbina parou de girar.',status:'concluido'},
+  ]);
+  if (!localStorage.getItem(K.compras)) ss(K.compras, [
+    {id:201,data:'2025-07-11',produto:'Bomba de Drenagem',cliente:'Carlos Silva',tel:'(11) 97654-3210',valor:89.90,status:'novo'},
+    {id:202,data:'2025-07-10',produto:'Turbina de Tanquinho',cliente:'Fernanda Costa',tel:'(11) 95678-1234',valor:55.00,status:'contato'},
+    {id:203,data:'2025-07-09',produto:'Filtro de Carvão Coifa',cliente:'Roberto Nunes',tel:'(11) 94321-8765',valor:45.90,status:'concluido'},
+  ]);
+})();
 
-// ═══════════════════════════════════════════
-//  NAVIGATION
-// ═══════════════════════════════════════════
-const titles = {dashboard:'Dashboard',produtos:'Produtos',atendimentos:'Solicitações de Atendimento',compras:'Compras via WhatsApp',config:'Configurações do Site',regioes:'Regiões Atendidas'};
+// ══════════════════════════════════════════════
+//  NAV
+// ══════════════════════════════════════════════
+const SEC_TITLES = {dashboard:'Dashboard',produtos:'Produtos',atendimentos:'Solicitações',compras:'Compras',config:'Configurações do Site',regioes:'Regiões Atendidas',usuarios:'Usuários'};
+const SEC_FNS    = {dashboard:renderDash,produtos:renderProds,atendimentos:renderAtend,compras:renderCompras,config:renderCfg,regioes:renderRegs,usuarios:renderUsers};
 
-function goSection(id, btn) {
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+function goSec(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('sec-'+id).classList.add('active');
-  if(btn) btn.classList.add('active');
-  document.getElementById('topbarTitle').textContent = titles[id]||id;
-  closeSidebar();
-  const fn = {dashboard:renderDashboard,produtos:renderProdTable,atendimentos:renderAtendTable,compras:renderComprasTable,config:renderConfig,regioes:renderRegTable};
-  if(fn[id]) fn[id]();
+  if (btn) btn.classList.add('active');
+  document.getElementById('topTitle').textContent = SEC_TITLES[id] || id;
+  closeSB();
+  SEC_FNS[id]?.();
 }
+function toggleSB() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('sOverlay').classList.toggle('open'); }
+function closeSB()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sOverlay').classList.remove('open'); }
 
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('open');
-}
-
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  DASHBOARD
-// ═══════════════════════════════════════════
-function renderDashboard() {
-  const prods = ls(K.prods);
-  const atend = ls(K.atend);
-  const compras = ls(K.compras);
-  const totalEst = prods.reduce((a,p)=>a+(p.estoque||0),0);
-  const totalVal = compras.filter(c=>c.status==='concluido').reduce((a,c)=>a+(c.valor||0),0);
-  const novosA = atend.filter(a=>a.status==='novo').length;
-  const novosC = compras.filter(c=>c.status==='novo').length;
+// ══════════════════════════════════════════════
+function renderDash() {
+  const prods = ls(K.prods), atend = ls(K.atend), compras = ls(K.compras);
+  const est   = prods.reduce((a,p) => a+(p.estoque||0), 0);
+  const rec   = compras.filter(c => c.status==='concluido').reduce((a,c) => a+(c.valor||0), 0);
+  const nA    = atend.filter(a => a.status==='novo').length;
+  const nC    = compras.filter(c => c.status==='novo').length;
 
   document.getElementById('dashCards').innerHTML = `
-    <div class="scard accent"><div class="scard-label">Produtos Cadastrados</div><div class="scard-val">${prods.length}</div><div class="scard-sub">${totalEst} unidades em estoque</div></div>
-    <div class="scard blue"><div class="scard-label">Solicitações Novas</div><div class="scard-val">${novosA}</div><div class="scard-sub">${atend.length} total recebidas</div></div>
-    <div class="scard green"><div class="scard-label">Compras Pendentes</div><div class="scard-val">${novosC}</div><div class="scard-sub">${compras.length} total registradas</div></div>
-    <div class="scard accent"><div class="scard-label">Receita Fechada</div><div class="scard-val">R$${totalVal.toFixed(0)}</div><div class="scard-sub">Vendas concluídas</div></div>
-  `;
+    <div class="scard red"><div class="sc-lbl">Produtos</div><div class="sc-val">${prods.length}</div><div class="sc-sub">${est} unidades em estoque</div></div>
+    <div class="scard blu"><div class="sc-lbl">Solicitações novas</div><div class="sc-val">${nA}</div><div class="sc-sub">${atend.length} total recebidas</div></div>
+    <div class="scard grn"><div class="sc-lbl">Compras pendentes</div><div class="sc-val">${nC}</div><div class="sc-sub">${compras.length} total registradas</div></div>
+    <div class="scard red"><div class="sc-lbl">Receita fechada</div><div class="sc-val">R$${rec.toFixed(0)}</div><div class="sc-sub">Vendas concluídas</div></div>`;
 
-  const badgeMap = {novo:'badge-new',andamento:'badge-pend',concluido:'badge-done'};
-  const labelMap = {novo:'Novo',andamento:'Em andamento',concluido:'Concluído',contato:'Contato feito'};
-
-  document.getElementById('dashAtend').innerHTML = atend.slice(0,5).map(a=>`
-    <tr><td class="td-name">${a.nome}</td><td>${a.equip}</td><td><span class="badge ${badgeMap[a.status]||'badge-new'}">${labelMap[a.status]||a.status}</span></td></tr>
-  `).join('') || `<tr class="empty-row"><td colspan="3">Nenhuma solicitação</td></tr>`;
-
-  const badgeC = {novo:'badge-new',contato:'badge-pend',concluido:'badge-done'};
-  document.getElementById('dashCompras').innerHTML = compras.slice(0,5).map(c=>`
-    <tr><td class="td-name">${c.produto}</td><td>${c.cliente}</td><td><span class="badge ${badgeC[c.status]||'badge-new'}">${labelMap[c.status]||c.status}</span></td></tr>
-  `).join('') || `<tr class="empty-row"><td colspan="3">Nenhuma compra</td></tr>`;
-
-  updateBadges();
+  const bm = {novo:'b-new',andamento:'b-pend',concluido:'b-done',contato:'b-pend'};
+  const lm = {novo:'Novo',andamento:'Em andamento',concluido:'Concluído',contato:'Contato feito'};
+  document.getElementById('dashAtend').innerHTML   = atend.slice(0,5).map(a => `<tr><td class="tn">${a.nome}</td><td>${a.equip}</td><td><span class="badge ${bm[a.status]||'b-new'}">${lm[a.status]||a.status}</span></td></tr>`).join('') || `<tr class="empty"><td colspan="3">Nenhuma solicitação</td></tr>`;
+  document.getElementById('dashCompras').innerHTML = compras.slice(0,5).map(c => `<tr><td class="tn">${c.produto}</td><td>${c.cliente}</td><td><span class="badge ${bm[c.status]||'b-new'}">${lm[c.status]||c.status}</span></td></tr>`).join('') || `<tr class="empty"><td colspan="3">Nenhuma compra</td></tr>`;
+  updBadges();
 }
 
-function updateBadges() {
-  const atend = ls(K.atend);
-  const compras = ls(K.compras);
-  const prods = ls(K.prods);
-  const novosA = atend.filter(a=>a.status==='novo').length;
-  const novosC = compras.filter(c=>c.status==='novo').length;
-  const bA = document.getElementById('badgeAtend');
-  const bC = document.getElementById('badgeCompra');
-  document.getElementById('badgeProd').textContent = prods.length;
-  if(novosA>0){bA.textContent=novosA;bA.style.display=''}else bA.style.display='none';
-  if(novosC>0){bC.textContent=novosC;bC.style.display=''}else bC.style.display='none';
+function updBadges() {
+  const nA = ls(K.atend).filter(a=>a.status==='novo').length;
+  const nC = ls(K.compras).filter(c=>c.status==='novo').length;
+  const bA = document.getElementById('bAtend'), bC = document.getElementById('bCompra');
+  document.getElementById('bProd').textContent = ls(K.prods).length;
+  nA>0 ? (bA.textContent=nA, bA.style.display='') : bA.style.display='none';
+  nC>0 ? (bC.textContent=nC, bC.style.display='') : bC.style.display='none';
 }
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  PRODUTOS
-// ═══════════════════════════════════════════
-let editProdId = null;
-let curImg = null;
-let revCount = 0;
-const catLabels = {lavar:'Máq. de Lavar',tanquinho:'Tanquinho',fogao:'Fogão',coifa:'Coifa',outro:'Outro'};
+// ══════════════════════════════════════════════
+const catLbl = {lavar:'Máq. de Lavar',tanquinho:'Tanquinho',fogao:'Fogão',coifa:'Coifa',outro:'Outro'};
+let editId = null, curImg = null, revCnt = 0;
 
-function renderProdTable(q='') {
-  let prods = ls(K.prods);
-  const catFilter = document.querySelector('#sec-produtos .filter-select')?.value || '';
-  if(catFilter) prods = prods.filter(p=>p.cat===catFilter);
-  if(q) prods = prods.filter(p=>(p.nome+p.marca+p.modelo).toLowerCase().includes(q.toLowerCase()));
-  const tbody = document.getElementById('prodTableBody');
-  updateBadges();
-  if(!prods.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="7">Nenhum produto encontrado. <a href="#" onclick="openProdModal()" style="color:var(--orange)">Cadastrar agora</a></td></tr>`;return;}
-  const sl = e=>(e<=0)?'badge-out':(e<=3)?'badge-low':'badge-ok';
-  const avg = p=>{if(!p.reviews||!p.reviews.length)return'—';const a=p.reviews.reduce((s,r)=>s+r.stars,0)/p.reviews.length;return`★ ${a.toFixed(1)}`;}
-  tbody.innerHTML = prods.map(p=>`
+function renderProds() {
+  let list = ls(K.prods);
+  const q  = document.getElementById('prodSearch')?.value.toLowerCase() || '';
+  const cf = document.getElementById('prodCatFilter')?.value || '';
+  if (cf) list = list.filter(p => p.cat === cf);
+  if (q)  list = list.filter(p => (p.nome+p.marca+p.modelo+p.compat).toLowerCase().includes(q));
+
+  updBadges();
+  const tb = document.getElementById('prodTbody');
+
+  if (!list.length) {
+    tb.innerHTML = `<tr class="empty"><td colspan="7">Nenhum produto encontrado. <a href="#" onclick="openProd()" style="color:var(--red)">Cadastrar agora</a></td></tr>`;
+    return;
+  }
+
+  const sl  = e => e <= 0 ? 'b-out' : e <= 3 ? 'b-low' : 'b-ok';
+  const avg = p => { if (!p.reviews?.length) return '—'; return '★ '+(p.reviews.reduce((s,r)=>s+r.stars,0)/p.reviews.length).toFixed(1); };
+
+  tb.innerHTML = list.map(p => `
     <tr>
-      <td>${p.foto?`<div class="td-img"><img src="${p.foto}"></div>`:'<div class="td-img">🔩</div>'}</td>
-      <td><div class="td-name">${p.nome}</div><div style="font-size:0.76rem;color:var(--muted)">${p.marca||''} ${p.modelo?'· '+p.modelo:''}</div></td>
-      <td>${catLabels[p.cat]||p.cat}</td>
-      <td class="td-price">R$ ${parseFloat(p.preco||0).toFixed(2).replace('.',',')}</td>
+      <td>${p.foto ? `<div class="ti"><img src="${p.foto}" alt="${p.nome}"></div>` : '<div class="ti">🔩</div>'}</td>
+      <td>
+        <div class="tn">${p.nome}</div>
+        <div style="font-size:0.74rem;color:var(--muted)">${p.marca||''}${p.modelo?' · '+p.modelo:''}</div>
+      </td>
+      <td>${catLbl[p.cat]||p.cat||'—'}</td>
+      <td class="tp">R$ ${parseFloat(p.preco||0).toFixed(2).replace('.',',')}</td>
       <td><span class="badge ${sl(p.estoque||0)}">${p.estoque||0} un.</span></td>
-      <td style="color:#F59E0B;font-size:0.85rem;">${avg(p)}</td>
-      <td><div class="td-actions">
-        <button class="btn-sm btn-edit" onclick="openProdModal(${p.id})">✏️ Editar</button>
-        <button class="btn-sm btn-del" onclick="delProd(${p.id})">🗑️</button>
+      <td style="color:#F59E0B;font-size:0.84rem">${avg(p)}</td>
+      <td><div class="acts">
+        <button class="bs be" onclick="openProd(${p.id})">✏️ Editar</button>
+        <button class="bs bd" onclick="delProd(${p.id})">🗑️ Remover</button>
       </div></td>
     </tr>`).join('');
 }
 
-function openProdModal(id=null) {
-  editProdId = id; curImg = null; revCount = 0;
-  document.getElementById('revContainer').innerHTML='';
-  document.getElementById('fp-prev').style.display='none';
-  if(id) {
-    const p = ls(K.prods).find(x=>x.id===id);
-    if(!p)return;
-    document.getElementById('prodModalTitle').textContent='Editar Produto';
-    ['nome','cat','marca','modelo','frete','info'].forEach(f=>document.getElementById('fp-'+f).value=p[f]||'');
-    document.getElementById('fp-preco').value=p.preco||'';
-    document.getElementById('fp-estoque').value=p.estoque||0;
-    curImg=p.foto||null;
-    if(curImg){const pr=document.getElementById('fp-prev');pr.src=curImg;pr.style.display='block';}
-    (p.reviews||[]).forEach(r=>addRevField(r));
+function openProd(id = null) {
+  editId = id; curImg = null; revCnt = 0;
+  document.getElementById('revContainer').innerHTML = '';
+  document.getElementById('fp-prev').style.display  = 'none';
+  document.getElementById('imgActions').style.display = 'none';
+  clearProdErrors();
+
+  if (id) {
+    const p = ls(K.prods).find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('mProdTitle').textContent = 'Editar Produto';
+    document.getElementById('fp-id').value      = p.id;
+    document.getElementById('fp-nome').value    = p.nome    || '';
+    document.getElementById('fp-cat').value     = p.cat     || '';
+    document.getElementById('fp-marca').value   = p.marca   || '';
+    document.getElementById('fp-modelo').value  = p.modelo  || '';
+    document.getElementById('fp-compat').value  = p.compat  || '';
+    document.getElementById('fp-preco').value   = p.preco   || '';
+    document.getElementById('fp-estoque').value = p.estoque ?? 0;
+    document.getElementById('fp-frete').value   = p.frete   || 'Grátis';
+    document.getElementById('fp-info').value    = p.info    || '';
+    if (p.foto) {
+      curImg = p.foto;
+      const pr = document.getElementById('fp-prev');
+      pr.src = p.foto; pr.style.display = 'block';
+      document.getElementById('imgActions').style.display = 'flex';
+    }
+    (p.reviews || []).forEach(r => addRev(r));
   } else {
-    document.getElementById('prodModalTitle').textContent='Novo Produto';
-    ['nome','marca','modelo','info'].forEach(f=>document.getElementById('fp-'+f).value='');
-    document.getElementById('fp-cat').value='';
-    document.getElementById('fp-preco').value='';
-    document.getElementById('fp-estoque').value='';
-    document.getElementById('fp-frete').value='Grátis';
+    document.getElementById('mProdTitle').textContent = 'Novo Produto';
+    document.getElementById('fp-id').value = '';
+    ['fp-nome','fp-marca','fp-modelo','fp-compat','fp-info'].forEach(i => document.getElementById(i).value = '');
+    document.getElementById('fp-cat').value     = '';
+    document.getElementById('fp-preco').value   = '';
+    document.getElementById('fp-estoque').value = '';
+    document.getElementById('fp-frete').value   = 'Grátis';
   }
-  document.getElementById('prodModal').classList.add('open');
+  document.getElementById('mProd').classList.add('open');
 }
 
-function closeProdModal(){document.getElementById('prodModal').classList.remove('open');}
+function closeProd() { document.getElementById('mProd').classList.remove('open'); }
+
+function removeImg() {
+  curImg = null;
+  const pr = document.getElementById('fp-prev');
+  pr.src = ''; pr.style.display = 'none';
+  document.getElementById('imgActions').style.display = 'none';
+  document.getElementById('fp-file').value = '';
+}
 
 function handleImg(input) {
-  const f=input.files[0];if(!f)return;
-  if(f.size>5*1024*1024){alert('Imagem muito grande. Máx 5MB.');return;}
-  const r=new FileReader();
-  r.onload=e=>{curImg=e.target.result;const pr=document.getElementById('fp-prev');pr.src=curImg;pr.style.display='block';};
+  const f = input.files[0]; if (!f) return;
+  if (f.size > 5*1024*1024) { toast('⚠️ Imagem muito grande. Máx 5MB.','err'); return; }
+  const r = new FileReader();
+  r.onload = e => {
+    curImg = e.target.result;
+    const pr = document.getElementById('fp-prev');
+    pr.src = curImg; pr.style.display = 'block';
+    document.getElementById('imgActions').style.display = 'flex';
+  };
   r.readAsDataURL(f);
 }
 
-function addRevField(data={}) {
-  revCount++;
-  const i=revCount;
-  const s=data.stars||5;
-  const div=document.createElement('div');div.className='rev-item';div.id=`rv-${i}`;
-  div.innerHTML=`<button type="button" class="rev-rm" onclick="document.getElementById('rv-${i}').remove()">✕</button>
-    <div class="fg" style="margin-bottom:0.6rem"><label class="fl">Nota</label>
-      <div class="stars-row" id="sr-${i}">${[1,2,3,4,5].map(n=>`<button type="button" class="star-btn ${n<=s?'on':''}" onclick="setStar(${i},${n})">${n<=s?'★':'☆'}</button>`).join('')}</div>
+function addRev(data = {}) {
+  revCnt++;
+  const i = revCnt, s = data.stars || 5;
+  const div = document.createElement('div');
+  div.className = 'rev-item'; div.id = `rv-${i}`;
+  div.innerHTML = `
+    <button type="button" class="rev-rm" onclick="document.getElementById('rv-${i}').remove()">✕</button>
+    <div class="fg" style="margin-bottom:0.6rem">
+      <label class="fl">Nota</label>
+      <div class="stars-row" id="sr-${i}">
+        ${[1,2,3,4,5].map(n=>`<button type="button" class="star-btn ${n<=s?'on':''}" onclick="setStar(${i},${n})">${n<=s?'★':'☆'}</button>`).join('')}
+      </div>
       <input type="hidden" id="sv-${i}" value="${s}">
     </div>
     <div class="frow" style="margin:0">
-      <div class="fg" style="margin:0"><label class="fl">Nome</label><input id="ra-${i}" class="fi" placeholder="Ex: João S." value="${data.autor||''}"></div>
+      <div class="fg" style="margin:0"><label class="fl">Nome do cliente</label><input id="ra-${i}" class="fi" placeholder="Ex: João S." value="${data.autor||''}"></div>
       <div class="fg" style="margin:0"><label class="fl">Comentário</label><input id="rt-${i}" class="fi" placeholder="Ótima peça!" value="${data.texto||''}"></div>
     </div>`;
   document.getElementById('revContainer').appendChild(div);
 }
 
-function setStar(i,v){
-  document.getElementById('sv-'+i).value=v;
-  document.querySelectorAll(`#sr-${i} .star-btn`).forEach(b=>{const n=parseInt(b.textContent==='★'?'filled':b.dataset?.val||0);});
-  document.querySelectorAll(`#sr-${i} .star-btn`).forEach((b,idx)=>{b.textContent=idx+1<=v?'★':'☆';b.classList.toggle('on',idx+1<=v);});
+function setStar(i, v) {
+  document.getElementById('sv-'+i).value = v;
+  document.querySelectorAll(`#sr-${i} .star-btn`).forEach((b, idx) => {
+    b.textContent = idx+1 <= v ? '★' : '☆';
+    b.classList.toggle('on', idx+1 <= v);
+  });
+}
+
+function clearProdErrors() {
+  ['fp-nome','fp-cat','fp-marca','fp-preco','fp-estoque'].forEach(f => {
+    document.getElementById(f)?.classList.remove('fi-err');
+    document.getElementById('err-'+f)?.classList.remove('show');
+  });
 }
 
 function saveProd() {
-  const nome=document.getElementById('fp-nome').value.trim();
-  const cat=document.getElementById('fp-cat').value;
-  const marca=document.getElementById('fp-marca').value.trim();
-  const preco=parseFloat(document.getElementById('fp-preco').value);
-  const estoque=parseInt(document.getElementById('fp-estoque').value);
-  if(!nome||!cat||!marca||isNaN(preco)||isNaN(estoque)){alert('Preencha: Nome, Categoria, Marca, Preço e Estoque.');return;}
-  const reviews=[];
-  document.querySelectorAll('[id^="ra-"]').forEach(el=>{
-    const idx=el.id.replace('ra-','');
-    const autor=el.value.trim();
-    const texto=(document.getElementById('rt-'+idx)||{}).value||'';
-    const stars=parseInt((document.getElementById('sv-'+idx)||{}).value)||5;
-    if(autor)reviews.push({autor,texto,stars});
+  const g  = id => document.getElementById(id);
+  const nome    = g('fp-nome').value.trim();
+  const cat     = g('fp-cat').value;
+  const marca   = g('fp-marca').value.trim();
+  const preco   = parseFloat(g('fp-preco').value);
+  const estoque = parseInt(g('fp-estoque').value);
+
+  clearProdErrors();
+  let ok = true;
+  const err = (id, msg) => { g(id).classList.add('fi-err'); const e = g('err-'+id); if(e){e.textContent=msg;e.classList.add('show');} ok = false; };
+
+  if (!nome)          err('fp-nome',    'Informe o nome do produto.');
+  if (!cat)           err('fp-cat',     'Selecione a categoria.');
+  if (!marca)         err('fp-marca',   'Informe a marca.');
+  if (isNaN(preco) || preco < 0) err('fp-preco', 'Informe um preço válido.');
+  if (isNaN(estoque) || estoque < 0) err('fp-estoque','Informe a quantidade em estoque.');
+  if (!ok) return;
+
+  const reviews = [];
+  document.querySelectorAll('[id^="ra-"]').forEach(el => {
+    const idx   = el.id.replace('ra-','');
+    const autor = el.value.trim();
+    const texto = g('rt-'+idx)?.value || '';
+    const stars = parseInt(g('sv-'+idx)?.value) || 5;
+    if (autor) reviews.push({ autor, texto, stars });
   });
-  const data={
-    id:editProdId||Date.now(),
-    nome,cat,
-    marca:document.getElementById('fp-marca').value.trim(),
-    modelo:document.getElementById('fp-modelo').value.trim(),
-    preco,estoque,
-    frete:document.getElementById('fp-frete').value,
-    info:document.getElementById('fp-info').value.trim(),
+
+  const prod = {
+    id: parseInt(g('fp-id').value) || Date.now(),
+    nome, cat,
+    marca,
+    modelo: g('fp-modelo').value.trim(),
+    compat: g('fp-compat').value.trim(),
+    preco, estoque,
+    frete:  g('fp-frete').value,
+    info:   g('fp-info').value.trim(),
     reviews,
-    foto:curImg||null
+    foto:   curImg || null,
   };
-  const prods=ls(K.prods);
-  if(editProdId){const i=prods.findIndex(p=>p.id===editProdId);if(i>-1){data.foto=data.foto||prods[i].foto||null;prods[i]=data;}
-  }else prods.push(data);
-  ss(K.prods,prods);
-  closeProdModal();
-  renderProdTable();
-  showToast('✅ Produto salvo com sucesso!');
+
+  const list = ls(K.prods);
+  if (editId) {
+    const idx = list.findIndex(p => p.id === editId);
+    if (idx > -1) {
+      prod.foto = prod.foto || list[idx].foto || null;
+      list[idx] = prod;
+    }
+  } else {
+    list.push(prod);
+  }
+  ss(K.prods, list);
+  closeProd();
+  renderProds();
+  toast('✅ Produto salvo com sucesso!', 'ok');
 }
 
-function delProd(id){
-  if(!confirm('Remover este produto?'))return;
-  ss(K.prods,ls(K.prods).filter(p=>p.id!==id));
-  renderProdTable();
-  showToast('🗑️ Produto removido.');
+function delProd(id) {
+  if (!confirm('Remover este produto definitivamente?')) return;
+  ss(K.prods, ls(K.prods).filter(p => p.id !== id));
+  renderProds();
+  toast('🗑️ Produto removido.', 'ok');
 }
 
-// ═══════════════════════════════════════════
+// ══════════════════════════════════════════════
 //  ATENDIMENTOS
-// ═══════════════════════════════════════════
-const statusAtendLabel={novo:'Novo',andamento:'Em andamento',concluido:'Concluído'};
-const statusAtendBadge={novo:'badge-new',andamento:'badge-pend',concluido:'badge-done'};
+// ══════════════════════════════════════════════
+const aLbl = {novo:'Novo',andamento:'Em andamento',concluido:'Concluído'};
+const aBdg = {novo:'b-new',andamento:'b-pend',concluido:'b-done'};
 
-function renderAtendTable() {
-  let atend=ls(K.atend);
-  const f=document.getElementById('atendFilter')?.value||'';
-  const q=document.querySelector('#sec-atendimentos .table-search')?.value.toLowerCase()||'';
-  if(f) atend=atend.filter(a=>a.status===f);
-  if(q) atend=atend.filter(a=>(a.nome+a.equip+a.local).toLowerCase().includes(q));
-  atend=atend.sort((a,b)=>b.id-a.id);
-  const tbody=document.getElementById('atendTableBody');
-  if(!atend.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="7">Nenhuma solicitação encontrada.</td></tr>`;return;}
-  tbody.innerHTML=atend.map(a=>`
+function renderAtend(q = '') {
+  let list = ls(K.atend);
+  const f  = document.getElementById('atendFilter')?.value || '';
+  if (f) list = list.filter(a => a.status === f);
+  if (q) list = list.filter(a => (a.nome+a.equip).toLowerCase().includes(q.toLowerCase()));
+  list.sort((a,b) => b.id - a.id);
+
+  const tb = document.getElementById('atendTbody');
+  if (!list.length) { tb.innerHTML = `<tr class="empty"><td colspan="6">Nenhuma solicitação encontrada.</td></tr>`; updBadges(); return; }
+
+  tb.innerHTML = list.map(a => `
     <tr>
-      <td>${fmtDate(a.data)}</td>
-      <td class="td-name">${a.nome}</td>
+      <td>${fmtD(a.data)}</td>
+      <td class="tn">${a.nome}<div style="font-size:0.73rem;color:var(--muted)">${a.tel}</div></td>
       <td>${a.tel}</td>
-      <td>${a.equip}</td>
-      <td>${a.local}</td>
-      <td><span class="badge ${statusAtendBadge[a.status]||'badge-new'}">${statusAtendLabel[a.status]||a.status}</span></td>
-      <td><div class="td-actions">
-        <button class="btn-sm btn-view" onclick="viewAtend(${a.id})">👁 Ver</button>
-        <button class="btn-sm btn-status" onclick="cycleAtend(${a.id})">↻ Status</button>
-        <button class="btn-sm btn-del" onclick="delAtend(${a.id})">🗑️</button>
+      <td>${a.equip||'—'}</td>
+      <td><span class="badge ${aBdg[a.status]||'b-new'}">${aLbl[a.status]||a.status}</span></td>
+      <td><div class="acts">
+        <button class="bs bv" onclick="viewAtend(${a.id})">👁 Ver</button>
+        <button class="bs bst" onclick="cycleAtend(${a.id})">↻ Status</button>
+        <button class="bs bd" onclick="delAtend(${a.id})">🗑️</button>
       </div></td>
     </tr>`).join('');
-  updateBadges();
+  updBadges();
 }
 
-function viewAtend(id){
-  const a=ls(K.atend).find(x=>x.id===id);if(!a)return;
-  document.getElementById('detailTitle').textContent='Solicitação #'+a.id;
-  document.getElementById('detailBody').innerHTML=`
-    <div class="detail-grid">
-      <div class="detail-item"><label>Cliente</label><span>${a.nome}</span></div>
-      <div class="detail-item"><label>Telefone</label><span>${a.tel}</span></div>
-      <div class="detail-item"><label>Localidade</label><span>${a.local}</span></div>
-      <div class="detail-item"><label>Data</label><span>${fmtDate(a.data)}</span></div>
-      <div class="detail-item"><label>Equipamento</label><span>${a.equip}</span></div>
-      <div class="detail-item"><label>Marca/Modelo</label><span>${a.marca||'—'}</span></div>
-      <div class="detail-item" style="grid-column:1/-1"><label>Problema Descrito</label><span style="white-space:pre-wrap">${a.problema}</span></div>
-      <div class="detail-item"><label>Status Atual</label><span><span class="badge ${statusAtendBadge[a.status]||''}">${statusAtendLabel[a.status]||a.status}</span></span></div>
+function viewAtend(id) {
+  const a = ls(K.atend).find(x => x.id === id); if (!a) return;
+  document.getElementById('mDetailTitle').textContent = 'Solicitação #'+a.id;
+  document.getElementById('mDetailBody').innerHTML = `
+    <div class="det-grid">
+      <div class="det-item"><label>Cliente</label><span>${a.nome}</span></div>
+      <div class="det-item"><label>Telefone</label><span>${a.tel}</span></div>
+      <div class="det-item"><label>Data</label><span>${fmtD(a.data)}</span></div>
+      <div class="det-item"><label>Status</label><span><span class="badge ${aBdg[a.status]||''}">${aLbl[a.status]||a.status}</span></span></div>
+      <div class="det-item"><label>Equipamento</label><span>${a.equip||'—'}</span></div>
+      <div class="det-item"><label>Marca/Modelo</label><span>${a.marca||'—'}</span></div>
+      ${a.local ? `<div class="det-item" style="grid-column:1/-1"><label>Localidade</label><span>${a.local}</span></div>` : ''}
+      <div class="det-item" style="grid-column:1/-1"><label>Problema Descrito</label><span style="white-space:pre-wrap;line-height:1.6">${a.problema||'—'}</span></div>
     </div>
-    <a href="https://wa.me/${a.tel.replace(/\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;background:#25D366;color:white;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.88rem;margin-top:0.5rem;">
-      📱 Contatar pelo WhatsApp
-    </a>`;
-  document.getElementById('detailActionBtn').style.display='none';
-  document.getElementById('detailModal').classList.add('open');
-}
-
-function cycleAtend(id){
-  const atend=ls(K.atend);const i=atend.findIndex(a=>a.id===id);if(i<0)return;
-  const cycle=['novo','andamento','concluido'];
-  const cur=cycle.indexOf(atend[i].status);
-  atend[i].status=cycle[(cur+1)%cycle.length];
-  ss(K.atend,atend);renderAtendTable();showToast('↻ Status atualizado!');
-}
-
-function delAtend(id){
-  if(!confirm('Remover esta solicitação?'))return;
-  ss(K.atend,ls(K.atend).filter(a=>a.id!==id));renderAtendTable();showToast('🗑️ Solicitação removida.');
-}
-
-function addAtendDemo(){
-  const nome=prompt('Nome do cliente:');if(!nome)return;
-  const tel=prompt('Telefone:','(11) 9');if(!tel)return;
-  const local=prompt('Bairro/Cidade:','');
-  const equip=prompt('Equipamento:','Máquina de Lavar');
-  const problema=prompt('Descreva o problema:','');
-  const atend=ls(K.atend);
-  atend.unshift({id:Date.now(),data:new Date().toISOString().slice(0,10),nome,tel,local:local||'',equip:equip||'',marca:'',problema:problema||'',status:'novo'});
-  ss(K.atend,atend);renderAtendTable();showToast('✅ Atendimento adicionado!');
-}
-
-// ═══════════════════════════════════════════
-//  COMPRAS
-// ═══════════════════════════════════════════
-const statusCompraLabel={novo:'Novo',contato:'Contato feito',concluido:'Concluído'};
-const statusCompraBadge={novo:'badge-new',contato:'badge-pend',concluido:'badge-done'};
-
-function renderComprasTable(){
-  let compras=ls(K.compras);
-  const f=document.getElementById('compraFilter')?.value||'';
-  const q=document.querySelector('#sec-compras .table-search')?.value.toLowerCase()||'';
-  if(f) compras=compras.filter(c=>c.status===f);
-  if(q) compras=compras.filter(c=>(c.produto+c.cliente).toLowerCase().includes(q));
-  compras=compras.sort((a,b)=>b.id-a.id);
-  const tbody=document.getElementById('comprasTableBody');
-  if(!compras.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="6">Nenhuma compra registrada.</td></tr>`;return;}
-  tbody.innerHTML=compras.map(c=>`
-    <tr>
-      <td>${fmtDate(c.data)}</td>
-      <td class="td-name">${c.produto}</td>
-      <td>${c.cliente}</td>
-      <td class="td-price">R$ ${parseFloat(c.valor||0).toFixed(2).replace('.',',')}</td>
-      <td><span class="badge ${statusCompraBadge[c.status]||'badge-new'}">${statusCompraLabel[c.status]||c.status}</span></td>
-      <td><div class="td-actions">
-        <button class="btn-sm btn-view" onclick="viewCompra(${c.id})">👁 Ver</button>
-        <button class="btn-sm btn-status" onclick="cycleCompra(${c.id})">↻ Status</button>
-        <button class="btn-sm btn-del" onclick="delCompra(${c.id})">🗑️</button>
-      </div></td>
-    </tr>`).join('');
-  updateBadges();
-}
-
-function viewCompra(id){
-  const c=ls(K.compras).find(x=>x.id===id);if(!c)return;
-  document.getElementById('detailTitle').textContent='Compra #'+c.id;
-  document.getElementById('detailBody').innerHTML=`
-    <div class="detail-grid">
-      <div class="detail-item"><label>Produto</label><span>${c.produto}</span></div>
-      <div class="detail-item"><label>Valor</label><span class="td-price">R$ ${parseFloat(c.valor||0).toFixed(2).replace('.',',')}</span></div>
-      <div class="detail-item"><label>Cliente</label><span>${c.cliente}</span></div>
-      <div class="detail-item"><label>Telefone</label><span>${c.tel||'—'}</span></div>
-      <div class="detail-item"><label>Data</label><span>${fmtDate(c.data)}</span></div>
-      <div class="detail-item"><label>Status</label><span><span class="badge ${statusCompraBadge[c.status]||''}">${statusCompraLabel[c.status]||c.status}</span></span></div>
-    </div>
-    ${c.tel?`<a href="https://wa.me/${c.tel.replace(/\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;background:#25D366;color:white;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.88rem;margin-top:0.5rem;">📱 Contatar pelo WhatsApp</a>`:''}`;
-  document.getElementById('detailActionBtn').style.display='none';
-  document.getElementById('detailModal').classList.add('open');
-}
-
-function cycleCompra(id){
-  const compras=ls(K.compras);const i=compras.findIndex(c=>c.id===id);if(i<0)return;
-  const cycle=['novo','contato','concluido'];
-  const cur=cycle.indexOf(compras[i].status);
-  compras[i].status=cycle[(cur+1)%cycle.length];
-  ss(K.compras,compras);renderComprasTable();showToast('↻ Status atualizado!');
-}
-
-function delCompra(id){
-  if(!confirm('Remover este registro?'))return;
-  ss(K.compras,ls(K.compras).filter(c=>c.id!==id));renderComprasTable();showToast('🗑️ Registro removido.');
-}
-
-function addCompraDemo(){
-  const produto=prompt('Nome do produto:');if(!produto)return;
-  const cliente=prompt('Nome do cliente:');if(!cliente)return;
-  const tel=prompt('Telefone do cliente:','(11) 9');
-  const valor=parseFloat(prompt('Valor (R$):','0'));
-  const compras=ls(K.compras);
-  compras.unshift({id:Date.now(),data:new Date().toISOString().slice(0,10),produto,cliente,tel:tel||'',valor:isNaN(valor)?0:valor,status:'novo'});
-  ss(K.compras,compras);renderComprasTable();showToast('✅ Compra registrada!');
-}
-
-function closeDetailModal(){document.getElementById('detailModal').classList.remove('open');}
-
-// ═══════════════════════════════════════════
-//  CONFIGURAÇÕES
-// ═══════════════════════════════════════════
-function renderConfig(){
-  const cfg=lsObj(K.config);
-  document.getElementById('configGrid').innerHTML=`
-    <div class="config-card">
-      <h3>📞 Contato e Redes</h3>
-      <div class="fg"><label class="fl">WhatsApp (com DDI)</label><input id="cfg-whatsapp" class="fi" value="${cfg.whatsapp||''}" placeholder="551126900632"></div>
-      <div class="fg"><label class="fl">E-mail</label><input id="cfg-email" class="fi" value="${cfg.email||''}" placeholder="contato@ramostec.com.br"></div>
-      <div class="fg"><label class="fl">Instagram</label><input id="cfg-instagram" class="fi" value="${cfg.instagram||''}" placeholder="@ramostec"></div>
-      <div class="fg"><label class="fl">Horário de atendimento</label><input id="cfg-horario" class="fi" value="${cfg.horario||''}" placeholder="Seg–Sáb: 8h–18h"></div>
-      <button class="config-save" onclick="saveConfig()">💾 Salvar Contato</button>
-    </div>
-    <div class="config-card">
-      <h3>🏠 Textos do Site</h3>
-      <div class="fg"><label class="fl">Nome da Empresa</label><input id="cfg-nome" class="fi" value="${cfg.nome||'Ramostec'}"></div>
-      <div class="fg"><label class="fl">Slogan (Hero)</label><input id="cfg-slogan" class="fi" value="${cfg.slogan||''}"></div>
-      <div class="fg"><label class="fl">Descrição curta</label><textarea id="cfg-descricao" class="fi">${cfg.descricao||''}</textarea></div>
-      <button class="config-save" onclick="saveConfig()">💾 Salvar Textos</button>
-    </div>
-    <div class="config-card">
-      <h3>📊 Números do Hero (Estatísticas)</h3>
-      <div class="frow">
-        <div class="fg"><label class="fl">Clientes atendidos</label><input id="cfg-stats_clientes" class="fi" value="${cfg.stats_clientes||'500+'}"></div>
-        <div class="fg"><label class="fl">Anos de experiência</label><input id="cfg-stats_anos" class="fi" value="${cfg.stats_anos||'4+'}"></div>
-      </div>
-      <div class="frow">
-        <div class="fg"><label class="fl">Peças em estoque</label><input id="cfg-stats_pecas" class="fi" value="${cfg.stats_pecas||'100+'}"></div>
-        <div class="fg"><label class="fl">Avaliação média</label><input id="cfg-stats_nota" class="fi" value="${cfg.stats_nota||'4.9'}"></div>
-      </div>
-      <button class="config-save" onclick="saveConfig()">💾 Salvar Estatísticas</button>
-    </div>
-    <div class="config-card">
-      <h3>🔐 Segurança</h3>
-      <div class="fg"><label class="fl">Nova senha de acesso</label><input id="cfg-senha" class="fi" type="password" placeholder="Digite nova senha"></div>
-      <div class="fg"><label class="fl">Confirmar nova senha</label><input id="cfg-senha2" class="fi" type="password" placeholder="Repita a nova senha"></div>
-      <p style="font-size:0.78rem;color:var(--muted);margin-top:0.5rem;">A senha atual é salva apenas neste navegador. Para ambientes de produção, utilize um backend.</p>
-      <button class="config-save" onclick="saveSenha()">🔒 Alterar Senha</button>
+    <div style="display:flex;gap:0.6rem;flex-wrap:wrap;margin-top:0.5rem">
+      <a href="https://wa.me/${(a.tel||'').replace(/\D/g,'')}" target="_blank"
+         style="display:inline-flex;align-items:center;gap:0.4rem;background:#25D366;color:#fff;padding:0.55rem 1.1rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.85rem;">
+        📱 WhatsApp
+      </a>
+      <button class="bs bst" onclick="cycleAtend(${a.id});closeDetail()">↻ Avançar Status</button>
     </div>`;
+  document.getElementById('mDetail').classList.add('open');
 }
 
-function saveConfig(){
-  const cfg=lsObj(K.config);
-  const fields=['whatsapp','email','instagram','horario','nome','slogan','descricao','stats_clientes','stats_anos','stats_pecas','stats_nota'];
-  fields.forEach(f=>{const el=document.getElementById('cfg-'+f);if(el)cfg[f]=el.value;});
-  ss(K.config,cfg);showToast('✅ Configurações salvas!');
+function cycleAtend(id) {
+  const list = ls(K.atend), i = list.findIndex(a => a.id === id); if (i < 0) return;
+  const cyc  = ['novo','andamento','concluido'];
+  list[i].status = cyc[(cyc.indexOf(list[i].status)+1) % cyc.length];
+  ss(K.atend, list); renderAtend(); toast('↻ Status atualizado!');
 }
 
-function saveSenha(){
-  const s1=(document.getElementById('cfg-senha')||{}).value;
-  const s2=(document.getElementById('cfg-senha2')||{}).value;
-  if(!s1){alert('Digite a nova senha.');return;}
-  if(s1!==s2){alert('As senhas não conferem.');return;}
-  localStorage.setItem('rmt_admin_pass',s1);
-  showToast('🔒 Senha alterada! Atualize o login.html com a nova senha também.');
+function delAtend(id) {
+  if (!confirm('Remover esta solicitação?')) return;
+  ss(K.atend, ls(K.atend).filter(a => a.id !== id)); renderAtend(); toast('🗑️ Solicitação removida.');
 }
 
-// ═══════════════════════════════════════════
-//  REGIÕES
-// ═══════════════════════════════════════════
-function renderRegTable(){
-  const regs=ls(K.regioes);
-  const tbody=document.getElementById('regTableBody');
-  if(!regs.length){tbody.innerHTML=`<tr class="empty-row"><td colspan="3">Nenhuma região cadastrada.</td></tr>`;return;}
-  tbody.innerHTML=regs.map(r=>`
+// ══════════════════════════════════════════════
+//  COMPRAS
+// ══════════════════════════════════════════════
+const cLbl = {novo:'Novo',contato:'Contato feito',concluido:'Concluído'};
+const cBdg = {novo:'b-new',contato:'b-pend',concluido:'b-done'};
+
+function renderCompras(q = '') {
+  let list = ls(K.compras);
+  const f  = document.getElementById('compraFilter')?.value || '';
+  if (f) list = list.filter(c => c.status === f);
+  if (q) list = list.filter(c => (c.produto+c.cliente).toLowerCase().includes(q.toLowerCase()));
+  list.sort((a,b) => b.id - a.id);
+
+  const tb = document.getElementById('compraTbody');
+  if (!list.length) { tb.innerHTML = `<tr class="empty"><td colspan="6">Nenhuma compra registrada.</td></tr>`; updBadges(); return; }
+
+  tb.innerHTML = list.map(c => `
     <tr>
-      <td class="td-name">📍 ${r.nome}</td>
+      <td>${fmtD(c.data)}</td>
+      <td class="tn">${c.produto}</td>
+      <td>${c.cliente}</td>
+      <td class="tp">R$ ${parseFloat(c.valor||0).toFixed(2).replace('.',',')}</td>
+      <td><span class="badge ${cBdg[c.status]||'b-new'}">${cLbl[c.status]||c.status}</span></td>
+      <td><div class="acts">
+        <button class="bs bv" onclick="viewCompra(${c.id})">👁 Ver</button>
+        <button class="bs bst" onclick="cycleCompra(${c.id})">↻ Status</button>
+        <button class="bs bd" onclick="delCompra(${c.id})">🗑️</button>
+      </div></td>
+    </tr>`).join('');
+  updBadges();
+}
+
+function viewCompra(id) {
+  const c = ls(K.compras).find(x => x.id === id); if (!c) return;
+  document.getElementById('mDetailTitle').textContent = 'Compra #'+c.id;
+  document.getElementById('mDetailBody').innerHTML = `
+    <div class="det-grid">
+      <div class="det-item"><label>Produto</label><span>${c.produto}</span></div>
+      <div class="det-item"><label>Valor</label><span class="tp">R$ ${parseFloat(c.valor||0).toFixed(2).replace('.',',')}</span></div>
+      <div class="det-item"><label>Cliente</label><span>${c.cliente}</span></div>
+      <div class="det-item"><label>Telefone</label><span>${c.tel||'—'}</span></div>
+      <div class="det-item"><label>Data</label><span>${fmtD(c.data)}</span></div>
+      <div class="det-item"><label>Status</label><span><span class="badge ${cBdg[c.status]||''}">${cLbl[c.status]||c.status}</span></span></div>
+    </div>
+    ${c.tel ? `<a href="https://wa.me/${c.tel.replace(/\D/g,'')}" target="_blank"
+       style="display:inline-flex;align-items:center;gap:0.4rem;background:#25D366;color:#fff;padding:0.55rem 1.1rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.85rem;margin-top:0.5rem">
+       📱 WhatsApp</a>` : ''}`;
+  document.getElementById('mDetail').classList.add('open');
+}
+
+function cycleCompra(id) {
+  const list = ls(K.compras), i = list.findIndex(c => c.id === id); if (i < 0) return;
+  const cyc  = ['novo','contato','concluido'];
+  list[i].status = cyc[(cyc.indexOf(list[i].status)+1) % cyc.length];
+  ss(K.compras, list); renderCompras(); toast('↻ Status atualizado!');
+}
+
+function delCompra(id) {
+  if (!confirm('Remover este registro?')) return;
+  ss(K.compras, ls(K.compras).filter(c => c.id !== id)); renderCompras(); toast('🗑️ Registro removido.');
+}
+
+function closeDetail() { document.getElementById('mDetail').classList.remove('open'); }
+
+// ══════════════════════════════════════════════
+//  CONFIGURAÇÕES — TOTALMENTE FUNCIONAL
+// ══════════════════════════════════════════════
+function renderCfg() {
+  var c = {};
+  try { c = JSON.parse(localStorage.getItem(K.cfg)) || {}; } catch(e) { c = {}; }
+
+  function v(key, def) {
+    var val = c[key];
+    return (val === undefined || val === null || val === '') ? (def || '') : val;
+  }
+
+  document.getElementById('cfgGrid').innerHTML =
+    '<div class="cfg-card">' +
+      '<h3>Contato e Redes</h3>' +
+      '<div class="fg"><label class="fl">WhatsApp (com DDI, sem espacos)</label>' +
+        '<input id="cfg-whatsapp" class="fi" value="' + v('whatsapp','551126900632') + '" placeholder="551126900632">' +
+        '<div style="font-size:0.72rem;color:var(--muted);margin-top:0.3rem">Ex: 551126900632 (55=Brasil, 11=DDD, numero sem traco)</div></div>' +
+      '<div class="fg"><label class="fl">E-mail</label>' +
+        '<input id="cfg-email" class="fi" value="' + v('email','contato@ramostec.com.br') + '" placeholder="contato@ramostec.com.br"></div>' +
+      '<div class="fg"><label class="fl">Instagram</label>' +
+        '<input id="cfg-instagram" class="fi" value="' + v('instagram','@ramostec') + '" placeholder="@ramostec"></div>' +
+      '<div class="fg"><label class="fl">Horario de Atendimento</label>' +
+        '<input id="cfg-horario" class="fi" value="' + v('horario','Segunda a sabado, 8h-18h') + '" placeholder="Seg-Sab: 8h-18h"></div>' +
+      '<button class="cfg-save" id="btnSaveContato" onclick="saveCfgBlock(\'contato\')">Salvar Contato</button>' +
+    '</div>' +
+
+    '<div class="cfg-card">' +
+      '<h3>Textos do Site</h3>' +
+      '<div class="fg"><label class="fl">Nome da Empresa</label>' +
+        '<input id="cfg-nome" class="fi" value="' + v('nome','Ramostec') + '"></div>' +
+      '<div class="fg"><label class="fl">Slogan (Hero)</label>' +
+        '<input id="cfg-slogan" class="fi" value="' + v('slogan','Seu eletrodomestico funcionando hoje.') + '"></div>' +
+      '<div class="fg"><label class="fl">Descricao Curta</label>' +
+        '<textarea id="cfg-descricao" class="fi" rows="3">' + v('descricao','Assistencia tecnica especializada em eletrodomesticos com atendimento domiciliar.') + '</textarea></div>' +
+      '<button class="cfg-save" id="btnSaveTextos" onclick="saveCfgBlock(\'textos\')">Salvar Textos</button>' +
+    '</div>' +
+
+    '<div class="cfg-card">' +
+      '<h3>Estatisticas do Hero</h3>' +
+      '<div class="frow">' +
+        '<div class="fg"><label class="fl">Clientes Atendidos</label>' +
+          '<input id="cfg-stats_clientes" class="fi" value="' + v('stats_clientes','500+') + '"></div>' +
+        '<div class="fg"><label class="fl">Anos de Experiencia</label>' +
+          '<input id="cfg-stats_anos" class="fi" value="' + v('stats_anos','4+') + '"></div>' +
+      '</div>' +
+      '<div class="frow">' +
+        '<div class="fg"><label class="fl">Pecas em Estoque</label>' +
+          '<input id="cfg-stats_pecas" class="fi" value="' + v('stats_pecas','100+') + '"></div>' +
+        '<div class="fg"><label class="fl">Avaliacao Media</label>' +
+          '<input id="cfg-stats_nota" class="fi" value="' + v('stats_nota','4.9') + '"></div>' +
+      '</div>' +
+      '<button class="cfg-save" id="btnSaveEstat" onclick="saveCfgBlock(\'estatisticas\')">Salvar Estatisticas</button>' +
+    '</div>' +
+
+    '<div class="cfg-card">' +
+      '<h3>Seguranca</h3>' +
+      '<div class="fg"><label class="fl">Senha Atual</label>' +
+        '<input id="cfg-senha-atual" class="fi" type="password" placeholder="Digite a senha atual"></div>' +
+      '<div class="fg"><label class="fl">Nova Senha</label>' +
+        '<input id="cfg-senha-nova" class="fi" type="password" placeholder="Min. 6 caracteres"></div>' +
+      '<div class="fg"><label class="fl">Confirmar Nova Senha</label>' +
+        '<input id="cfg-senha-conf" class="fi" type="password" placeholder="Repita a nova senha"></div>' +
+      '<p class="cfg-note">Credenciais salvas no localStorage. Para producao, use um backend real.</p>' +
+      '<button class="cfg-save" id="btnSaveSenha" onclick="saveSenha()">Alterar Senha</button>' +
+    '</div>';
+}
+
+function saveCfgBlock(bloco) {
+  // Lê o objeto atual (ou cria um vazio)
+  let c = {};
+  try { c = JSON.parse(localStorage.getItem(K.cfg)) || {}; } catch { c = {}; }
+
+  const fieldMap = {
+    contato:      ['whatsapp','email','instagram','horario'],
+    textos:       ['nome','slogan','descricao'],
+    estatisticas: ['stats_clientes','stats_anos','stats_pecas','stats_nota'],
+  };
+  const btnMap = {
+    contato:      'btnSaveContato',
+    textos:       'btnSaveTextos',
+    estatisticas: 'btnSaveEstat',
+  };
+
+  const fields = fieldMap[bloco];
+  if (!fields) { toast('Bloco desconhecido: ' + bloco, 'err'); return; }
+
+  let algumErro = false;
+  fields.forEach(function(field) {
+    const el = document.getElementById('cfg-' + field);
+    if (el) {
+      const val = (el.tagName === 'TEXTAREA') ? el.value : el.value.trim();
+      c[field] = val;
+    } else {
+      console.warn('Campo nao encontrado: cfg-' + field);
+      algumErro = true;
+    }
+  });
+
+  // Persiste no localStorage
+  localStorage.setItem(K.cfg, JSON.stringify(c));
+
+  // Verifica se realmente foi salvo
+  const saved = JSON.parse(localStorage.getItem(K.cfg) || '{}');
+  const ok = fields.every(function(f) { return saved[f] !== undefined; });
+
+  if (!ok || algumErro) {
+    toast('Erro ao salvar. Tente novamente.', 'err');
+    return;
+  }
+
+  // Feedback visual no botão
+  const btnId = btnMap[bloco];
+  const btn = btnId ? document.getElementById(btnId) : null;
+  if (btn) {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ Salvo!';
+    btn.style.background = '#16A34A';
+    setTimeout(function() {
+      btn.innerHTML = orig;
+      btn.style.background = '';
+    }, 2200);
+  }
+
+  const nomes = {contato:'Contato', textos:'Textos', estatisticas:'Estatisticas'};
+  toast('Salvo: ' + (nomes[bloco] || bloco), 'ok');
+}
+
+function saveSenha() {
+  const atual = document.getElementById('cfg-senha-atual')?.value || '';
+  const nova  = document.getElementById('cfg-senha-nova')?.value  || '';
+  const conf  = document.getElementById('cfg-senha-conf')?.value  || '';
+
+  // Validate against stored users
+  const users = JSON.parse(localStorage.getItem('rmt_users') || '[]');
+  const me2   = users.find(u => u.id === Auth.getSession()?.id);
+  if (me2 && me2.senha !== atual) { toast('❌ Senha atual incorreta.','err'); return; }
+  if (nova.length < 6)            { toast('❌ A nova senha deve ter pelo menos 6 caracteres.','err'); return; }
+  if (nova !== conf)              { toast('❌ As senhas não conferem.','err'); return; }
+
+  if (me2) { me2.senha = nova; localStorage.setItem('rmt_users', JSON.stringify(users)); }
+
+  document.getElementById('cfg-senha-atual').value = '';
+  document.getElementById('cfg-senha-nova').value  = '';
+  document.getElementById('cfg-senha-conf').value  = '';
+
+  const btn = document.getElementById('btnSaveSenha');
+  if (btn) { const o=btn.innerHTML; btn.innerHTML='✅ Alterada!'; btn.classList.add('saved'); setTimeout(()=>{btn.innerHTML=o;btn.classList.remove('saved');},2000); }
+  toast('🔒 Senha alterada com sucesso!','ok');
+}
+
+// ══════════════════════════════════════════════
+//  REGIÕES
+// ══════════════════════════════════════════════
+function renderRegs() {
+  const list = ls(K.regs);
+  const tb   = document.getElementById('regTbody');
+  if (!list.length) { tb.innerHTML = `<tr class="empty"><td colspan="3">Nenhuma região cadastrada.</td></tr>`; return; }
+  tb.innerHTML = list.map(r => `
+    <tr>
+      <td class="tn">📍 ${r.nome}</td>
       <td>${r.det||'—'}</td>
-      <td><div class="td-actions">
-        <button class="btn-sm btn-edit" onclick="openRegModal(${r.id})">✏️ Editar</button>
-        <button class="btn-sm btn-del" onclick="delRegiao(${r.id})">🗑️</button>
+      <td><div class="acts">
+        <button class="bs be" onclick="openReg(${r.id})">✏️ Editar</button>
+        <button class="bs bd" onclick="delReg(${r.id})">🗑️</button>
       </div></td>
     </tr>`).join('');
 }
 
-function addRegiao(){openRegModal(null);}
-function openRegModal(id){
-  document.getElementById('rg-id').value=id||'';
-  if(id){const r=ls(K.regioes).find(x=>x.id===id);if(!r)return;document.getElementById('regModalTitle').textContent='Editar Região';document.getElementById('rg-nome').value=r.nome;document.getElementById('rg-det').value=r.det||'';}
-  else{document.getElementById('regModalTitle').textContent='Adicionar Região';document.getElementById('rg-nome').value='';document.getElementById('rg-det').value='';}
-  document.getElementById('regModal').classList.add('open');
+function openReg(id = null) {
+  document.getElementById('rg-id').value = id || '';
+  if (id) {
+    const r = ls(K.regs).find(x => x.id === id); if (!r) return;
+    document.getElementById('mRegTitle').textContent = 'Editar Região';
+    document.getElementById('rg-nome').value = r.nome;
+    document.getElementById('rg-det').value  = r.det || '';
+  } else {
+    document.getElementById('mRegTitle').textContent = 'Adicionar Região';
+    document.getElementById('rg-nome').value = '';
+    document.getElementById('rg-det').value  = '';
+  }
+  document.getElementById('mReg').classList.add('open');
 }
-function closeRegModal(){document.getElementById('regModal').classList.remove('open');}
-function saveRegiao(){
-  const nome=document.getElementById('rg-nome').value.trim();if(!nome){alert('Informe o nome da cidade.');return;}
-  const det=document.getElementById('rg-det').value.trim();
-  const id=parseInt(document.getElementById('rg-id').value)||null;
-  const regs=ls(K.regioes);
-  if(id){const i=regs.findIndex(r=>r.id===id);if(i>-1)regs[i]={id,nome,det};}
-  else regs.push({id:Date.now(),nome,det});
-  ss(K.regioes,regs);closeRegModal();renderRegTable();showToast('✅ Região salva!');
-}
-function delRegiao(id){if(!confirm('Remover esta região?'))return;ss(K.regioes,ls(K.regioes).filter(r=>r.id!==id));renderRegTable();showToast('🗑️ Região removida.');}
 
-// ═══════════════════════════════════════════
+function closeReg() { document.getElementById('mReg').classList.remove('open'); }
+
+function saveReg() {
+  const nome = document.getElementById('rg-nome').value.trim();
+  if (!nome) { toast('❌ Informe o nome da cidade.','err'); return; }
+  const det  = document.getElementById('rg-det').value.trim();
+  const id   = parseInt(document.getElementById('rg-id').value) || null;
+  const list = ls(K.regs);
+  if (id) { const i = list.findIndex(r => r.id === id); if (i > -1) list[i] = {id,nome,det}; }
+  else list.push({id:Date.now(),nome,det});
+  ss(K.regs, list); closeReg(); renderRegs(); toast('✅ Região salva!','ok');
+}
+
+function delReg(id) {
+  if (!confirm('Remover esta região?')) return;
+  ss(K.regs, ls(K.regs).filter(r => r.id !== id)); renderRegs(); toast('🗑️ Região removida.');
+}
+
+// ══════════════════════════════════════════════
+//  USUÁRIOS
+// ══════════════════════════════════════════════
+function renderUsers() {
+  const users = Auth.getAllUsers();
+  const tb    = document.getElementById('userTbody');
+  const me2   = Auth.getSession();
+  const rLbl  = {admin:'Administrador',user:'Usuário'};
+  const rBdg  = {admin:'b-done',user:'b-new'};
+
+  tb.innerHTML = users.map(u => `
+    <tr>
+      <td class="tn">${u.nome} ${u.id===me2?.id?'<span style="font-size:0.7rem;color:var(--muted)">(você)</span>':''}</td>
+      <td>${u.email}</td>
+      <td><span class="badge ${rBdg[u.role]||'b-new'}">${rLbl[u.role]||u.role}</span></td>
+      <td>${u.criadoEm||'—'}</td>
+      <td><div class="acts">
+        ${u.id !== me2?.id ? `
+          <button class="bs bst" onclick="toggleRole(${u.id},'${u.role}')">
+            ${u.role==='admin'?'↓ Tornar Usuário':'↑ Tornar Admin'}
+          </button>
+          <button class="bs bd" onclick="delUser(${u.id})">🗑️</button>
+        ` : '<span style="font-size:0.74rem;color:var(--muted)">Conta atual</span>'}
+      </div></td>
+    </tr>`).join('');
+}
+
+function toggleRole(id, currentRole) {
+  const newRole = currentRole === 'admin' ? 'user' : 'admin';
+  Auth.setUserRole(id, newRole);
+  renderUsers();
+  toast(`✅ Perfil atualizado para ${newRole === 'admin' ? 'Administrador' : 'Usuário'}.`, 'ok');
+}
+
+function delUser(id) {
+  if (!confirm('Remover este usuário permanentemente?')) return;
+  if (Auth.deleteUser(id)) { renderUsers(); toast('🗑️ Usuário removido.'); }
+  else toast('❌ Não é possível remover sua própria conta.','err');
+}
+
+// ══════════════════════════════════════════════
 //  UTILS
-// ═══════════════════════════════════════════
-function fmtDate(d){if(!d)return'—';try{const[y,m,dia]=d.split('-');return`${dia}/${m}/${y}`;}catch{return d;}}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+// ══════════════════════════════════════════════
+function fmtD(d) {
+  if (!d) return '—';
+  try { const [y,m,dia] = d.split('-'); return `${dia}/${m}/${y}`; } catch { return d; }
+}
 
-// Init
-renderDashboard();
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = 'toast' + (type ? ' '+type : '');
+  void t.offsetWidth; // reflow
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── INIT ──
+renderDash();
 </script>
 </body>
 </html>
