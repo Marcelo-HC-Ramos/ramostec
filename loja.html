@@ -128,6 +128,15 @@
   /* ── TOAST ── */
   .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(80px); background: #0F2060; color: white; padding: 0.9rem 1.8rem; border-radius: 10px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2); transition: transform 0.3s; z-index: 9999; white-space: nowrap; }
   .toast.show { transform: translateX(-50%) translateY(0); }
+  .product-marca { font-size: 0.78rem; color: #6B7A8D; font-weight: 600; margin-bottom: 0.2rem; }
+  .product-stars { color: #F59E0B; font-size: 0.85rem; margin-bottom: 0.2rem; }
+  .product-rev-count { color: #6B7A8D; font-size: 0.75rem; }
+  .product-stock { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .stock-ok  { color: #16A34A; }
+  .stock-low { color: #D97706; }
+  .stock-out { color: #DC2626; }
+  .product-frete { font-size: 0.75rem; color: #2563EB; font-weight: 600; margin-bottom: 0.3rem; }
+  .product-info  { font-size: 0.78rem; color: #6B7A8D; margin-bottom: 0.5rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
   @media (max-width: 768px) {
     .nav-links { display: none; }
@@ -190,67 +199,143 @@
 <div class="toast" id="toast">✅ Redirecionando para o WhatsApp...</div>
 
 <script>
-  const produtos = [
-    { nome: 'Mangueira de Entrada', compat: 'Electrolux, Brastemp, LG', preco: 'R$ 29,90', cat: 'lavar', icon: '🔗' },
-    { nome: 'Bomba de Drenagem', compat: 'Brastemp, Consul, Samsung', preco: 'R$ 89,90', cat: 'lavar', icon: '🔄' },
-    { nome: 'Tampa de Máquina', compat: 'Electrolux LTR10, LTR12', preco: 'R$ 49,90', cat: 'lavar', icon: '🔲' },
-    { nome: 'Rolamento de Tambor', compat: 'Diversas marcas', preco: 'R$ 39,90', cat: 'lavar', icon: '⚙️' },
-    { nome: 'Turbina de Tanquinho', compat: 'Agratto, Wanke, Suggar', preco: 'R$ 55,00', cat: 'tanquinho', icon: '🌀' },
-    { nome: 'Mangueira de Esgoto', compat: 'Tanquinhos em geral', preco: 'R$ 19,90', cat: 'tanquinho', icon: '🔗' },
-    { nome: 'Tampa para Tanquinho', compat: 'Agratto, Wanke', preco: 'R$ 34,90', cat: 'tanquinho', icon: '🔲' },
-    { nome: 'Botão Acionador', compat: 'Suggar, Wanke', preco: 'R$ 15,00', cat: 'tanquinho', icon: '🔘' },
-    { nome: 'Acendedor Eletrônico', compat: 'Brastemp, Consul, Atlas', preco: 'R$ 45,00', cat: 'fogao', icon: '⚡' },
-    { nome: 'Grelha de Fogão', compat: 'Dako, Atlas, Esmaltec', preco: 'R$ 38,00', cat: 'fogao', icon: '🔆' },
-    { nome: 'Válvula de Gás', compat: 'Brastemp, Consul', preco: 'R$ 62,00', cat: 'fogao', icon: '🔩' },
-    { nome: 'Filtro de Carvão Coifa', compat: 'Suggar, Nardelli', preco: 'R$ 45,90', cat: 'coifa', icon: '🌫️' },
-    { nome: 'Motor de Coifa', compat: 'Diversos modelos', preco: 'R$ 120,00', cat: 'coifa', icon: '💨' },
-    { nome: 'Luminária LED Coifa', compat: 'Universal', preco: 'R$ 25,00', cat: 'coifa', icon: '💡' },
-  ];
+  // ══════════════════════════════════════════
+  //  LOJA — lê exclusivamente os produtos
+  //  cadastrados pelo admin no painel.
+  //  Chave localStorage: 'rmt_produtos'
+  // ══════════════════════════════════════════
 
-  function catLabel(cat) {
-    const map = { lavar: 'Máq. de Lavar', tanquinho: 'Tanquinho', fogao: 'Fogão', coifa: 'Coifa' };
-    return map[cat] || cat;
+  var CAT_LABEL = {
+    lavar:     'Maq. de Lavar',
+    tanquinho: 'Tanquinho',
+    fogao:     'Fogao',
+    coifa:     'Coifa',
+    outro:     'Outro'
+  };
+
+  // ── Lê produtos salvos pelo admin ──
+  function getProdutos() {
+    try {
+      var raw = localStorage.getItem('rmt_produtos');
+      if (!raw) return [];
+      var list = JSON.parse(raw);
+      return Array.isArray(list) ? list : [];
+    } catch(e) {
+      console.error('Erro ao ler produtos:', e);
+      return [];
+    }
   }
 
+  function stockClass(q) {
+    if (q <= 0) return 'stock-out';
+    if (q <= 3) return 'stock-low';
+    return 'stock-ok';
+  }
+  function stockLabel(q) {
+    if (q <= 0) return 'Sem estoque';
+    if (q <= 3) return 'Ultimas ' + q + ' un.';
+    return 'Em estoque (' + q + ')';
+  }
+  function avgStars(reviews) {
+    if (!reviews || !reviews.length) return 0;
+    return reviews.reduce(function(a, r) { return a + (r.stars || 0); }, 0) / reviews.length;
+  }
+  function esc(s) { return (s || '').replace(/'/g, "\'"); }
+
   function renderProducts(cat) {
-    const grid = document.getElementById('productsGrid');
-    const filtered = cat === 'todos' ? produtos : produtos.filter(p => p.cat === cat);
-    if (!filtered.length) {
-      grid.innerHTML = '<div class="empty-state"><span class="empty-icon">🔍</span><p>Nenhuma peça encontrada nessa categoria.</p></div>';
+    var grid  = document.getElementById('productsGrid');
+    var todos = getProdutos();
+
+    // ── Nenhum produto cadastrado ──
+    if (todos.length === 0) {
+      var adminMsg = Auth.isAdmin()
+        ? '<br><a href="admin.html" style="color:#CC0000;font-weight:700;text-decoration:underline">Ir para o painel e cadastrar produtos</a>'
+        : '';
+      grid.innerHTML =
+        '<div class="empty-state">' +
+          '<span class="empty-icon">📦</span>' +
+          '<p>Nenhum produto disponivel no momento.<br>Em breve novidades!' + adminMsg + '</p>' +
+        '</div>';
       return;
     }
-    grid.innerHTML = filtered.map(p => `
-      <div class="product-card">
-        <div class="product-img">${p.icon}</div>
-        <div class="product-body">
-          <span class="product-badge">${catLabel(p.cat)}</span>
-          <div class="product-name">${p.nome}</div>
-          <div class="product-compat">Compatível: ${p.compat}</div>
-          <div class="product-price">${p.preco}</div>
-          <button class="btn-buy" onclick="comprarPeca('${esc(p.nome)}','${esc(p.preco)}','${esc(p.marca)}','${esc(p.modelo)}','${esc(p.compat)}','${esc(p.frete)}','${esc(p.info)}')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
-            Comprar via WhatsApp
-          </button>
-        </div>
-      </div>
-    `).join('');
+
+    // ── Filtra por categoria ──
+    var list = (cat === 'todos')
+      ? todos
+      : todos.filter(function(p) { return p.cat === cat; });
+
+    if (list.length === 0) {
+      grid.innerHTML =
+        '<div class="empty-state">' +
+          '<span class="empty-icon">🔍</span>' +
+          '<p>Nenhuma peca nessa categoria no momento.</p>' +
+        '</div>';
+      return;
+    }
+
+    // ── Renderiza cards ──
+    grid.innerHTML = list.map(function(p) {
+      var preco  = 'R$ ' + parseFloat(p.preco || 0).toFixed(2).replace('.', ',');
+      var avg    = avgStars(p.reviews);
+      var nRev   = p.reviews ? p.reviews.length : 0;
+      var stars  = avg > 0
+        ? '<div class="product-stars">' +
+            [1,2,3,4,5].map(function(n){ return n <= Math.round(avg) ? '★' : '☆'; }).join('') +
+            ' <span class="product-rev-count">(' + nRev + ')</span>' +
+          '</div>'
+        : '';
+      var foto = p.foto
+        ? '<img src="' + p.foto + '" alt="' + p.nome + '" style="width:100%;height:100%;object-fit:cover;">'
+        : '<span style="font-size:3.2rem">🔩</span>';
+      var sc = stockClass(p.estoque !== undefined ? p.estoque : 0);
+      var sl = stockLabel(p.estoque !== undefined ? p.estoque : 0);
+      var marcaModelo = (p.marca || '') + (p.modelo ? ' · ' + p.modelo : '');
+      var frete  = p.frete  ? '<div class="product-frete">Frete: ' + p.frete + '</div>' : '';
+      var compat = p.compat ? '<div class="product-compat">Compativel: ' + p.compat + '</div>' : '';
+      var info   = p.info   ? '<div class="product-info">' + p.info + '</div>' : '';
+
+      return (
+        '<div class="product-card">' +
+          '<div class="product-img">' + foto + '</div>' +
+          '<div class="product-body">' +
+            '<span class="product-badge">' + (CAT_LABEL[p.cat] || p.cat || 'Peca') + '</span>' +
+            '<div class="product-name">' + p.nome + '</div>' +
+            (marcaModelo ? '<div class="product-marca">' + marcaModelo + '</div>' : '') +
+            compat + stars +
+            '<div class="product-stock ' + sc + '">' + sl + '</div>' +
+            frete + info +
+            '<div class="product-price">' + preco + '</div>' +
+            '<button class="btn-buy" onclick="comprarPeca('' +
+              esc(p.nome)   + '','' + esc(preco)    + '','' +
+              esc(p.marca)  + '','' + esc(p.modelo) + '','' +
+              esc(p.compat) + '','' + esc(p.frete)  + '','' +
+              esc(p.info)   + '')">' +
+              '<svg width="16" height="16" viewBox="0 0 24 24" fill="white">' +
+                '<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>' +
+                '<path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.115 1.528 5.835L.057 23.215a.75.75 0 0 0 .923.923l5.38-1.471A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.694 9.694 0 0 1-4.98-1.372l-.36-.214-3.713 1.015 1.015-3.713-.214-.36A9.694 9.694 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/>' +
+              '</svg>' +
+              ' Comprar via WhatsApp' +
+            '</button>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
   }
 
   function filterProducts(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
     renderProducts(cat);
   }
 
   function comprarPeca(nome, preco, marca, modelo, compat, frete, info) {
     if (!Auth.isLoggedIn()) {
-      if (confirm('Para comprar, você precisa fazer login.\nDeseja entrar agora?')) {
+      if (confirm('Para comprar, voce precisa fazer login.\nDeseja entrar agora?')) {
         window.location.href = 'login.html?next=' + encodeURIComponent(window.location.href);
       }
       return;
     }
-
-    let msg = 'Ola, Ramostec! Tenho interesse em uma peca do site.\n\n';
+    var msg = 'Ola, Ramostec! Tenho interesse em uma peca do site.\n\n';
     msg += 'PECA: ' + nome + '\n';
     if (marca)  msg += 'Marca: ' + marca + '\n';
     if (modelo) msg += 'Modelo: ' + modelo + '\n';
@@ -261,14 +346,13 @@
     msg += '\nGostaria de confirmar disponibilidade e prazo de entrega.\n';
     msg += '\nMinha duvida / observacao:\n(escreva aqui antes de enviar)';
 
-    const toast = document.getElementById('toast');
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-    setTimeout(() => window.open('https://wa.me/551126900632?text=' + encodeURIComponent(msg), '_blank'), 400);
+    var t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3000);
+    setTimeout(function() { window.open('https://wa.me/551126900632?text=' + encodeURIComponent(msg), '_blank'); }, 400);
   }
 
-  function esc(s) { return (s || '').replace(/'/g, "\'"); }
-
+  // Renderiza ao carregar
   renderProducts('todos');
 </script>
 </body>
